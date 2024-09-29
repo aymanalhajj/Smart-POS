@@ -1,0 +1,9 @@
+﻿<Application x:Class="Smart_POS.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Smart_POS"
+             StartupUri="PurchaseInvoicePage.xaml">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
