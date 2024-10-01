@@ -39,17 +39,6 @@ namespace POS_Desktop
         }
     }
 
-    public class RadioButtonCheckedConverterBool : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value.Equals(parameter);
-        }
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value.Equals(true) ? parameter : Binding.DoNothing;
-        }
-    }
     /// <summary>
     /// Interaction logic for PurchaseInvoicePage.xaml
     /// </summary>
@@ -60,6 +49,9 @@ namespace POS_Desktop
             var comboBox = sender as ComboBox;
             if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId))
             {
+                //MessageBox.Show(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId.ToString());
+
+                viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId = comboBox?.SelectedValue.ToString();
                 viewModel.ProductSelected();
             }
         }
@@ -76,7 +68,7 @@ namespace POS_Desktop
             InitializeComponent();
 
             ProductComboBox.ItemsSource = viewModel.ProductList;
-            ProductUnitComboBox.ItemsSource = viewModel.ProductList;
+            //ProductUnitComboBox.ItemsSource = viewModel.ProductList;
 
             Load_Branches();
             Load_Providers();
@@ -243,7 +235,7 @@ namespace POS_Desktop
         {
             try
             {
-                MessageBox.Show(viewModel.PurchaseInvoice.payment_type.ToString());
+                MessageBox.Show(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId.ToString());
 
                 MessageBox.Show(viewModel.CurrentRow.ToString());
                 //MessageBox.Show(viewModel.InvoiceDetailItems.Count.ToString());
@@ -277,6 +269,27 @@ namespace POS_Desktop
             if (viewModel.CurrentRow >= 0 && viewModel.InvoiceDetailItems.Count > 0 && viewModel.CurrentRow < viewModel.InvoiceDetailItems.Count)
             {
                 viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);
+            }
+        }
+
+        private void DetailsGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.Column.DisplayIndex == 2 || e.Column.DisplayIndex == 4 || e.Column.DisplayIndex == 6 || e.Column.DisplayIndex == 9)
+            {
+                viewModel.RecalcPrice();
+            }
+            //MessageBox.Show(e.Column.DisplayIndex.ToString());
+        }
+
+        private void deferredInvoiceBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            if (deferredInvoiceBtn.IsChecked == true)
+            {
+                PaidAmountTxt.IsReadOnly = DeferredAmountTxt.IsReadOnly = false;
+            }
+            else
+            {
+                PaidAmountTxt.IsReadOnly = DeferredAmountTxt.IsReadOnly = true;
             }
         }
     }

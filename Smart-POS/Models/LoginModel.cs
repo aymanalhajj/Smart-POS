@@ -1,12 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Windows;
+using Newtonsoft.Json;
 
 namespace POS_Desktop.Models
 {
+    public class ProductPrice
+    {
+        [JsonProperty("barcode")]
+        public string? Barcode { get; set; }
+
+        [JsonProperty("quantity")]
+        public string? Quantity { get; set; }
+
+        [JsonProperty("default_unit_id")]
+        public int DefaultUnitId { get; set; }
+
+        [JsonProperty("base_price")]
+        public string? BasePrice { get; set; }
+
+        [JsonProperty("total_price")]
+        public string? TotalPrice { get; set; }
+
+        [JsonProperty("discount")]
+        public float? Discount { get; set; }
+
+        [JsonProperty("discount_value")]
+        public string? DiscountValue { get; set; }
+
+        [JsonProperty("post_discount_total_price")]
+        public string? PostDiscountTotalPrice { get; set; }
+
+        [JsonProperty("vat_percentage")]
+        public float? VatPercentage { get; set; }
+
+        [JsonProperty("vat_value")]
+        public string? VatValue { get; set; }
+
+        [JsonProperty("total_amount")]
+        public string? TotalAmount { get; set; }
+
+        [JsonProperty("pre_discount_vat_value")]
+        public string? PreDiscountVatValue { get; set; }
+
+        [JsonProperty("original_price")]
+        public string? OriginalPrice { get; set; }
+    }
     class LoginModel
     {
         public string? username { get; set; }
@@ -24,23 +72,75 @@ namespace POS_Desktop.Models
 
     public class InvoiceDetailItem : INotifyPropertyChanged
     {
-        public int ProductId { get; set; }
+
+        public void Load_ProductUnits()
+        {
+            using var client = new HttpClient();
+            var requestUri = new Uri($"http://localhost:8000/ords/accounting/lists/product_unit_list?p_company_id=0&p_lang_id=2&p_product_id={HttpUtility.UrlEncode(ProductId.ToString())}", UriKind.Absolute);
+
+            //MessageBox.Show(requestUri.ToString());
+            var response = client.GetAsync(requestUri).Result;
+            var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
+            if (res != null)
+            {
+                ProductUnitList.Clear();
+                for (int i = 0; i < res.Items?.Count; i++)
+                {
+                    Item? item = res.Items[i];
+                    ProductUnitList.Add(item);
+                }
+            }
+        }
+        public InvoiceDetailItem()
+        {
+            ProductUnitList = new ObservableCollection<Item> { };
+        }
+
+        private ObservableCollection<Item> _productUnitList;
+
+
+        public ObservableCollection<Item> ProductUnitList
+        {
+            get { return _productUnitList; }
+            set
+            {
+
+                _productUnitList = value;
+
+                OnPropertyChanged("ProductUnitList");
+            }
+        }
+
+
+        public object _product_Id { get; set; }
         public string? _product_barcode;
 
         public int _product_unit_id;
         public string? _price;
         public string? _total_price;
-        public string? _discount_percentage;
+        public float? _discount_percentage;
         public string? _discount_value;
         public string? _post_discount_price;
 
 
-        public string? _vat_percentage;
+        public float? _vat_percentage;
         public string? _vat_value;
         public string? _total_amount;
-        public string? _change_total_amount;
+        public float? _change_total_amount;
 
         public string? _quantity;
+        public object ProductId
+        {
+            get
+            {
+                return _product_Id;
+            }
+            set
+            {
+                _product_Id = value;
+                OnPropertyChanged("ProductId");
+            }
+        }
         public string? ProductBarcode
         {
             get
@@ -121,13 +221,13 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("TotalPrice");
             }
         }
-        public string? DiscountPercentage
+        public float? DiscountPercentage
         {
             get
             {
                 if (_discount_percentage == null)
                 {
-                    _discount_percentage = "";
+                    _discount_percentage = 0;
                 }
                 return _discount_percentage;
             }
@@ -169,14 +269,10 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("PostDiscountPrice");
             }
         }
-        public string? VatPercentage
+        public float? VatPercentage
         {
             get
             {
-                if (_vat_percentage == null)
-                {
-                    _vat_percentage = "";
-                }
                 return _vat_percentage;
             }
             set
@@ -185,6 +281,24 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("VatPercentage");
             }
         }
+        public string? _pre_discount_vat_value;
+        public string? PreDiscountVatValue
+        {
+            get
+            {
+                if (_pre_discount_vat_value == null)
+                {
+                    _pre_discount_vat_value = "0";
+                }
+                return _pre_discount_vat_value;
+            }
+            set
+            {
+                _pre_discount_vat_value = value;
+                OnPropertyChanged("PreDiscountVatValue");
+            }
+        }
+
         public string? VatValue
         {
             get
@@ -217,23 +331,26 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("TotalAmount");
             }
         }
-        public string? ChangeTotalAmount
+        public float? ChangeTotalAmount
         {
             get
             {
-                if (_change_total_amount == null)
-                {
-                    _change_total_amount = "";
-                }
                 return _change_total_amount;
             }
             set
             {
                 _change_total_amount = value;
+                DiscountPercentage = 0;
+                TotalPrice = (value * 100 /(100+VatPercentage)).ToString();
+                Price = (float.Parse(TotalPrice) / float.Parse(Quantity)).ToString();
+                PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
+                DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
+                PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
+                VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
+                TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
                 OnPropertyChanged("ChangeTotalAmount");
             }
         }
-        public string? PreDiscountVatValue { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -416,20 +533,27 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("CostCenterId");
             }
         }
-        public object _invoice_type { get; set; }
-        public object InvoiceType
+
+        public delegate void ResetPaidCallbackEventHandler();
+        public event ResetPaidCallbackEventHandler ResetPaidCallback;
+
+        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
+        public event DiscountCallbackEventHandler DiscountCallback;
+
+        public int _invoice_type { get; set; }
+        public int InvoiceType
         {
             get
             {
-                if (_invoice_type == null)
-                {
-                    _invoice_type = "0";
-                }
                 return _invoice_type;
             }
             set
             {
                 _invoice_type = value;
+                if (ResetPaidCallback != null)
+                {
+                    ResetPaidCallback();
+                }
                 OnPropertyChanged("InvoiceType");
             }
         }
@@ -476,21 +600,34 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("PaymentType");
             }
         }
-        public double _pre_tax_total_amount { get; set; }
-        public double PreTaxTotalAmount
+        public double _pre_discount_total_amount { get; set; }
+        public double PreDiscountTotalAmount
         {
             get
             {
-                return _pre_tax_total_amount;
+                return _pre_discount_total_amount;
             }
             set
             {
-                _pre_tax_total_amount = value;
-                OnPropertyChanged("PreTaxTotalAmount");
+                _pre_discount_total_amount = value;
+                OnPropertyChanged("PreDiscountTotalAmount");
             }
         }
-        public double _client_discount { get; set;
-        public double ClientDiscount
+        public double _pre_discount_total_vat { get; set; }
+        public double PreDiscountTotalVat
+        {
+            get
+            {
+                return _pre_discount_total_vat;
+            }
+            set
+            {
+                _pre_discount_total_vat = value;
+                OnPropertyChanged("PreDiscountTotalVat");
+            }
+        }
+        public float _client_discount { get; set; }
+        public float ClientDiscount
         {
             get
             {
@@ -499,6 +636,10 @@ namespace POS_Desktop.Models
             set
             {
                 _client_discount = value;
+                if (DiscountCallback != null)
+                {
+                    DiscountCallback((float)(_client_discount /(PreDiscountTotalVat+ PreDiscountTotalAmount) *100));
+                }
                 OnPropertyChanged("ClientDiscount");
             }
         }
@@ -554,8 +695,8 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("TotalQuantity");
             }
         }
-        public int _invoice_total_amount { get; set; }
-        public int InvoiceTotalAmount
+        public double _invoice_total_amount { get; set; }
+        public double InvoiceTotalAmount
         {
             get
             {
@@ -632,8 +773,8 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("BankAccId");
             }
         }
-        public object _paid_amount { get; set; }
-        public object PaidAmount
+        public double _paid_amount { get; set; }
+        public double PaidAmount
         {
             get
             {
@@ -641,12 +782,20 @@ namespace POS_Desktop.Models
             }
             set
             {
-                _paid_amount = value;
+                if (InvoiceTotalAmount - value < 0)
+                {
+                    _paid_amount = InvoiceTotalAmount;
+                }
+                else
+                {
+                    _paid_amount = value;
+                }
                 OnPropertyChanged("PaidAmount");
+                DeferredAmount = InvoiceTotalAmount - _paid_amount;
             }
         }
-        public object _deferred_amount { get; set; }
-        public object DeferredAmount
+        public double _deferred_amount { get; set; }
+        public double DeferredAmount
         {
             get
             {
@@ -654,8 +803,17 @@ namespace POS_Desktop.Models
             }
             set
             {
-                _deferred_amount = value;
+                if (InvoiceTotalAmount - value < 0)
+                {
+                    _deferred_amount = InvoiceTotalAmount;
+                }
+                else
+                {
+                    _deferred_amount = value;
+                }
                 OnPropertyChanged("DeferredAmount");
+                _paid_amount = InvoiceTotalAmount - _deferred_amount;
+                OnPropertyChanged("PaidAmount");
             }
         }
 
