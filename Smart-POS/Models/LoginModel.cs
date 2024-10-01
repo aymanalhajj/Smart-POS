@@ -73,6 +73,9 @@ namespace POS_Desktop.Models
     public class InvoiceDetailItem : INotifyPropertyChanged
     {
 
+        public delegate void CalcSummaryCallbackEventHandler();
+        public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
+
         public void Load_ProductUnits()
         {
             using var client = new HttpClient();
@@ -126,7 +129,7 @@ namespace POS_Desktop.Models
         public float? _vat_percentage;
         public string? _vat_value;
         public string? _total_amount;
-        public float? _change_total_amount;
+        public object? _change_total_amount;
 
         public string? _quantity;
         public object ProductId
@@ -331,7 +334,7 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("TotalAmount");
             }
         }
-        public float? ChangeTotalAmount
+        public object? ChangeTotalAmount
         {
             get
             {
@@ -340,14 +343,21 @@ namespace POS_Desktop.Models
             set
             {
                 _change_total_amount = value;
-                DiscountPercentage = 0;
-                TotalPrice = (value * 100 /(100+VatPercentage)).ToString();
-                Price = (float.Parse(TotalPrice) / float.Parse(Quantity)).ToString();
-                PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
-                DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
-                PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
-                TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+                if (value != null && !value.Equals("0") && !value.Equals(""))
+                {
+                    DiscountPercentage = 0;
+                    Price = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage) / float.Parse(Quantity)).ToString();
+                    TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage)).ToString();
+                    PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
+                    DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
+                    PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
+                    VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
+                    TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+                    if (CalcSummaryCallback != null)
+                    {
+                        CalcSummaryCallback();
+                    }
+                }
                 OnPropertyChanged("ChangeTotalAmount");
             }
         }
@@ -537,6 +547,9 @@ namespace POS_Desktop.Models
         public delegate void ResetPaidCallbackEventHandler();
         public event ResetPaidCallbackEventHandler ResetPaidCallback;
 
+        public delegate void ResetPaidCashCallbackEventHandler();
+        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
+
         public delegate void DiscountCallbackEventHandler(float DiscountPercent);
         public event DiscountCallbackEventHandler DiscountCallback;
 
@@ -597,6 +610,10 @@ namespace POS_Desktop.Models
             set
             {
                 _payment_type = value;
+                if (ResetPaidCashCallback != null)
+                {
+                    ResetPaidCashCallback();
+                }
                 OnPropertyChanged("PaymentType");
             }
         }
@@ -638,7 +655,7 @@ namespace POS_Desktop.Models
                 _client_discount = value;
                 if (DiscountCallback != null)
                 {
-                    DiscountCallback((float)(_client_discount /(PreDiscountTotalVat+ PreDiscountTotalAmount) *100));
+                    DiscountCallback((float)(_client_discount / (PreDiscountTotalVat + PreDiscountTotalAmount) * 100));
                 }
                 OnPropertyChanged("ClientDiscount");
             }
@@ -708,8 +725,8 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("InvoiceTotalAmount");
             }
         }
-        public object _paid_cash_amount { get; set; }
-        public object PaidCashAmount
+        public double _paid_cash_amount { get; set; }
+        public double PaidCashAmount
         {
             get
             {
@@ -717,12 +734,20 @@ namespace POS_Desktop.Models
             }
             set
             {
-                _paid_cash_amount = value;
+                if (PaidAmount - value < 0)
+                {
+                    _paid_cash_amount = PaidAmount;
+                }
+                else
+                {
+                    _paid_cash_amount = value;
+                }
                 OnPropertyChanged("PaidCashAmount");
+                PaidBankAmount = PaidAmount - _paid_cash_amount;
             }
         }
-        public object _paid_bank_amount { get; set; }
-        public object PaidBankAmount
+        public double _paid_bank_amount { get; set; }
+        public double PaidBankAmount
         {
             get
             {
@@ -730,8 +755,17 @@ namespace POS_Desktop.Models
             }
             set
             {
-                _paid_bank_amount = value;
+                if (PaidAmount - value < 0)
+                {
+                    _paid_cash_amount = PaidAmount;
+                }
+                else
+                {
+                    _paid_bank_amount = value;
+                }
                 OnPropertyChanged("PaidBankAmount");
+                _paid_cash_amount = PaidAmount - _paid_bank_amount;
+                OnPropertyChanged("PaidCashAmount");
             }
         }
         public int _company_id { get; set; }

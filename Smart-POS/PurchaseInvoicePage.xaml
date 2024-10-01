@@ -145,7 +145,7 @@
                     <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                     <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
                     <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
-                    <DataGridTextColumn Header="تغيير الصافي" Width="80" Binding="{Binding ChangeTotalAmount}"  />
+                    <DataGridTextColumn Header="تغيير الصافي" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay}"  />
                     <DataGridTemplateColumn Header="حذف" 
                                                     >
                         <DataGridTemplateColumn.CellTemplate>
@@ -158,80 +158,124 @@
 
             </DataGrid>
         </StackPanel>
-        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
 
-            <Border CornerRadius="2"
+        <Border 
+                VerticalAlignment="Bottom"
+                CornerRadius="2"
                 BorderBrush="Gray"
                 Background="LightGray"
                 BorderThickness="2"
-                     Margin="5"
+                Margin="5"
                 Padding="8">
+            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
 
-                <StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="2">
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2"  HorizontalContentAlignment="Right">نوع الدفع</Label>
-                        <RadioButton Name="cashBtn" Content="نقد" Margin="10,5,0,0" GroupName="PaymentType"
-                             IsChecked="{Binding 
+                <StackPanel Orientation="Horizontal" Margin="2">
+                    <Label Width="100" FontSize="16" FontWeight="SemiBold" Margin="2"  HorizontalContentAlignment="Right">نوع الدفع</Label>
+                    <RadioButton 
+                            VerticalContentAlignment="Center"
+                            FontSize="16"
+                            Name="cashBtn" 
+                            Content="نقد" 
+                            Margin="10,5,0,0" 
+                            GroupName="PaymentType"
+                            IsChecked="{Binding 
                             Path=PurchaseInvoice.PaymentType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=1}" />
-                        <RadioButton Name="bankBtn" Content="شبكة" Margin="10,5,0,0" GroupName="PaymentType" 
-                             IsChecked="{Binding 
+                    <RadioButton 
+                        Checked="bankBtn_Checked"
+                        Unchecked="bankBtn_Checked"
+                            VerticalContentAlignment="Center"
+                            FontSize="16"
+                            Name="bankBtn" 
+                            Content="شبكة" 
+                            Margin="10,5,0,0" 
+                            GroupName="PaymentType" 
+                            IsChecked="{Binding 
                             Path=PurchaseInvoice.PaymentType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=2}"/>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="50" HorizontalContentAlignment="Right">البنك</Label>
-                        <ComboBox Name="BankList" Margin="2" Width="100" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=PurchaseInvoice.BankAccId}" />
-
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">خصم العميل</Label>
-                        <TextBox Text="{Binding Path=PurchaseInvoice.ClientDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center" />
-                        
-                        <Label Content="الاجمالي قبل الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.PreDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                        <Label Content="اجمالي الكمية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalQuantity}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal" Margin="2">
-
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المبلغ المدفوع</Label>
-                        <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=PurchaseInvoice.PaidAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المبلغ المتبقي</Label>
-                        <TextBox IsReadOnly="True" Name="DeferredAmountTxt" Text="{Binding Path=PurchaseInvoice.DeferredAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                        <Label Content="اجمالي الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                        <Label Content="اجمالي الضريبة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalVat}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="2">
-
-                        <Label Content="المدفوع عبر البنك" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox Height="25" Text="{Binding Path=PurchaseInvoice.PaidBankAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                        <Label Content="المدفوع نقدا" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox Height="25" Text="{Binding Path=PurchaseInvoice.PaidCashAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-
-                        <Label Content="الاجمالي بعد الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox Height="25" IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.PostDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                        <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                        <TextBox FontWeight="Bold" FontSize="20" Height="50" IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal"  Margin="2">
-                        <Button Name="New_Btn" Margin="6" Padding="20,5" Content="جديد"/>
-                        <Button Name="Save_Btn" Margin="6" Padding="20,5" Content="حفظ" Click="Save_Btn_Click"/>
-                        <Button Name="First_Btn" Margin="6" Padding="20,5" Content="الأول"/>
-                        <Button Name="Prev_Btn" Margin="6" Padding="20,5" Content="السابق"/>
-                        <Button Name="Next_Btn" Margin="6" Padding="20,5" Content="التالي"/>
-                        <Button Name="Last_Btn" Margin="6" Padding="20,5" Content="الأخير"/>
-                    </StackPanel>
                 </StackPanel>
-            </Border>
-        </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal">
+
+                    <StackPanel Orientation="Vertical" Margin="2">
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">البنك</Label>
+                            <ComboBox IsEnabled="False" Name="BankList" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=PurchaseInvoice.BankAccId}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">المبلغ المدفوع</Label>
+                            <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=PurchaseInvoice.PaidAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="المدفوع نقدا" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Name="PaidCashTxt" Height="25" Text="{Binding Path=PurchaseInvoice.PaidCashAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="2">
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">خصم العميل</Label>
+                            <TextBox Text="{Binding Path=PurchaseInvoice.ClientDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المبلغ المتبقي</Label>
+                            <TextBox IsReadOnly="True" Name="DeferredAmountTxt" Text="{Binding Path=PurchaseInvoice.DeferredAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="المدفوع عبر البنك" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Name="PaidBankTxt" Height="25" Text="{Binding Path=PurchaseInvoice.PaidBankAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="2">
+
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="الاجمالي قبل الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.PreDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="اجمالي الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="الاجمالي بعد الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox Height="25" IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.PostDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical" Margin="2">
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="اجمالي الكمية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalQuantity}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="اجمالي الضريبة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.TotalVat}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="2">
+                            <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                            <TextBox FontWeight="Bold" FontSize="20" Height="50" IsReadOnly="True" Text="{Binding Path=PurchaseInvoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  Margin="2">
+                    <Button Name="New_Btn" Margin="6" Padding="20,5" Content="جديد"/>
+                    <Button Name="Save_Btn" Margin="6" Padding="20,5" Content="حفظ" Click="Save_Btn_Click"/>
+                    <Button Name="First_Btn" Margin="6" Padding="20,5" Content="الأول"/>
+                    <Button Name="Prev_Btn" Margin="6" Padding="20,5" Content="السابق"/>
+                    <Button Name="Next_Btn" Margin="6" Padding="20,5" Content="التالي"/>
+                    <Button Name="Last_Btn" Margin="6" Padding="20,5" Content="الأخير"/>
+                </StackPanel>
+
+            </StackPanel>
+        </Border>
 
 
     </Grid>

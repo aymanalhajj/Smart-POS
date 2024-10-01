@@ -83,19 +83,6 @@ namespace POS_Desktop
 
         }
 
-        public class MainViewModel
-        {
-            private ObservableCollection<InvoiceDetailItem> _productCollection;
-            public ObservableCollection<InvoiceDetailItem> ProductCollection
-            {
-                get { return _productCollection; }
-                set
-                {
-                    _productCollection = value;
-                    //RaisePropertyChanged("ProductCollection");
-                }
-            }
-        }
         private void Load_Branches()
         {
             using var client = new HttpClient();
@@ -278,6 +265,10 @@ namespace POS_Desktop
             {
                 viewModel.RecalcPrice();
             }
+            if (e.Column.DisplayIndex == 12)
+            {
+                viewModel.ChangePrice();
+            }
             //MessageBox.Show(e.Column.DisplayIndex.ToString());
         }
 
@@ -285,12 +276,32 @@ namespace POS_Desktop
         {
             if (deferredInvoiceBtn.IsChecked == true)
             {
-                PaidAmountTxt.IsReadOnly = DeferredAmountTxt.IsReadOnly = false;
+                PaidAmountTxt.IsReadOnly = false;
+                DeferredAmountTxt.IsReadOnly = false;
             }
             else
             {
-                PaidAmountTxt.IsReadOnly = DeferredAmountTxt.IsReadOnly = true;
+                PaidAmountTxt.IsReadOnly = true;
+                DeferredAmountTxt.IsReadOnly = true;
             }
+        }
+
+        private void bankBtn_Checked(object sender, RoutedEventArgs e)
+        {
+            if (bankBtn.IsChecked == true)
+            {
+                PaidCashTxt.IsReadOnly = false; 
+                PaidBankTxt.IsReadOnly = false;
+                BankList.IsEnabled = true;
+            }
+            else
+            {
+                PaidCashTxt.IsReadOnly = true;
+                PaidBankTxt.IsReadOnly = true;
+                BankList.IsEnabled = false;
+            }
+
+
         }
     }
 }
