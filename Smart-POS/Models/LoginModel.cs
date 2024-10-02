@@ -16,14 +16,17 @@ namespace POS_Desktop.Models
 {
     public class ProductPrice
     {
+        [JsonProperty("product_id")]
+        public string? ProductId { get; set; }
+
         [JsonProperty("barcode")]
         public string? Barcode { get; set; }
-
+        
         [JsonProperty("quantity")]
         public string? Quantity { get; set; }
 
         [JsonProperty("default_unit_id")]
-        public int DefaultUnitId { get; set; }
+        public string DefaultUnitId { get; set; }
 
         [JsonProperty("base_price")]
         public string? BasePrice { get; set; }
@@ -118,7 +121,7 @@ namespace POS_Desktop.Models
         public object _product_Id { get; set; }
         public string? _product_barcode;
 
-        public int _product_unit_id;
+        public string _product_unit_id;
         public string? _price;
         public string? _total_price;
         public float? _discount_percentage;
@@ -176,14 +179,10 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("Quantity");
             }
         }
-        public int ProductUnitId
+        public string ProductUnitId
         {
             get
             {
-                if (_product_unit_id == null)
-                {
-                    _product_unit_id = 1;
-                }
                 return _product_unit_id;
             }
             set
@@ -318,6 +317,25 @@ namespace POS_Desktop.Models
                 OnPropertyChanged("VatValue");
             }
         }
+
+        public string? _original_price { get; set; }
+        public string? OriginalPrice
+        {
+            get
+            {
+                if (_original_price == null)
+                {
+                    _original_price = "";
+                }
+                return _original_price;
+            }
+            set
+            {
+                _original_price = value;
+                OnPropertyChanged("OriginalPrice");
+            }
+        }
+
         public string? TotalAmount
         {
             get

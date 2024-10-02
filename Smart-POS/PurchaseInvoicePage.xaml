@@ -102,7 +102,22 @@
                 AutoGenerateColumns = "False"
                       >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="الباركود" Width="80" Binding="{Binding ProductBarcode}"  />
+                    <!--<DataGridTemplateColumn 
+                        Header="الباركود" 
+                        Width="150" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <HierarchicalDataTemplate>
+                            <TextBox 
+                                KeyDown="ProductBarcode_KeyDown"
+                                Name="ProductBarcodeTxt"
+                                Text="{Binding ProductBarcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </HierarchicalDataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>-->
+                    <DataGridTextColumn 
+                        Header="الباركود" 
+                        Width="80" 
+                        Binding="{Binding ProductBarcode}"  />
                     <DataGridComboBoxColumn 
                         SelectedValueBinding="{Binding ProductId}"
                         x:Name="ProductComboBox"
@@ -122,6 +137,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <HierarchicalDataTemplate>
                                 <ComboBox 
+                                    SelectionChanged="ProductUnitSelectionChanged"
                                     ItemsSource="{Binding ProductUnitList}"
                                     SelectedValue="{Binding ProductUnitId}"
                                     DisplayMemberPath="name" 

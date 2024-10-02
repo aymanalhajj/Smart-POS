@@ -30,7 +30,7 @@ namespace Smart_POS.ViewModel
             purchaseInvoice.DiscountCallback += new PurchaseInvoice.DiscountCallbackEventHandler(calcDiscount);
             purchaseInvoice.ResetPaidCashCallback += new PurchaseInvoice.ResetPaidCashCallbackEventHandler(resetCashBankPaid);
 
-            
+
             CurrentRow = 0;
         }
         public void ProductSelected()
@@ -38,6 +38,42 @@ namespace Smart_POS.ViewModel
             InvoiceDetailItems[CurrentRow].Load_ProductUnits();
             GetProductPrice();
             InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new InvoiceDetailItem.CalcSummaryCallbackEventHandler(calcSummary);
+        }
+        public void GetProductPriceByBarcode(string productBarcode)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                var requestUri = new Uri($"http://localhost:8000/ords/accounting/utils/get_product_by_barcode?p_company_id=0&p_barcode={HttpUtility.UrlEncode(productBarcode)}", UriKind.Absolute);
+
+                var response = client.GetAsync(requestUri).Result;
+                var res = JsonConvert.DeserializeObject<ProductPrice>(response.Content.ReadAsStringAsync().Result);
+                if (res != null)
+                {
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].Quantity = res.Quantity;
+                    InvoiceDetailItems[CurrentRow].Price = res.BasePrice;
+                    InvoiceDetailItems[CurrentRow].TotalPrice = res.TotalPrice;
+                    InvoiceDetailItems[CurrentRow].DiscountPercentage = res.Discount;
+                    InvoiceDetailItems[CurrentRow].DiscountValue = res.DiscountValue;
+                    InvoiceDetailItems[CurrentRow].PostDiscountPrice = res.PostDiscountTotalPrice;
+                    InvoiceDetailItems[CurrentRow].VatPercentage = res.VatPercentage;
+                    InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
+                    InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
+                    InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
+                    InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
+
+                    InvoiceDetailItems[CurrentRow].Load_ProductUnits();
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.DefaultUnitId;
+
+                    //purchaseInvoice.ClientDiscount = 0;
+                    calcSummary();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         public void GetProductPrice()
         {
@@ -61,6 +97,33 @@ namespace Smart_POS.ViewModel
                 InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
                 InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
                 InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
+                InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
+
+                //purchaseInvoice.ClientDiscount = 0;
+                calcSummary();
+            }
+        }
+
+        public void GetProductUnitPrice()
+        {
+            using var client = new HttpClient();
+
+            var requestUri = new Uri($"http://localhost:8000/ords/accounting/utils/get_product_unit_price?p_company_id=0&p_product_id={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].ProductId.ToString())}&p_quantity={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].Quantity.ToString())}&p_product_unit_id={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].ProductUnitId.ToString())}", UriKind.Absolute);
+
+            var response = client.GetAsync(requestUri).Result;
+            var res = JsonConvert.DeserializeObject<ProductPrice>(response.Content.ReadAsStringAsync().Result);
+            if (res != null)
+            {
+                InvoiceDetailItems[CurrentRow].Price = res.BasePrice;
+                InvoiceDetailItems[CurrentRow].TotalPrice = res.TotalPrice;
+                InvoiceDetailItems[CurrentRow].DiscountPercentage = res.Discount;
+                InvoiceDetailItems[CurrentRow].DiscountValue = res.DiscountValue;
+                InvoiceDetailItems[CurrentRow].PostDiscountPrice = res.PostDiscountTotalPrice;
+                InvoiceDetailItems[CurrentRow].VatPercentage = res.VatPercentage;
+                InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
+                InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
+                InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
+                InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
 
                 //purchaseInvoice.ClientDiscount = 0;
                 calcSummary();
@@ -74,14 +137,17 @@ namespace Smart_POS.ViewModel
         }
         public void RecalcPrice()
         {
-            //purchaseInvoice.ClientDiscount = 0;
-            InvoiceDetailItems[CurrentRow].TotalPrice = (float.Parse(InvoiceDetailItems[CurrentRow].Price) * float.Parse(InvoiceDetailItems[CurrentRow].Quantity)).ToString();
-            InvoiceDetailItems[CurrentRow].PreDiscountVatValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * InvoiceDetailItems[CurrentRow].VatPercentage / 100).ToString();
-            InvoiceDetailItems[CurrentRow].DiscountValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * InvoiceDetailItems[CurrentRow].DiscountPercentage / 100).ToString();
-            InvoiceDetailItems[CurrentRow].PostDiscountPrice = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) - float.Parse(InvoiceDetailItems[CurrentRow].DiscountValue)).ToString(); ;
-            InvoiceDetailItems[CurrentRow].VatValue = (float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) * InvoiceDetailItems[CurrentRow].VatPercentage / 100).ToString();
-            InvoiceDetailItems[CurrentRow].TotalAmount = Math.Round((float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) + float.Parse(InvoiceDetailItems[CurrentRow].VatValue)), 2).ToString();
-            calcSummary();
+            if (InvoiceDetailItems[CurrentRow].ProductId != null && InvoiceDetailItems[CurrentRow].ProductId != "")
+            {
+                //purchaseInvoice.ClientDiscount = 0;
+                InvoiceDetailItems[CurrentRow].TotalPrice = (float.Parse(InvoiceDetailItems[CurrentRow].Price) * float.Parse(InvoiceDetailItems[CurrentRow].Quantity)).ToString();
+                InvoiceDetailItems[CurrentRow].PreDiscountVatValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * InvoiceDetailItems[CurrentRow].VatPercentage / 100).ToString();
+                InvoiceDetailItems[CurrentRow].DiscountValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * InvoiceDetailItems[CurrentRow].DiscountPercentage / 100).ToString();
+                InvoiceDetailItems[CurrentRow].PostDiscountPrice = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) - float.Parse(InvoiceDetailItems[CurrentRow].DiscountValue)).ToString(); ;
+                InvoiceDetailItems[CurrentRow].VatValue = (float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) * InvoiceDetailItems[CurrentRow].VatPercentage / 100).ToString();
+                InvoiceDetailItems[CurrentRow].TotalAmount = Math.Round((float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) + float.Parse(InvoiceDetailItems[CurrentRow].VatValue)), 2).ToString();
+                calcSummary();
+            }
         }
         public void calcSummary()
         {
@@ -140,8 +206,6 @@ namespace Smart_POS.ViewModel
         //public List<Item> ProductList { get; set; }
 
         private ObservableCollection<Item> _productList;
-
-
         public ObservableCollection<Item> ProductList
         {
             get { return _productList; }

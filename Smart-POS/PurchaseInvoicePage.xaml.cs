@@ -55,6 +55,15 @@ namespace POS_Desktop
                 viewModel.ProductSelected();
             }
         }
+        private void ProductUnitSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var comboBox = sender as ComboBox;
+            if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId))
+            {
+                viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId = comboBox?.SelectedValue.ToString();
+                viewModel.GetProductUnitPrice();
+            }
+        }
         public static bool BooleanTrue = true;
 
         public static bool BooleanFalse = false;
@@ -269,6 +278,14 @@ namespace POS_Desktop
             {
                 viewModel.ChangePrice();
             }
+            if (e.Column.DisplayIndex == 0)
+            {
+
+                TextBox t = e.EditingElement as TextBox;
+                string productBarcode = t.Text.ToString();
+
+                viewModel.GetProductPriceByBarcode(productBarcode);
+            }
             //MessageBox.Show(e.Column.DisplayIndex.ToString());
         }
 
@@ -290,7 +307,7 @@ namespace POS_Desktop
         {
             if (bankBtn.IsChecked == true)
             {
-                PaidCashTxt.IsReadOnly = false; 
+                PaidCashTxt.IsReadOnly = false;
                 PaidBankTxt.IsReadOnly = false;
                 BankList.IsEnabled = true;
             }
@@ -302,6 +319,15 @@ namespace POS_Desktop
             }
 
 
+        }
+
+        private void ProductBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var ProductBarcodeTxt = (TextBox) sender;
+                //viewModel.GetProductPriceByBarcode(ProductBarcodeTxt.Text);
+            }
         }
     }
 }
