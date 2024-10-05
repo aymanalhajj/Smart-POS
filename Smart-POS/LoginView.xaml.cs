@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using POS_Desktop.Models;
 using MessageBox = System.Windows.MessageBox;
 using Application = System.Windows.Application;
+using Smart_POS.Models;
 
 namespace POS_Desktop
 {

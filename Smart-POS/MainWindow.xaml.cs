@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Newtonsoft.Json;
 using POS_Desktop.Models;
+using Smart_POS.Models;
 
 namespace POS_Desktop
 {
@@ -27,7 +28,7 @@ namespace POS_Desktop
             using var client = new HttpClient();
             var response = client.GetAsync($"http://localhost:8000/ords/accounting/trade_v1/purchases_invoices").Result;
 
-            var res = JsonConvert.DeserializeObject<PurchaseInvoicesResponse>(response.Content.ReadAsStringAsync().Result);
+            var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
             if (res != null)
             {
                 foreach (var item in res.items)

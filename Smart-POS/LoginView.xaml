@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:POS_Desktop"
              mc:Ignorable="d" 
+             FlowDirection="RightToLeft"
              d:DesignHeight="450" d:DesignWidth="800">
     <Border Width="300"
             Height="400"
@@ -19,7 +20,7 @@
         </Border.Effect>
         <StackPanel Orientation="Vertical"
                     Margin="20">
-            <TextBlock Text="Login" 
+            <TextBlock Text="تسجيل الدخول" 
                        FontSize="25"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Top"
@@ -33,12 +34,12 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="User Name" 
+                <TextBlock Text="اسم المستخدم" 
                    Grid.Row="0"
                    Margin="0,15"
                    HorizontalAlignment="Left"/>
                 <TextBox
-                    Text="ali"
+                    Text="aalrabyee"
                     Name="UsernameTxt"
                     Grid.Column="1"
                     Grid.Row="1"
@@ -46,21 +47,21 @@
                   Width="255"
                   BorderThickness="0,0,0,1"
                   HorizontalAlignment="Left"/>
-                <TextBlock Text="Password" 
+                <TextBlock Text="كلمة المرور" 
                    Grid.Row="2"
                    Margin="0,15"
                    HorizontalAlignment="Left"/>
                 <PasswordBox Name="PasswordTxt" Grid.Row="3"
-                             Password="ali"
+                             Password="aalrabyee"
                       Padding="0,5"                           
                       Width="255"
                       BorderThickness="0,0,0,1"
                       HorizontalAlignment="Left"/>
             </Grid>
-            <TextBlock Text="forgot password?" 
+            <TextBlock Text="نسيت كلمة المرور؟" 
                        HorizontalAlignment="Right"/>
             <Button x:Name="LoginBtn" 
-                    Content="Login" 
+                    Content="تسجيل الدخول" 
                     Foreground="White"
                     Background="Black"
                     Margin="0,25"
@@ -88,11 +89,7 @@
                     </Style>
                 </Button.Style>
             </Button>
-            <TextBlock Text="Not a member?"
-                         Margin="0,5"
-                       VerticalAlignment="Bottom"
-                       HorizontalAlignment="Center"/>
-            <TextBlock Text="Sign Up"
+            <TextBlock Text="مستخدم جديد"
                          Margin="0,10"
                        VerticalAlignment="Bottom"
                        HorizontalAlignment="Center"/>

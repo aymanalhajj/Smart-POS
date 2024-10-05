@@ -4,6 +4,15 @@
              xmlns:local="clr-namespace:Smart_POS"
              StartupUri="PurchaseInvoicePage.xaml">
     <Application.Resources>
-         
+
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="Templates.xaml" />
+
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

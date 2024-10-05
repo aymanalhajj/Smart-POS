@@ -10,12 +10,74 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\img_about.png" />
+    <None Remove="Assets\img_acoustic.png" />
+    <None Remove="Assets\img_album.png" />
+    <None Remove="Assets\img_arrow.png" />
+    <None Remove="Assets\img_artist.png" />
+    <None Remove="Assets\img_electronic.png" />
+    <None Remove="Assets\img_exit.png" />
+    <None Remove="Assets\img_folder.png" />
+    <None Remove="Assets\img_genre.png" />
+    <None Remove="Assets\img_hiphop.png" />
+    <None Remove="Assets\img_history.png" />
+    <None Remove="Assets\img_home.png" />
+    <None Remove="Assets\img_hotkey.png" />
+    <None Remove="Assets\img_input.png" />
+    <None Remove="Assets\img_jazz.png" />
+    <None Remove="Assets\img_metal.png" />
+    <None Remove="Assets\img_movies.png" />
+    <None Remove="Assets\img_music.png" />
+    <None Remove="Assets\img_playlist.png" />
+    <None Remove="Assets\img_pop.png" />
+    <None Remove="Assets\img_rock.png" />
+    <None Remove="Assets\img_search.png" />
+    <None Remove="Assets\img_setting.png" />
+    <None Remove="Assets\img_songs.png" />
+    <None Remove="Assets\max_def.png" />
+    <None Remove="Assets\max_mo.png" />
+    <None Remove="Assets\shutdown_def.png" />
+    <None Remove="Assets\shutdown_mo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MvvmLightLibs" Version="5.4.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\img_about.png" />
+    <Resource Include="Assets\img_acoustic.png" />
+    <Resource Include="Assets\img_album.png" />
+    <Resource Include="Assets\img_arrow.png" />
+    <Resource Include="Assets\img_artist.png" />
+    <Resource Include="Assets\img_electronic.png" />
+    <Resource Include="Assets\img_exit.png" />
+    <Resource Include="Assets\img_folder.png" />
+    <Resource Include="Assets\img_genre.png" />
+    <Resource Include="Assets\img_hiphop.png" />
+    <Resource Include="Assets\img_history.png" />
+    <Resource Include="Assets\img_home.png" />
+    <Resource Include="Assets\img_hotkey.png" />
+    <Resource Include="Assets\img_input.png" />
+    <Resource Include="Assets\img_jazz.png" />
+    <Resource Include="Assets\img_metal.png" />
+    <Resource Include="Assets\img_movies.png" />
+    <Resource Include="Assets\img_music.png" />
+    <Resource Include="Assets\img_playlist.png" />
+    <Resource Include="Assets\img_pop.png" />
+    <Resource Include="Assets\img_rock.png" />
+    <Resource Include="Assets\img_search.png" />
+    <Resource Include="Assets\img_setting.png" />
+    <Resource Include="Assets\img_songs.png" />
+    <Resource Include="Assets\max_def.png" />
+    <Resource Include="Assets\max_mo.png" />
+    <Resource Include="Assets\shutdown_def.png" />
+    <Resource Include="Assets\shutdown_mo.png" />
   </ItemGroup>
 
 </Project>
