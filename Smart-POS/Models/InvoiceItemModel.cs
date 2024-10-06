@@ -12,13 +12,13 @@ namespace Smart_POS.Models
         public string? Barcode { get; set; }
 
         [JsonProperty("quantity")]
-        public string? Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [JsonProperty("unit_id")]
         public string UnitId { get; set; }
 
         [JsonProperty("base_price")]
-        public string? BasePrice { get; set; }
+        public float? BasePrice { get; set; }
 
         [JsonProperty("total_price")]
         public string? TotalPrice { get; set; }

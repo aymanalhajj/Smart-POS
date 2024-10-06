@@ -11,247 +11,241 @@
         xmlns:vl="clr-namespace:Smart_POS.Validators"
         mc:Ignorable="d"
         FlowDirection="RightToLeft"
-        Title="فاتورة المشتريات" Height="450" Width="1500" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="فاتورة المشتريات" Height="450" Width="1500" 
+        WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
         <src:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
         <vm:PurchaseInvoiceViewModel x:Key="ViewModel" />
     </Window.Resources>
-    <!--<Window.DataContext>
-        <vm:PurchaseInvoiceViewModel />
-    </Window.DataContext>-->
-    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
-        <StackPanel Orientation="Vertical" >
-            <Border CornerRadius="2"
-                BorderBrush="Gray"
-                BorderThickness="1"
-                     Margin="5"
-                Padding="8">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">رقم الفاتورة</Label>
-                        <TextBox 
-                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
-                            Margin="2" 
-                            Width="150"  
-                            VerticalContentAlignment="Center" />
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">الفرع</Label>
-                        <ComboBox ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
-                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
-                        <DatePicker VerticalContentAlignment="Center"  Margin="2" Width="150" 
-                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
-                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
 
-                        <RadioButton 
-                            Name="cashInvoiceBtn" 
-                            Content="نقد" 
-                            Margin="10,5,0,0" 
+    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="*" MinHeight="150" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="112"/>
+            <ColumnDefinition Width="155"/>
+            <ColumnDefinition Width="112"/>
+            <ColumnDefinition Width="155"/>
+            <ColumnDefinition Width="112"/>
+            <ColumnDefinition Width="115"/>
+            <ColumnDefinition Width="112"/>
+            <ColumnDefinition Width="155"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
+        <TextBox Grid.Row="1" Grid.Column="1" Height="26"
+            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+            Margin="2" Width="150" VerticalAlignment="Top" />
+        <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
+        <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+            <ComboBox.SelectedValue>
+                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedValue>
+        </ComboBox>
+        <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+        <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" 
+                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+            <DatePicker.SelectedDate>
+                <Binding Path="Invoice.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </DatePicker.SelectedDate>
+        </DatePicker>
+        <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
+
+        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"
+                            Name="cashInvoiceBtn" VerticalContentAlignment="Center"
+                            Content="نقد" HorizontalAlignment="Left"
+                            Margin="5,2" Width="50"
                             GroupName="InvoiceType"
                             IsChecked="{Binding 
                             Path=Invoice.InvoiceType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=1}" />
-                        <RadioButton 
-                            Checked="deferredInvoiceBtn_Checked"
+        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"
+                            Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
                             Unchecked="deferredInvoiceBtn_Checked"
                             Name="deferredInvoiceBtn" 
-                            Content="آجل" 
-                            Margin="10,5,0,0" 
+                            Content="آجل" Width="50" Margin="5,2" 
                             GroupName="InvoiceType" 
                             IsChecked="{Binding 
                             Path=Invoice.InvoiceType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=2}"/>
-                    </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">رقم فاتورة المورد</Label>
-                        <TextBox Text="{Binding Path=Invoice.ProviderInvId, Mode=TwoWay}" Margin="2" Width="150" VerticalContentAlignment="Center" />
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المورد</Label>
-                        <ComboBox ItemsSource="{Binding ProviderList}" Name="ProviderList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">رقم فاتورة المورد</Label>
+        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top"
+                            Text="{Binding Path=Invoice.ProviderInvId, Mode=TwoWay}"
+                            Margin="2" Height="26"
+                            Width="150"  
+                            VerticalContentAlignment="Center" />
+        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المورد</Label>
+        <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding ProviderList}" Name="ProviderList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+            <ComboBox.SelectedValue>
+                <Binding Path="Invoice.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">تاريخ فاتورة المورد</Label>
-                        <DatePicker Text="{Binding Path=Invoice.ProviderInvDate}" VerticalContentAlignment="Center"  Margin="2" Width="150"
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedValue>
+        </ComboBox>
+        <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ فاتورة المورد</Label>
+        <DatePicker  Grid.Row="2" Grid.Column="5" VerticalContentAlignment="Center"  Margin="2" Width="110" Height="26" VerticalAlignment="Top"
                                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.ProviderInvDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+            <DatePicker.SelectedDate>
+                <Binding Path="Invoice.ProviderInvDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المخزن</Label>
-                        <ComboBox ItemsSource="{Binding StoreList}" Name="StoreList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </DatePicker.SelectedDate>
+        </DatePicker>
+        <Label  Grid.Row="2" Grid.Column="6" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
+        <ComboBox Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}" Name="StoreList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+            <ComboBox.SelectedValue>
+                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                    </StackPanel>
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedValue>
+        </ComboBox>
+        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الملاحظات</Label>
+        <TextBox Grid.Row="3" Grid.Column="1" Height="26" VerticalAlignment="Top"  Text="{Binding Path=Invoice.Notes,Mode=TwoWay}" Margin="2" Width="150"  VerticalContentAlignment="Center" />
+        <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مركز التكلفة</Label>
+        <ComboBox Grid.Row="3" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding CostCenterList}" Name="CostCenterList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+            <ComboBox.SelectedValue>
+                <Binding Path="Invoice.CostCenterId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedValue>
+        </ComboBox>
+        <Label Grid.Row="3" Grid.Column="4" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ التوريد</Label>
+        <DatePicker Grid.Row="3" Grid.Column="5" VerticalAlignment="Top"  Text="{Binding Path=Invoice.StoreDate}" VerticalContentAlignment="Center" Margin="2" Width="110"  
+                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+            <DatePicker.SelectedDate>
+                <Binding Path="Invoice.StoreDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </DatePicker.SelectedDate>
+        </DatePicker>
+        <Label Grid.Row="3" Grid.Column="6" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الخزينة</Label>
+        <ComboBox Grid.Row="3" Grid.Column="7" Height="26" VerticalAlignment="Top"  ItemsSource="{Binding SaveList}" Name="SaveList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+            <ComboBox.SelectedValue>
+                <Binding Path="Invoice.SafeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                        <vl:SelectListValidator/>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.SelectedValue>
+        </ComboBox>
 
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">الملاحظات</Label>
-                        <TextBox Text="{Binding Path=Invoice.Notes,Mode=TwoWay}" Margin="2" Width="150"  VerticalContentAlignment="Center" />
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">مركز التكلفة</Label>
-                        <ComboBox ItemsSource="{Binding CostCenterList}" Name="CostCenterList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
-                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.CostCenterId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">تاريخ التوريد</Label>
-                        <DatePicker Text="{Binding Path=Invoice.StoreDate}" VerticalContentAlignment="Center" Margin="2" Width="150"  
-                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.StoreDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
-                        <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">الخزينة</Label>
-                        <ComboBox ItemsSource="{Binding SaveList}" Name="SaveList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
-                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.SafeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            <DataGrid 
+        <DataGrid VerticalAlignment="Top"
+            Grid.Row="4" Grid.ColumnSpan="9"
                 CellEditEnding="DetailsGrid_CellEditEnding"
                 ItemsSource="{Binding InvoiceDetailItems}"
                 HorizontalContentAlignment="Stretch"
-                Margin="5" 
-                Background="LightGray"
-                RowBackground="LightYellow" 
-                AlternatingRowBackground="LightBlue"
-                BorderBrush="Gray" 
-                SelectionMode="Single"
-                SelectionUnit="FullRow"
-                BorderThickness="1"
-                VerticalScrollBarVisibility="Visible"
-                GridLinesVisibility="All" 
-                Name="DetailsGrid" 
-                HorizontalAlignment="Stretch"
-                MaxHeight="200"
-                SelectedIndex="{Binding Path=CurrentRow}"
-                CanUserAddRows ="True"
-                AutoGenerateColumns = "False" >
-                <DataGrid.Columns>
-                    <!--<DataGridTemplateColumn 
-                        Header="الباركود" 
-                        Width="150" >
-                    <DataGridTemplateColumn.CellTemplate>
-                        <HierarchicalDataTemplate>
-                            <TextBox 
-                                KeyDown="ProductBarcode_KeyDown"
-                                Name="ProductBarcodeTxt"
-                                Text="{Binding ProductBarcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </HierarchicalDataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>-->
-                    <DataGridTextColumn 
+                Margin="5" Background="LightGray" AutoGenerateColumns = "False"
+                RowBackground="LightYellow" AlternatingRowBackground="LightBlue"
+                BorderBrush="Gray" SelectionMode="Single"
+                SelectionUnit="FullRow" BorderThickness="1"
+                VerticalScrollBarVisibility="Visible" GridLinesVisibility="All" 
+                Name="DetailsGrid" HorizontalAlignment="Stretch" MaxHeight="200"
+                SelectedIndex="{Binding Path=CurrentRow}" CanUserAddRows ="True">
+            <DataGrid.Resources>
+                <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
+                    <Setter Property="Padding" Value="-2"/>
+                    <Style.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter Property="Background" Value="Red"/>
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn 
                         Header="الباركود" 
                         Width="80" 
                         Binding="{Binding ProductBarcode}"  />
-                    <DataGridComboBoxColumn
+                <DataGridComboBoxColumn
                         ItemsSource="{Binding ProductList}"
                         SelectedValueBinding="{Binding ProductId}"
                         x:Name="ProductComboBox"
                         Header="المنتج" Width="150"
                         DisplayMemberPath="name" 
                         SelectedValuePath="id" >
-                        <DataGridComboBoxColumn.EditingElementStyle>
-                            <Style TargetType="{x:Type ComboBox}">
-                                <EventSetter Event="SelectionChanged" Handler="ProductSelectionChanged" />
-                            </Style>
-                        </DataGridComboBoxColumn.EditingElementStyle>
-                    </DataGridComboBoxColumn>
-                    <DataGridTextColumn Header="الكمية" Width="80" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                    <DataGridTemplateColumn 
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="{x:Type ComboBox}">
+                            <EventSetter Event="SelectionChanged" Handler="ProductSelectionChanged" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn EditingElementStyle="{StaticResource errorStyle}" Header="الكمية" Width="80" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <DataGridTemplateColumn 
                         Header="الوحدة" 
                         Width="150" >
-                        <DataGridTemplateColumn.CellTemplate>
-                            <HierarchicalDataTemplate>
-                                <ComboBox 
+                    <DataGridTemplateColumn.CellTemplate>
+                        <HierarchicalDataTemplate>
+                            <ComboBox 
                                     SelectionChanged="ProductUnitSelectionChanged"
                                     ItemsSource="{Binding ProductUnitList}"
                                     SelectedValue="{Binding ProductUnitId}"
                                     DisplayMemberPath="name" 
                                     SelectedValuePath="id" />
-                            </HierarchicalDataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="السعر" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                    <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True" />
-                    <DataGridTextColumn Header="نسبة الخصم" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                    <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"   />
-                    <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"  />
-                    <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                    <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
-                    <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
-                    <DataGridTextColumn Header="تغيير الصافي" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay}"  />
-                    <DataGridTemplateColumn Header="حذف">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Name="DeleteRow" Content="حذف"  Click="DeleteRow_Click" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
+                        </HierarchicalDataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="السعر" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True" />
+                <DataGridTextColumn Header="نسبة الخصم" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"   />
+                <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"  />
+                <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" EditingElementStyle="{StaticResource errorStyle}" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
+                <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
+                <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
+                <DataGridTextColumn Header="تغيير الصافي" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay,TargetNullValue=''}"  />
+                <DataGridTemplateColumn Header="حذف">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Name="DeleteRow" Content="حذف"  Click="DeleteRow_Click" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
 
-            </DataGrid>
-        </StackPanel>
-
-        <Border 
+        </DataGrid>
+        <Border Grid.Row="5" Grid.ColumnSpan="9"
                 VerticalAlignment="Bottom"
                 CornerRadius="2"
                 BorderBrush="Gray"
@@ -368,7 +362,5 @@
 
             </StackPanel>
         </Border>
-
-
     </Grid>
 </Window>

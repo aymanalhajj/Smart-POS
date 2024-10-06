@@ -62,7 +62,7 @@ namespace Smart_POS.ViewModels
         public string? _product_barcode;
 
         public string _product_unit_id;
-        public string? _price;
+        public float? _price;
         public string? _total_price;
         public float? _discount_percentage;
         public string? _discount_value;
@@ -72,9 +72,9 @@ namespace Smart_POS.ViewModels
         public float? _vat_percentage;
         public string? _vat_value;
         public string? _total_amount;
-        public object? _change_total_amount;
+        public float? _change_total_amount;
 
-        public string? _quantity;
+        public int _quantity;
         public string ProductId
         {
             get
@@ -103,13 +103,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductBarcode");
             }
         }
-        public string? Quantity
+        public int Quantity
         {
             get
             {
                 if (_quantity == null)
                 {
-                    _quantity = "";
+                    _quantity = 1;
                 }
                 return _quantity;
             }
@@ -131,14 +131,10 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductUnitId");
             }
         }
-        public string? Price
+        public float? Price
         {
             get
             {
-                if (_price == null)
-                {
-                    _price = "";
-                }
                 return _price;
             }
             set
@@ -220,7 +216,7 @@ namespace Smart_POS.ViewModels
         {
             get
             {
-                if(_vat_percentage==null)
+                if (_vat_percentage == null)
                 {
                     _vat_percentage = 0;
                 }
@@ -301,7 +297,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("TotalAmount");
             }
         }
-        public object? ChangeTotalAmount
+        public float? ChangeTotalAmount
         {
             get
             {
@@ -309,11 +305,18 @@ namespace Smart_POS.ViewModels
             }
             set
             {
-                _change_total_amount = value;
+                if (value == null || value.Equals("0") || value.Equals(""))
+                {
+                    _change_total_amount = null;
+                }
+                else
+                {
+                    _change_total_amount = value;
+                }
                 if (value != null && !value.Equals("0") && !value.Equals(""))
                 {
                     DiscountPercentage = 0;
-                    Price = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage) / float.Parse(Quantity)).ToString();
+                    Price = float.Parse(value.ToString()) * 100 / (100 + VatPercentage) / Quantity;
                     TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage)).ToString();
                     PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
                     DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();

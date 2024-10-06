@@ -51,11 +51,18 @@ namespace POS_Desktop
         }
         private void ProductUnitSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var comboBox = sender as ComboBox;
-            if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId))
+            try
             {
-                viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId = comboBox?.SelectedValue.ToString();
-                viewModel.GetProductUnitPrice();
+                var comboBox = sender as ComboBox;
+                if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId))
+                {
+                    viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId = comboBox?.SelectedValue.ToString();
+                    viewModel.GetProductUnitPrice();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         private void DeleteRow_Click(object sender, RoutedEventArgs e)
@@ -67,7 +74,7 @@ namespace POS_Desktop
             }
         }
 
-		private void DetailsGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        private void DetailsGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.Column.DisplayIndex == 2 || e.Column.DisplayIndex == 4 || e.Column.DisplayIndex == 6 || e.Column.DisplayIndex == 9)
             {
