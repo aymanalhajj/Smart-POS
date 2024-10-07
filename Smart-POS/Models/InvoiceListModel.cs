@@ -2,7 +2,7 @@
 {
     internal class InvoiceListModel
     {
-        public List<InvoiceModel> items { get; set; }
+        public List<InvoiceListItemModel> items { get; set; }
         public bool hasMore { get; set; }
         public int limit { get; set; }
         public int offset { get; set; }

@@ -39,5 +39,10 @@ namespace POS_Desktop
             }
 
         }
+
+        private void deferredInvoiceBtn_Checked(object sender, RoutedEventArgs e)
+        {
+        }
+
     }
 }

@@ -15,7 +15,6 @@ namespace Smart_POS.ViewModels
 {
     public class InvoiceItemViewModel : INotifyPropertyChanged
     {
-
         public delegate void CalcSummaryCallbackEventHandler();
         public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
 
@@ -75,6 +74,7 @@ namespace Smart_POS.ViewModels
         public float? _change_total_amount;
 
         public int _quantity;
+        public string? Dtl_Id { get; set; }
         public string ProductId
         {
             get
@@ -149,7 +149,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_total_price == null)
                 {
-                    _total_price = "";
+                    _total_price = "0";
                 }
                 return _total_price;
             }
@@ -173,10 +173,10 @@ namespace Smart_POS.ViewModels
             {
                 _discount_percentage = value;
 
-                DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
-                PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
-                TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+                //DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
+                //PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
+                //VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
+                //TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
                 OnPropertyChanged("DiscountPercentage");
             }
         }
@@ -186,7 +186,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_discount_value == null)
                 {
-                    _discount_value = "";
+                    _discount_value = "0";
                 }
                 return _discount_value;
             }
@@ -202,7 +202,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_post_discount_price == null)
                 {
-                    _post_discount_price = "";
+                    _post_discount_price = "0";
                 }
                 return _post_discount_price;
             }
@@ -252,7 +252,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_vat_value == null)
                 {
-                    _vat_value = "";
+                    _vat_value = "0";
                 }
                 return _vat_value;
             }
@@ -270,7 +270,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_original_price == null)
                 {
-                    _original_price = "";
+                    _original_price = "0";
                 }
                 return _original_price;
             }
@@ -287,7 +287,7 @@ namespace Smart_POS.ViewModels
             {
                 if (_total_amount == null)
                 {
-                    _total_amount = "";
+                    _total_amount = "0";
                 }
                 return _total_amount;
             }
@@ -349,20 +349,43 @@ namespace Smart_POS.ViewModels
         {
             InvoiceItemModel model = new()
             {
-                Barcode = this.ProductBarcode,
-                BasePrice = this.Price,
+                Dtl_Id = this.Dtl_Id,
+                ProductBarcode = this.ProductBarcode,
+                Price = this.Price,
                 DiscountPercentage = this.DiscountPercentage,
                 DiscountValue = this.DiscountValue,
-                PostDiscountTotalPrice = this.PostDiscountPrice,
+                PostDiscountPrice = this.PostDiscountPrice,
                 ProductId = this.ProductId,
                 Quantity = this.Quantity,
                 TotalAmount = this.TotalAmount,
                 TotalPrice = this.TotalPrice,
-                UnitId = this.ProductUnitId,
+                ProductUnitId = this.ProductUnitId,
                 VatPercentage = this.VatPercentage,
                 VatValue = this.VatValue
             };
             return model;
+        }
+
+        static public InvoiceItemViewModel FromInvoiceItemModel(InvoiceItemModel model)
+        {
+            InvoiceItemViewModel viewModel = new()
+            {
+                Dtl_Id = model.Dtl_Id,
+                ProductBarcode = model.ProductBarcode,
+                Price = model.Price,
+                DiscountPercentage = model.DiscountPercentage,
+                DiscountValue = model.DiscountValue,
+                PostDiscountPrice = model.PostDiscountPrice,
+                ProductId = model.ProductId,
+                Quantity = model.Quantity,
+                TotalAmount = model.TotalAmount,
+                TotalPrice = model.TotalPrice,
+                VatPercentage = model.VatPercentage,
+                VatValue = model.VatValue
+            };
+            viewModel.Load_ProductUnits();
+            viewModel.ProductUnitId = model.ProductUnitId;
+            return viewModel;
         }
     }
 }

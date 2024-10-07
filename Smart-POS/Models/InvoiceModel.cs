@@ -57,9 +57,9 @@ namespace Smart_POS.Models
         [JsonProperty("user_id")]
         public int UserId;
         [JsonProperty("bank_acc_id")]
-        public int BankAccId;
+        public object? BankAccId;
         [JsonProperty("paid_amount")]
-        public double PaidAmount;
+        public double? PaidAmount;
         [JsonProperty("deferred_amount")]
         public double DeferredAmount;
         [JsonProperty("items")]

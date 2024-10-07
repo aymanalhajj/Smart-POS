@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System.Net.Http;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Newtonsoft.Json;
+using Smart_POS.Models;
 using Smart_POS.Validators;
 using Smart_POS.ViewModels;
 using MessageBox = System.Windows.MessageBox;
@@ -54,11 +57,11 @@ namespace POS_Desktop
             try
             {
                 var comboBox = sender as ComboBox;
-                if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId))
-                {
-                    viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId = comboBox?.SelectedValue.ToString();
-                    viewModel.GetProductUnitPrice();
-                }
+                //if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId))
+                //{
+                //    viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductUnitId = comboBox?.SelectedValue.ToString();
+                //    viewModel.GetProductUnitPrice();
+                //}
             }
             catch (Exception ex)
             {
@@ -70,7 +73,7 @@ namespace POS_Desktop
             MessageBox.Show(DetailsGrid.Items.Count.ToString());
             if (viewModel.CurrentRow >= 0 && viewModel.InvoiceDetailItems.Count > 0 && viewModel.CurrentRow < viewModel.InvoiceDetailItems.Count)
             {
-                //viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);
+                viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);
             }
         }
 
@@ -130,6 +133,11 @@ namespace POS_Desktop
             {
                 MessageBox.Show("isNotValid");
             }
+        }
+
+        private void InvoicesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.LoadInvoiceData();
         }
     }
 }

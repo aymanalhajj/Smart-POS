@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using POS_Desktop.Models;
+using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels
 {
@@ -437,8 +438,8 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("UserId");
             }
         }
-        public int _bank_acc_id { get; set; }
-        public int BankAccId
+        public object _bank_acc_id { get; set; }
+        public object BankAccId
         {
             get
             {
@@ -493,6 +494,39 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PaidAmount");
             }
         }
+        public void FromInvoiceModel(InvoiceModel model)
+        {
+            BankAccId = model.BankAccId;
+            BranchId = model.BranchId;
+            ClientDiscount = model.ClientDiscount;
+            CompanyId = model.CompanyId;
+            CostCenterId = model.CostCenterId;
+            DeferredAmount = model.DeferredAmount;
+            InvoiceNo = model.InvoiceNo;
+            InvoiceId = model.InvoiceId;
+            InvoiceDate = model.InvoiceDate;
+            InvoiceTotalAmount = model.InvoiceTotalAmount;
+            InvoiceType = model.InvoiceType;
+            Notes = model.Notes;
+            //PaidAmount = model.PaidAmount;
+            PaidBankAmount = model.PaidBankAmount;
+            PaidCashAmount = model.PaidCashAmount;
+            PaymentType = model.PaymentType;
+            PostDiscountTotalAmount = model.PostDiscountTotalAmount;
+            PreDiscountTotalAmount = model.PreDiscountTotalAmount;
+            PreDiscountTotalVat = model.PreDiscountTotalVat;
+            ProviderId = model.ProviderId;
+            ProviderInvDate = model.ProviderInvDate;
+            ProviderInvId = model.ProviderInvId;
+            SafeId = model.SafeId;
+            StoreDate = model.StoreDate;
+            StoreId = model.StoreId;
+            TotalDiscount = model.TotalDiscount;
+            TotalQuantity = model.TotalQuantity;
+            TotalVat = model.TotalVat;
+            UserId = model.UserId;
+            
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -505,7 +539,6 @@ namespace Smart_POS.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
         #endregion
     }
 }
