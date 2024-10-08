@@ -39,7 +39,7 @@ namespace Smart_POS.ViewModels
 
         public void ValidateInputData(string value)
         {
-            if (value!= null && !string.Equals(value, "test", StringComparison.OrdinalIgnoreCase))
+            if (value != null && !string.Equals(value, "test", StringComparison.OrdinalIgnoreCase))
             {
                 throw new ArgumentException("Test is not valid.");
             }
@@ -496,36 +496,77 @@ namespace Smart_POS.ViewModels
         }
         public void FromInvoiceModel(InvoiceModel model)
         {
-            BankAccId = model.BankAccId;
-            BranchId = model.BranchId;
-            ClientDiscount = model.ClientDiscount;
-            CompanyId = model.CompanyId;
-            CostCenterId = model.CostCenterId;
-            DeferredAmount = model.DeferredAmount;
-            InvoiceNo = model.InvoiceNo;
-            InvoiceId = model.InvoiceId;
-            InvoiceDate = model.InvoiceDate;
-            InvoiceTotalAmount = model.InvoiceTotalAmount;
-            InvoiceType = model.InvoiceType;
-            Notes = model.Notes;
-            //PaidAmount = model.PaidAmount;
-            PaidBankAmount = model.PaidBankAmount;
-            PaidCashAmount = model.PaidCashAmount;
-            PaymentType = model.PaymentType;
-            PostDiscountTotalAmount = model.PostDiscountTotalAmount;
-            PreDiscountTotalAmount = model.PreDiscountTotalAmount;
-            PreDiscountTotalVat = model.PreDiscountTotalVat;
-            ProviderId = model.ProviderId;
-            ProviderInvDate = model.ProviderInvDate;
-            ProviderInvId = model.ProviderInvId;
-            SafeId = model.SafeId;
-            StoreDate = model.StoreDate;
-            StoreId = model.StoreId;
-            TotalDiscount = model.TotalDiscount;
-            TotalQuantity = model.TotalQuantity;
-            TotalVat = model.TotalVat;
-            UserId = model.UserId;
-            
+            if (model != null)
+            {
+                BankAccId = model.BankAccId;
+                BranchId = model.BranchId;
+                ClientDiscount = model.ClientDiscount;
+                CompanyId = model.CompanyId;
+                CostCenterId = model.CostCenterId;
+                DeferredAmount = model.DeferredAmount;
+                InvoiceNo = model.InvoiceNo;
+                InvoiceId = model.InvoiceId;
+                InvoiceDate = model.InvoiceDate;
+                InvoiceTotalAmount = model.InvoiceTotalAmount;
+                InvoiceType = model.InvoiceType;
+                Notes = model.Notes;
+                PaidAmount = model.PaidAmount;
+                PaidBankAmount = model.PaidBankAmount;
+                PaidCashAmount = model.PaidCashAmount;
+                PaymentType = model.PaymentType;
+                PostDiscountTotalAmount = model.PostDiscountTotalAmount;
+                PreDiscountTotalAmount = model.PreDiscountTotalAmount;
+                PreDiscountTotalVat = model.PreDiscountTotalVat;
+                ProviderId = model.ProviderId;
+                ProviderInvDate = model.ProviderInvDate;
+                ProviderInvId = model.ProviderInvId;
+                SafeId = model.SafeId;
+                StoreDate = model.StoreDate;
+                StoreId = model.StoreId;
+                TotalDiscount = model.TotalDiscount;
+                TotalQuantity = model.TotalQuantity;
+                TotalVat = model.TotalVat;
+                UserId = model.UserId;
+
+            }
+            else
+            {
+                this.clear();
+            }
+
+        }
+        public void clear()
+        {
+            BankAccId = null;
+            BranchId = null;
+            ClientDiscount = 0;
+            CompanyId = 1;
+            CostCenterId = null;
+            DeferredAmount = 0;
+            InvoiceNo = 0;
+            InvoiceId = 0;
+            InvoiceDate = DateTime.Now;
+            InvoiceTotalAmount = 0;
+            InvoiceType = 1;
+            Notes = null;
+            PaidAmount = 0;
+            PaidBankAmount = 0;
+            PaidCashAmount = 0;
+            PaymentType = 1;
+            PostDiscountTotalAmount = 0;
+            PreDiscountTotalAmount = 0;
+            PreDiscountTotalVat = 0;
+            ProviderId = null;
+            ProviderInvDate = DateTime.Now;
+            ProviderInvId = null;
+            SafeId = null;
+            StoreDate = DateTime.Now;
+            StoreId = null;
+            TotalDiscount = 0;
+            TotalQuantity = 0;
+            TotalVat = 0;
+            UserId = 0;
+
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

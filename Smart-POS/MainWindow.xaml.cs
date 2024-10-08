@@ -33,7 +33,7 @@ namespace POS_Desktop
             {
                 foreach (var item in res.items)
                 {
-                    InvoicesList.Items.Add(item);
+                    //InvoicesList.Items.Add(item);
                 }
 
             }

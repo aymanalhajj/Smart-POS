@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
-using POS_Desktop.Models;
 using System.Web;
 using Smart_POS.Models;
+using System.Windows;
 
 namespace Smart_POS.ViewModels
 {
@@ -17,6 +12,8 @@ namespace Smart_POS.ViewModels
     {
         public delegate void CalcSummaryCallbackEventHandler();
         public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
+        public delegate void GetProductUnitPriceCallbackEventHandler();
+        public event GetProductUnitPriceCallbackEventHandler GetProductUnitPriceCallback;
 
         public void Load_ProductUnits()
         {
@@ -61,19 +58,19 @@ namespace Smart_POS.ViewModels
         public string? _product_barcode;
 
         public string _product_unit_id;
-        public float? _price;
+        public string? _price;
         public string? _total_price;
-        public float? _discount_percentage;
+        public string? _discount_percentage;
         public string? _discount_value;
         public string? _post_discount_price;
 
 
-        public float? _vat_percentage;
+        public string? _vat_percentage;
         public string? _vat_value;
         public string? _total_amount;
         public float? _change_total_amount;
 
-        public int _quantity;
+        public string _quantity;
         public string? Dtl_Id { get; set; }
         public string ProductId
         {
@@ -103,19 +100,23 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductBarcode");
             }
         }
-        public int Quantity
+        public string Quantity
         {
             get
             {
-                if (_quantity == null)
-                {
-                    _quantity = 1;
-                }
                 return _quantity;
             }
             set
             {
-                _quantity = value;
+                int q;
+                if (value == null || value.Equals("") || value.Equals("0") || int.TryParse(value, out q) == false)
+                {
+                    _quantity = "1";
+                }
+                else
+                {
+                    _quantity = value;
+                }
                 OnPropertyChanged("Quantity");
             }
         }
@@ -127,11 +128,23 @@ namespace Smart_POS.ViewModels
             }
             set
             {
-                _product_unit_id = value;
+                if (_product_unit_id != value && _product_unit_id != null)
+                {
+                    _product_unit_id = value;
+                    if (GetProductUnitPriceCallback != null && _product_unit_id != null)
+                    {
+                        GetProductUnitPriceCallback();
+                    }
+                }
+                else
+                {
+                    _product_unit_id = value;
+                }
+
                 OnPropertyChanged("ProductUnitId");
             }
         }
-        public float? Price
+        public string? Price
         {
             get
             {
@@ -139,7 +152,15 @@ namespace Smart_POS.ViewModels
             }
             set
             {
-                _price = value;
+                float q;
+                if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
+                {
+                    _price = (float.Parse(OriginalPrice.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
+                }
+                else
+                {
+                    _price = value;
+                }
                 OnPropertyChanged("Price");
             }
         }
@@ -159,24 +180,27 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("TotalPrice");
             }
         }
-        public float? DiscountPercentage
+        public string? DiscountPercentage
         {
             get
             {
                 if (_discount_percentage == null)
                 {
-                    _discount_percentage = 0;
+                    _discount_percentage = "0";
                 }
                 return _discount_percentage;
             }
             set
             {
-                _discount_percentage = value;
-
-                //DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
-                //PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                //VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
-                //TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+                float q;
+                if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
+                {
+                    _discount_percentage = "0";
+                }
+                else
+                {
+                    _discount_percentage = value;
+                }
                 OnPropertyChanged("DiscountPercentage");
             }
         }
@@ -212,19 +236,27 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PostDiscountPrice");
             }
         }
-        public float? VatPercentage
+        public string? VatPercentage
         {
             get
             {
                 if (_vat_percentage == null)
                 {
-                    _vat_percentage = 0;
+                    _vat_percentage = "0";
                 }
                 return _vat_percentage;
             }
             set
             {
-                _vat_percentage = value;
+                float q;
+                if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
+                {
+                    _vat_percentage = "0";
+                }
+                else
+                {
+                    _vat_percentage = value;
+                }
                 OnPropertyChanged("VatPercentage");
             }
         }
@@ -305,7 +337,7 @@ namespace Smart_POS.ViewModels
             }
             set
             {
-                if (value == null || value.Equals("0") || value.Equals(""))
+                if (value == null || value == 0 || value.Equals(""))
                 {
                     _change_total_amount = null;
                 }
@@ -313,15 +345,15 @@ namespace Smart_POS.ViewModels
                 {
                     _change_total_amount = value;
                 }
-                if (value != null && !value.Equals("0") && !value.Equals(""))
+                if (value != null && value != 0 && !value.Equals(""))
                 {
-                    DiscountPercentage = 0;
-                    Price = float.Parse(value.ToString()) * 100 / (100 + VatPercentage) / Quantity;
-                    TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage)).ToString();
-                    PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
-                    DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
+                    DiscountPercentage = "0";
+                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
+                    TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage))).ToString();
+                    PreDiscountVatValue = (float.Parse(TotalPrice) * float.Parse(VatPercentage) / 100).ToString();
+                    DiscountValue = (float.Parse(TotalPrice) * float.Parse(DiscountPercentage) / 100).ToString();
                     PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                    VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
+                    VatValue = (float.Parse(PostDiscountPrice) * float.Parse(VatPercentage) / 100).ToString();
                     TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
                     if (CalcSummaryCallback != null)
                     {
@@ -351,16 +383,16 @@ namespace Smart_POS.ViewModels
             {
                 Dtl_Id = this.Dtl_Id,
                 ProductBarcode = this.ProductBarcode,
-                Price = this.Price,
-                DiscountPercentage = this.DiscountPercentage,
+                Price = float.Parse(this.Price),
+                DiscountPercentage = float.Parse(this.DiscountPercentage),
                 DiscountValue = this.DiscountValue,
                 PostDiscountPrice = this.PostDiscountPrice,
                 ProductId = this.ProductId,
-                Quantity = this.Quantity,
+                Quantity = int.Parse(this.Quantity),
                 TotalAmount = this.TotalAmount,
                 TotalPrice = this.TotalPrice,
                 ProductUnitId = this.ProductUnitId,
-                VatPercentage = this.VatPercentage,
+                VatPercentage = float.Parse(this.VatPercentage),
                 VatValue = this.VatValue
             };
             return model;
@@ -372,15 +404,15 @@ namespace Smart_POS.ViewModels
             {
                 Dtl_Id = model.Dtl_Id,
                 ProductBarcode = model.ProductBarcode,
-                Price = model.Price,
-                DiscountPercentage = model.DiscountPercentage,
+                Price = model.Price.ToString(),
+                DiscountPercentage = model.DiscountPercentage.ToString(),
                 DiscountValue = model.DiscountValue,
                 PostDiscountPrice = model.PostDiscountPrice,
                 ProductId = model.ProductId,
-                Quantity = model.Quantity,
+                Quantity = model.Quantity.ToString(),
                 TotalAmount = model.TotalAmount,
                 TotalPrice = model.TotalPrice,
-                VatPercentage = model.VatPercentage,
+                VatPercentage = model.VatPercentage.ToString(),
                 VatValue = model.VatValue
             };
             viewModel.Load_ProductUnits();

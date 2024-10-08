@@ -18,7 +18,7 @@ namespace Smart_POS
             InitializeComponent();
             viewModel = (PurchaseInvoiceViewModel)LayoutRoot.DataContext;
 
-            ProductComboBox.ItemsSource = viewModel.ProductList;
+            //ProductComboBox.ItemsSource = viewModel.ProductList;
         }
 
         private void save_Click(object sender, RoutedEventArgs e)
@@ -84,7 +84,6 @@ namespace Smart_POS
         }
         private void DeleteRow_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(DetailsGrid.Items.Count.ToString());
             if (viewModel.CurrentRow >= 0 && viewModel.InvoiceDetailItems.Count > 0 && viewModel.CurrentRow < viewModel.InvoiceDetailItems.Count)
             {
                 //viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);
