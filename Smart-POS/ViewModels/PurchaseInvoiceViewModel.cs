@@ -37,7 +37,7 @@ namespace Smart_POS.ViewModels
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
 
-            initLists();
+            InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
@@ -67,131 +67,17 @@ namespace Smart_POS.ViewModels
         public ICommand _NextCommand;
         public ICommand _PrevCommand;
         public ICommand _LastCommand;
-        public ObservableCollection<Item> ProductList
-        {
-            get { return _productList; }
-            set
-            {
-                _productList = value;
-                OnPropertyChanged("ProductList");
-            }
-        }
-        public ObservableCollection<Item> BranchList
-        {
-            get { return _branchList; }
-            set
-            {
-                _branchList = value;
-                OnPropertyChanged("BranchList");
-            }
-        }
-        public ObservableCollection<Item> StoreList
-        {
-            get { return _storeList; }
-            set
-            {
-                _storeList = value;
-                OnPropertyChanged("StoreList");
-            }
-        }
-        public ObservableCollection<Item> SaveList
-        {
-            get { return _saveList; }
-            set
-            {
-                _saveList = value;
-                OnPropertyChanged("SaveList");
-            }
-        }
-        public ObservableCollection<Item> BankList
-        {
-            get { return _bankList; }
-            set
-            {
-                _bankList = value;
-                OnPropertyChanged("BankList");
-            }
-        }
-        public ObservableCollection<Item> CostCenterList
-        {
-            get { return _costCenterList; }
-            set
-            {
-                _costCenterList = value;
-                OnPropertyChanged("CostCenterList");
-            }
-        }
-        public ObservableCollection<Item> ProviderList
-        {
-            get { return _providerList; }
-            set
-            {
-                _providerList = value;
-                OnPropertyChanged("ProviderList");
-            }
-        }
 
-        public InvoiceViewModel Invoice
-        {
-            get { return invoice; }
-            set { invoice = value; }
-        }
-
-        public InvoiceViewModel Filters
-        {
-            get { return filters; }
-            set { filters = value; }
-        }
-
-        public ObservableCollection<InvoiceItemViewModel> InvoiceDetailItems
-        {
-            get { return _InvoiceDetailItems; }
-            set
-            {
-                _InvoiceDetailItems = value;
-                OnPropertyChanged("InvoiceDetailItems");
-            }
-        }
-        public ObservableCollection<InvoiceListItemModel> InvoiceListItems
-        {
-            get { return _InvoiceListItems; }
-            set
-            {
-                _InvoiceListItems = value;
-                OnPropertyChanged("InvoiceListItems");
-            }
-        }
-
-        public ICommand SaveCommand
-        {
-            get
-            {
-                if (_SaveCommand == null)
-                {
-                    _SaveCommand = new RelayCommand(o => SaveBtnClick());
-                }
-                return _SaveCommand;
-            }
-        }
         private void SaveBtnClick()
         {
             if (!ValidateCallback())
                 return;
             try
             {
-                var json = JsonConvert.SerializeObject(ToInvoiceModel());
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-
-                using var client = new HttpClient();
-                var response = client.PostAsync($"http://localhost:8000/ords/accounting/invoices/purchase_invoice", data).Result;
-                var res = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
-
-                if (res == null || response.StatusCode != System.Net.HttpStatusCode.OK)
+                var res = ApiRepository.getInstance().PostPurchaseInoice(ToInvoiceModel());
+                if (res != null && res.Status == 1)
                 {
-                    MessageBox.Show(response.Content.ReadAsStringAsync().Result);
-                }
-                else
-                {
+                    MessageBox.Show(res.Message);
                     ClearForm();
                 }
             }
@@ -200,16 +86,80 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public ICommand NewCommand
+        private void FirstBtnClick()
         {
-            get
+            try
             {
-                if (_NewCommand == null)
-                {
-                    _NewCommand = new RelayCommand(o => ClearForm());
-                }
-                return _NewCommand;
+                var res = ApiRepository.getInstance().GetPurchaseInvoice(first: "1", last: "0", next: "0", prev: "0", invoiceId: "");
+                ShowInvoice(res);
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void NextBtnClick()
+        {
+            try
+            {
+                if (Invoice.InvoiceId != 0)
+                {
+                    var res = ApiRepository.getInstance().GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
+                    ShowInvoice(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void PrevBtnClick()
+        {
+            try
+            {
+                if (Invoice.InvoiceId != 0)
+                {
+                    var res = ApiRepository.getInstance().GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
+                    ShowInvoice(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void LastBtnClick()
+        {
+            try
+            {
+                var res = ApiRepository.getInstance().GetPurchaseInvoice(first: "0", last: "1", next: "0", prev: "0", invoiceId: "");
+                ShowInvoice(res);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void SearchBtnClick()
+        {
+            try
+            {
+                InvoiceListItems = ApiRepository.getInstance().GetAllPurchaseInoices();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void InitLists()
+        {
+            BranchList = ApiRepository.getInstance().GetBranchList();
+            ProviderList = ApiRepository.getInstance().GetProviderList();
+            CostCenterList = ApiRepository.getInstance().GetCostCenterList();
+            SaveList = ApiRepository.getInstance().GetSaveList();
+            StoreList = ApiRepository.getInstance().GetStoreList();
+            BankList = ApiRepository.getInstance().GetBankList();
+            ProductList = ApiRepository.getInstance().GetProductList();
         }
         private void ClearForm()
         {
@@ -223,221 +173,23 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public ICommand FirstCommand
+        public void ShowInvoice(InvoiceModel? model)
         {
-            get
+            if (model != null && model.Items != null)
             {
-                if (_FirstCommand == null)
-                {
-                    _FirstCommand = new RelayCommand(o => FirstBtnClick());
-                }
-                return _FirstCommand;
-            }
-        }
-        private void FirstBtnClick()
-        {
-            try
-            {
-                using var client = new HttpClient();
-                var requestUri = ApiRepository.GetPurchaseInvoiceUri(first: "1", last: "0", next: "0", prev: "0", invoiceId: "");
-                var response = client.GetAsync(requestUri).Result;
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-                    invoice.FromInvoiceModel(res);
-                    InvoiceDetailItems.Clear();
-                    if (res != null && res.Items != null)
-                    {
-                        foreach (var item in res.Items)
-                        {
-                            var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                            itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                            itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                invoice.FromInvoiceModel(model);
+                InvoiceDetailItems.Clear();
 
-                            InvoiceDetailItems.Add(itemViewModel);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        public ICommand NextCommand
-        {
-            get
-            {
-                if (_NextCommand == null)
+                foreach (var item in model.Items)
                 {
-                    _NextCommand = new RelayCommand(o => NextBtnClick());
-                }
-                return _NextCommand;
-            }
-        }
-        private void NextBtnClick()
-        {
-            try
-            {
-                if (Invoice.InvoiceId != 0)
-                {
-                    using var client = new HttpClient();
-                    var requestUri = ApiRepository.GetPurchaseInvoiceUri(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
-                    var response = client.GetAsync(requestUri).Result;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-                        invoice.FromInvoiceModel(res);
-                        InvoiceDetailItems.Clear();
-                        if (res != null && res.Items != null)
-                        {
-                            foreach (var item in res.Items)
-                            {
-                                var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                                itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                                itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                    var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
+                    itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
-                                InvoiceDetailItems.Add(itemViewModel);
-                            }
-                        }
-                    }
+                    InvoiceDetailItems.Add(itemViewModel);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
         }
-        public ICommand PrevCommand
-        {
-            get
-            {
-                if (_PrevCommand == null)
-                {
-                    _PrevCommand = new RelayCommand(o => PrevBtnClick());
-                }
-                return _PrevCommand;
-            }
-        }
-        private void PrevBtnClick()
-        {
-            try
-            {
-                if (Invoice.InvoiceId != 0)
-                {
-                    using var client = new HttpClient();
-                    var requestUri = ApiRepository.GetPurchaseInvoiceUri(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
-                    var response = client.GetAsync(requestUri).Result;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-                        invoice.FromInvoiceModel(res);
-                        InvoiceDetailItems.Clear();
-                        if (res != null && res.Items != null)
-                        {
-                            foreach (var item in res.Items)
-                            {
-                                var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                                itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                                itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
-
-                                InvoiceDetailItems.Add(itemViewModel);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        public ICommand LastCommand
-        {
-            get
-            {
-                if (_LastCommand == null)
-                {
-                    _LastCommand = new RelayCommand(o => LastBtnClick());
-                }
-                return _LastCommand;
-            }
-        }
-        private void LastBtnClick()
-        {
-            try
-            {
-                using var client = new HttpClient();
-                var requestUri = ApiRepository.GetPurchaseInvoiceUri(first: "0", last: "1", next: "0", prev: "0", invoiceId: "");
-                var response = client.GetAsync(requestUri).Result;
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-                    invoice.FromInvoiceModel(res);
-                    InvoiceDetailItems.Clear();
-                    if (res != null && res.Items != null)
-                    {
-                        foreach (var item in res.Items)
-                        {
-                            var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                            itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                            itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
-
-                            InvoiceDetailItems.Add(itemViewModel);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        public ICommand SearchCommand
-        {
-            get
-            {
-                if (_SearchCommand == null)
-                {
-                    _SearchCommand = new RelayCommand(o => SearchBtnClick());
-                }
-                return _SearchCommand;
-            }
-        }
-        private void SearchBtnClick()
-        {
-            try
-            {
-                using var client = new HttpClient();
-                var response = client.GetAsync($"http://localhost:8000/ords/accounting/trade_v1/purchases_invoices").Result;
-                var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
-                if (res != null)
-                {
-                    InvoiceListItems.Clear();
-                    foreach (var item in res.items)
-                    {
-                        InvoiceListItems.Add(item);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-        public void initLists()
-        {
-            BranchList = ListsRepository.Load_Branches();
-            ProviderList = ListsRepository.Load_Providers();
-            CostCenterList = ListsRepository.Load_CostCenters();
-            SaveList = ListsRepository.Load_Saves();
-            StoreList = ListsRepository.Load_Stores();
-            BankList = ListsRepository.Load_Banks();
-            ProductList = ListsRepository.Load_Products();
-        }
-
-
-
         public void LoadInvoiceData()
         {
             try
@@ -445,26 +197,8 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    using var client = new HttpClient();
-                    var requestUri = ApiRepository.GetPurchaseInvoiceUri(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].InvoiceId.ToString());
-                    var response = client.GetAsync(requestUri).Result;
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-                        invoice.FromInvoiceModel(res);
-                        InvoiceDetailItems.Clear();
-                        if (res != null && res.Items != null)
-                        {
-                            foreach (var item in res.Items)
-                            {
-                                var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                                itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                                itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
-
-                                InvoiceDetailItems.Add(itemViewModel);
-                            }
-                        }
-                    }
+                    var res = ApiRepository.getInstance().GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].InvoiceId.ToString());
+                    ShowInvoice(res);
                 }
             }
 
@@ -485,25 +219,13 @@ namespace Smart_POS.ViewModels
                 InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                 InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
-                using var client = new HttpClient();
-                var requestUri = ApiRepository.GetProductPriceByIdUri(InvoiceDetailItems[CurrentRow].ProductId.ToString());
-                var response = client.GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
+                var res = ApiRepository.getInstance().GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
                 {
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
                     InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].Price = res.Price.ToString();
-                    InvoiceDetailItems[CurrentRow].TotalPrice = res.TotalPrice;
-                    InvoiceDetailItems[CurrentRow].DiscountPercentage = res.DiscountPercentage.ToString();
-                    InvoiceDetailItems[CurrentRow].VatPercentage = res.VatPercentage.ToString();
-                    InvoiceDetailItems[CurrentRow].DiscountValue = res.DiscountValue;
-                    InvoiceDetailItems[CurrentRow].PostDiscountPrice = res.PostDiscountPrice;
-                    InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
-                    InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
-                    InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
-                    InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
+                    InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     CalcSummary();
                 }
             }
@@ -516,26 +238,13 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                using var client = new HttpClient();
-                var requestUri = new Uri($"http://localhost:8000/ords/accounting/utils/get_product_by_barcode?p_company_id=0&p_barcode={HttpUtility.UrlEncode(productBarcode)}", UriKind.Absolute);
-
-                var response = client.GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
+                var res = ApiRepository.getInstance().GetProductPriceByBarcode(productBarcode);
                 if (res != null)
                 {
                     InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
-                    InvoiceDetailItems[CurrentRow].Price = res.Price.ToString();
-                    InvoiceDetailItems[CurrentRow].TotalPrice = res.TotalPrice;
-                    InvoiceDetailItems[CurrentRow].DiscountPercentage = res.DiscountPercentage.ToString();
-                    InvoiceDetailItems[CurrentRow].DiscountValue = res.DiscountValue;
-                    InvoiceDetailItems[CurrentRow].PostDiscountPrice = res.PostDiscountPrice;
-                    InvoiceDetailItems[CurrentRow].VatPercentage = res.VatPercentage.ToString();
-                    InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
-                    InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
-                    InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
-                    InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
 
+                    InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
                     InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
@@ -543,8 +252,6 @@ namespace Smart_POS.ViewModels
 
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
-
-                    //purchaseInvoice.ClientDiscount = 0;
                     CalcSummary();
                 }
             }
@@ -559,24 +266,10 @@ namespace Smart_POS.ViewModels
             {
                 if (CurrentRow != -1)
                 {
-                    using var client = new HttpClient();
-                    var requestUri = new Uri($"http://localhost:8000/ords/accounting/utils/get_product_unit_price?p_company_id=0&p_product_id={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].ProductId.ToString())}&p_quantity={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].Quantity.ToString())}&p_product_unit_id={HttpUtility.UrlEncode(InvoiceDetailItems[CurrentRow].ProductUnitId.ToString())}", UriKind.Absolute);
-                    var response = client.GetAsync(requestUri).Result;
-                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = ApiRepository.getInstance().GetProductUnitPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString(), InvoiceDetailItems[CurrentRow].Quantity.ToString(), InvoiceDetailItems[CurrentRow].ProductUnitId.ToString());
                     if (res != null)
                     {
-                        InvoiceDetailItems[CurrentRow].Price = res.Price.ToString();
-                        InvoiceDetailItems[CurrentRow].TotalPrice = res.TotalPrice;
-                        InvoiceDetailItems[CurrentRow].DiscountPercentage = res.DiscountPercentage.ToString();
-                        InvoiceDetailItems[CurrentRow].DiscountValue = res.DiscountValue;
-                        InvoiceDetailItems[CurrentRow].PostDiscountPrice = res.PostDiscountPrice;
-                        InvoiceDetailItems[CurrentRow].VatPercentage = res.VatPercentage.ToString();
-                        InvoiceDetailItems[CurrentRow].VatValue = res.VatValue;
-                        InvoiceDetailItems[CurrentRow].PreDiscountVatValue = res.PreDiscountVatValue;
-                        InvoiceDetailItems[CurrentRow].TotalAmount = res.TotalAmount;
-                        InvoiceDetailItems[CurrentRow].OriginalPrice = res.OriginalPrice;
-
-                        //purchaseInvoice.ClientDiscount = 0;
+                        InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                         CalcSummary();
                     }
                 }
@@ -591,10 +284,7 @@ namespace Smart_POS.ViewModels
             for (int i = 0; i < InvoiceDetailItems.Count; i++)
             {
                 InvoiceDetailItems[i].DiscountPercentage = DiscountPercent.ToString();
-                InvoiceDetailItems[i].DiscountValue = (float.Parse(InvoiceDetailItems[i].TotalPrice) * float.Parse(InvoiceDetailItems[i].DiscountPercentage) / 100).ToString();
-                InvoiceDetailItems[i].PostDiscountPrice = (float.Parse(InvoiceDetailItems[i].TotalPrice) - float.Parse(InvoiceDetailItems[i].DiscountValue)).ToString(); ;
-                InvoiceDetailItems[i].VatValue = (float.Parse(InvoiceDetailItems[i].PostDiscountPrice) * float.Parse(InvoiceDetailItems[i].VatPercentage) / 100).ToString();
-                InvoiceDetailItems[i].TotalAmount = Math.Round((float.Parse(InvoiceDetailItems[i].PostDiscountPrice) + float.Parse(InvoiceDetailItems[i].VatValue)), 2).ToString();
+                InvoiceDetailItems[i].RecalcPrice();
             }
             CalcSummary();
         }
@@ -604,12 +294,7 @@ namespace Smart_POS.ViewModels
             {
                 if (InvoiceDetailItems[CurrentRow].ProductId != null && InvoiceDetailItems[CurrentRow].ProductId != "")
                 {
-                    InvoiceDetailItems[CurrentRow].TotalPrice = (float.Parse(InvoiceDetailItems[CurrentRow].Price) * int.Parse(InvoiceDetailItems[CurrentRow].Quantity)).ToString();
-                    InvoiceDetailItems[CurrentRow].PreDiscountVatValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * float.Parse(InvoiceDetailItems[CurrentRow].VatPercentage) / 100).ToString();
-                    InvoiceDetailItems[CurrentRow].DiscountValue = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) * float.Parse(InvoiceDetailItems[CurrentRow].DiscountPercentage) / 100).ToString();
-                    InvoiceDetailItems[CurrentRow].PostDiscountPrice = (float.Parse(InvoiceDetailItems[CurrentRow].TotalPrice) - float.Parse(InvoiceDetailItems[CurrentRow].DiscountValue)).ToString(); ;
-                    InvoiceDetailItems[CurrentRow].VatValue = (float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) * float.Parse(InvoiceDetailItems[CurrentRow].VatPercentage) / 100).ToString();
-                    InvoiceDetailItems[CurrentRow].TotalAmount = Math.Round((float.Parse(InvoiceDetailItems[CurrentRow].PostDiscountPrice) + float.Parse(InvoiceDetailItems[CurrentRow].VatValue)), 2).ToString();
+                    InvoiceDetailItems[CurrentRow].RecalcPrice();
                     CalcSummary();
                 }
             }
@@ -712,6 +397,178 @@ namespace Smart_POS.ViewModels
                 model.Items.Add(item.ToInvoiceItemModel());
             }
             return model;
+        }
+
+        public ObservableCollection<Item> ProductList
+        {
+            get { return _productList; }
+            set
+            {
+                _productList = value;
+                OnPropertyChanged("ProductList");
+            }
+        }
+        public ObservableCollection<Item> BranchList
+        {
+            get { return _branchList; }
+            set
+            {
+                _branchList = value;
+                OnPropertyChanged("BranchList");
+            }
+        }
+        public ObservableCollection<Item> StoreList
+        {
+            get { return _storeList; }
+            set
+            {
+                _storeList = value;
+                OnPropertyChanged("StoreList");
+            }
+        }
+        public ObservableCollection<Item> SaveList
+        {
+            get { return _saveList; }
+            set
+            {
+                _saveList = value;
+                OnPropertyChanged("SaveList");
+            }
+        }
+        public ObservableCollection<Item> BankList
+        {
+            get { return _bankList; }
+            set
+            {
+                _bankList = value;
+                OnPropertyChanged("BankList");
+            }
+        }
+        public ObservableCollection<Item> CostCenterList
+        {
+            get { return _costCenterList; }
+            set
+            {
+                _costCenterList = value;
+                OnPropertyChanged("CostCenterList");
+            }
+        }
+        public ObservableCollection<Item> ProviderList
+        {
+            get { return _providerList; }
+            set
+            {
+                _providerList = value;
+                OnPropertyChanged("ProviderList");
+            }
+        }
+
+        public InvoiceViewModel Invoice
+        {
+            get { return invoice; }
+            set { invoice = value; }
+        }
+
+        public InvoiceViewModel Filters
+        {
+            get { return filters; }
+            set { filters = value; }
+        }
+
+        public ObservableCollection<InvoiceItemViewModel> InvoiceDetailItems
+        {
+            get { return _InvoiceDetailItems; }
+            set
+            {
+                _InvoiceDetailItems = value;
+                OnPropertyChanged("InvoiceDetailItems");
+            }
+        }
+        public ObservableCollection<InvoiceListItemModel> InvoiceListItems
+        {
+            get { return _InvoiceListItems; }
+            set
+            {
+                _InvoiceListItems = value;
+                OnPropertyChanged("InvoiceListItems");
+            }
+        }
+        public ICommand SaveCommand
+        {
+            get
+            {
+                if (_SaveCommand == null)
+                {
+                    _SaveCommand = new RelayCommand(o => SaveBtnClick());
+                }
+                return _SaveCommand;
+            }
+        }
+        public ICommand NewCommand
+        {
+            get
+            {
+                if (_NewCommand == null)
+                {
+                    _NewCommand = new RelayCommand(o => ClearForm());
+                }
+                return _NewCommand;
+            }
+        }
+        public ICommand FirstCommand
+        {
+            get
+            {
+                if (_FirstCommand == null)
+                {
+                    _FirstCommand = new RelayCommand(o => FirstBtnClick());
+                }
+                return _FirstCommand;
+            }
+        }
+        public ICommand NextCommand
+        {
+            get
+            {
+                if (_NextCommand == null)
+                {
+                    _NextCommand = new RelayCommand(o => NextBtnClick());
+                }
+                return _NextCommand;
+            }
+        }
+        public ICommand PrevCommand
+        {
+            get
+            {
+                if (_PrevCommand == null)
+                {
+                    _PrevCommand = new RelayCommand(o => PrevBtnClick());
+                }
+                return _PrevCommand;
+            }
+        }
+        public ICommand LastCommand
+        {
+            get
+            {
+                if (_LastCommand == null)
+                {
+                    _LastCommand = new RelayCommand(o => LastBtnClick());
+                }
+                return _LastCommand;
+            }
+        }
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_SearchCommand == null)
+                {
+                    _SearchCommand = new RelayCommand(o => SearchBtnClick());
+                }
+                return _SearchCommand;
+            }
         }
 
     }

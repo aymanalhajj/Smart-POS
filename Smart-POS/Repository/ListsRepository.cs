@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Net.Http;
 using Newtonsoft.Json;
+using RestSharp;
 using Smart_POS.Models;
 
 namespace Smart_POS.Repository
@@ -13,6 +14,7 @@ namespace Smart_POS.Repository
             using var client = new HttpClient();
             var response = client.GetAsync($"http://localhost:8000/ords/accounting/lists/branch_list?p_lang_id=2&p_company_id=0").Result;
             var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
+            
             if (res != null)
             {
                 for (int i = 0; i < res.Items?.Count; i++)

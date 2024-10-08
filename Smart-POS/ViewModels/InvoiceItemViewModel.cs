@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Web;
 using Smart_POS.Models;
 using System.Windows;
+using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
@@ -17,21 +18,7 @@ namespace Smart_POS.ViewModels
 
         public void Load_ProductUnits()
         {
-            using var client = new HttpClient();
-            var requestUri = new Uri($"http://localhost:8000/ords/accounting/lists/product_unit_list?p_company_id=0&p_lang_id=2&p_product_id={HttpUtility.UrlEncode(ProductId.ToString())}", UriKind.Absolute);
-
-            //MessageBox.Show(requestUri.ToString());
-            var response = client.GetAsync(requestUri).Result;
-            var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
-            if (res != null)
-            {
-                ProductUnitList.Clear();
-                for (int i = 0; i < res.Items?.Count; i++)
-                {
-                    Item? item = res.Items[i];
-                    ProductUnitList.Add(item);
-                }
-            }
+            ProductUnitList = ApiRepository.getInstance().GetProductUnitList(ProductId.ToString());
         }
         public InvoiceItemViewModel()
         {
@@ -349,12 +336,7 @@ namespace Smart_POS.ViewModels
                 {
                     DiscountPercentage = "0";
                     Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
-                    TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage))).ToString();
-                    PreDiscountVatValue = (float.Parse(TotalPrice) * float.Parse(VatPercentage) / 100).ToString();
-                    DiscountValue = (float.Parse(TotalPrice) * float.Parse(DiscountPercentage) / 100).ToString();
-                    PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                    VatValue = (float.Parse(PostDiscountPrice) * float.Parse(VatPercentage) / 100).ToString();
-                    TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+                    RecalcPrice();                    
                     if (CalcSummaryCallback != null)
                     {
                         CalcSummaryCallback();
@@ -364,6 +346,46 @@ namespace Smart_POS.ViewModels
             }
         }
 
+        public void ResetProductPrice(InvoiceItemModel model)
+        {
+            try
+            {
+                Price = model.Price.ToString();
+                TotalPrice = model.TotalPrice;
+                DiscountPercentage = model.DiscountPercentage.ToString();
+                DiscountValue = model.DiscountValue;
+                PostDiscountPrice = model.PostDiscountPrice;
+                VatPercentage = model.VatPercentage.ToString();
+                VatValue = model.VatValue;
+                PreDiscountVatValue = model.PreDiscountVatValue;
+                TotalAmount = model.TotalAmount;
+                OriginalPrice = model.OriginalPrice;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void RecalcPrice()
+        {
+            try
+            {
+                if (ProductId != null && ProductId != "")
+                {
+                    TotalPrice = (float.Parse(Price) * int.Parse(Quantity)).ToString();
+                    PreDiscountVatValue = (float.Parse(TotalPrice) * float.Parse(VatPercentage) / 100).ToString();
+                    DiscountValue = (float.Parse(TotalPrice) * float.Parse(DiscountPercentage) / 100).ToString();
+                    PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
+                    VatValue = (float.Parse(PostDiscountPrice) * float.Parse(VatPercentage) / 100).ToString();
+                    TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #region INotifyPropertyChanged Members
