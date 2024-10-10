@@ -15,7 +15,8 @@ namespace Smart_POS.Repository
         static ApiRepository _instance;
         string companyId = "0";
         string langId = "2";
-        static private string baseUrl = "http://localhost:8000/";
+        static private string baseUrl = "http://localhost:8000/ords/accounting/";
+        //static private string baseUrl = "https://apex.oracle.com/pls/apex/smart_pos/";
         readonly HttpClient _client;
         static public ApiRepository getInstance()
         {
@@ -58,7 +59,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetBranchList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/branch_list" +
+                $"lists/branch_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -66,7 +67,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetProductList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/product_list" +
+                $"lists/product_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -74,7 +75,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetStoreList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/store_list" +
+                $"lists/store_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -82,7 +83,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetSaveList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/save_list" +
+                $"lists/save_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -90,7 +91,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetBankList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/bank_list" +
+                $"lists/bank_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -98,7 +99,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetCostCenterList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/cost_ctr_list" +
+                $"lists/cost_ctr_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -106,7 +107,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetProviderList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/provider_list" +
+                $"lists/provider_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -114,7 +115,7 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetProductUnitList(string productId)
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"ords/accounting/lists/product_unit_list" +
+                $"lists/product_unit_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
                 $"&p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
@@ -127,7 +128,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/utils/get_product_unit_price" +
+                    $"utils/get_product_unit_price" +
                     $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                     $"&p_product_id={HttpUtility.UrlEncode(productId)}" +
                     $"&p_quantity={HttpUtility.UrlEncode(quantity)}" +
@@ -156,7 +157,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/utils/get_product_price?p_company_id=0&" +
+                    $"utils/get_product_price?p_company_id=0&" +
                     $"p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
                 var response = _client.GetAsync(requestUri).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
@@ -181,7 +182,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/utils/get_product_by_barcode" +
+                    $"utils/get_product_by_barcode" +
                     $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                     $"&p_barcode={HttpUtility.UrlEncode(barcode)}", UriKind.Absolute);
                 var response = _client.GetAsync(requestUri).Result;
@@ -207,7 +208,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/invoices/purchase_invoice", UriKind.Absolute);
+                    $"invoices/purchase_invoice", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -235,7 +236,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/invoices/purchase_invoice?p_company_id=0&" +
+                    $"invoices/purchase_invoice?p_company_id=0&" +
                     $"p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
                     $"&p_next={HttpUtility.UrlEncode(next)}" +
@@ -266,7 +267,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"ords/accounting/trade_v1/purchases_invoices", UriKind.Absolute);
+                    $"invoices/purchases_invoices", UriKind.Absolute);
                 var response = _client.GetAsync(requestUri).Result;
                 var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
 

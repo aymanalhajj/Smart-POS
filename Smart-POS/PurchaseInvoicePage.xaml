@@ -19,7 +19,6 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
     </Window.Resources>
-
     <Grid>
         <TabControl Name="myTab">
             <TabItem Header="بيانات الفاتورة" Width="150">
@@ -51,7 +50,8 @@
                             Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
                             Margin="2" Width="150" VerticalAlignment="Top" />
                         <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
-                        <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
+                        <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
