@@ -53,8 +53,32 @@ namespace Smart_POS
             //MainWindow mainW = new MainWindow();
             //mainW.Show();
             //currentWin.Close();
-            PurchaseInvoicePage page = new PurchaseInvoicePage();
             //page.ShowInTaskbar = false;
+            PurchaseInvoicePage page = new PurchaseInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void SaleInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+            SaleInvoicePage page = new SaleInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void PurchaseReturnInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+            PurchaseReturnInvoicePage page = new PurchaseReturnInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void SaleReturnInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+
+            SaleReturnInvoicePage page = new SaleReturnInvoicePage();
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }

@@ -1,20 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http;
-using System.Text;
-using System.Web;
 using System.Windows;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using Smart_POS.Models;
 using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseInvoiceViewModel : INotifyPropertyChanged
+    class SaleReturnInvoiceViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseInvoiceViewModel()
+        public SaleReturnInvoiceViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
             _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
@@ -25,7 +21,7 @@ namespace Smart_POS.ViewModels
             SaveList = new ObservableCollection<Item> { };
             BankList = new ObservableCollection<Item> { };
             CostCenterList = new ObservableCollection<Item> { };
-            ProviderList = new ObservableCollection<Item> { };
+            ClientList = new ObservableCollection<Item> { };
 
             filters = new InvoiceViewModel();
             invoice = new InvoiceViewModel();
@@ -36,14 +32,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new SaleReturnInvoiceRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private SaleReturnInvoiceRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -59,7 +55,7 @@ namespace Smart_POS.ViewModels
         private ObservableCollection<Item> _saveList;
         private ObservableCollection<Item> _bankList;
         private ObservableCollection<Item> _costCenterList;
-        private ObservableCollection<Item> _providerList;
+        private ObservableCollection<Item> _clientList;
 
         public ICommand _SaveCommand;
         public ICommand _SearchCommand;
@@ -155,7 +151,7 @@ namespace Smart_POS.ViewModels
         public void InitLists()
         {
             BranchList = repo.GetBranchList();
-            ProviderList = repo.GetProviderList();
+            ClientList = repo.GetClientList();
             CostCenterList = repo.GetCostCenterList();
             SaveList = repo.GetSaveList();
             StoreList = repo.GetStoreList();
@@ -381,6 +377,7 @@ namespace Smart_POS.ViewModels
                 PreDiscountTotalAmount = invoice.PreDiscountTotalAmount,
                 PreDiscountTotalVat = invoice.PreDiscountTotalVat,
                 ProviderId = invoice.ProviderId,
+                ClientId = invoice.ClientId,
                 ProviderInvDate = String.Format("{0:dd-MM-yyyy}", invoice.ProviderInvDate),
                 ProviderInvId = invoice.ProviderInvId,
                 SafeId = invoice.SafeId,
@@ -454,13 +451,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CostCenterList");
             }
         }
-        public ObservableCollection<Item> ProviderList
+        public ObservableCollection<Item> ClientList
         {
-            get { return _providerList; }
+            get { return _clientList; }
             set
             {
-                _providerList = value;
-                OnPropertyChanged("ProviderList");
+                _clientList = value;
+                OnPropertyChanged("ClientList");
             }
         }
 

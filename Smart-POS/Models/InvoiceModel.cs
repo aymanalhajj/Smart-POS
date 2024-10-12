@@ -19,9 +19,11 @@ namespace Smart_POS.Models
         [JsonProperty("store_date")]
         public object? StoreDate;
         [JsonProperty("branch_id")]
-        public object? BranchId;
+        public object? BranchId; 
         [JsonProperty("provider_id")]
         public object? ProviderId;
+        [JsonProperty("client_id")]
+        public object? ClientId;
         [JsonProperty("cost_ctr_id")]
         public object? CostCenterId;
         [JsonProperty("invoice_type")]

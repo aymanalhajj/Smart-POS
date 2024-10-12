@@ -12,31 +12,6 @@ namespace Smart_POS.ViewModels
 {
     public class InvoiceViewModel : INotifyPropertyChanged
     {
-
-        private string _customError;
-        public string CustomError
-        {
-            get => _customError;
-            set
-            {
-                //ValidateInputData(value);
-                _customError = value;
-                OnPropertyChanged("CustomError");
-            }
-        }
-
-        private string _customError2;
-        public string CustomError2
-        {
-            get => _customError2;
-            set
-            {
-                //ValidateInputData(value);
-                _customError2 = value;
-                OnPropertyChanged("CustomError2");
-            }
-        }
-
         public void ValidateInputData(string value)
         {
             if (value != null && !string.Equals(value, "test", StringComparison.OrdinalIgnoreCase))
@@ -171,6 +146,20 @@ namespace Smart_POS.ViewModels
             {
                 _provider_id = value;
                 OnPropertyChanged("ProviderId");
+            }
+        }
+
+        public object _client_id { get; set; }
+        public object ClientId
+        {
+            get
+            {
+                return _client_id;
+            }
+            set
+            {
+                _client_id = value;
+                OnPropertyChanged("ClientId");
             }
         }
         public object _cost_ctr_id { get; set; }
@@ -518,6 +507,7 @@ namespace Smart_POS.ViewModels
                 PreDiscountTotalAmount = model.PreDiscountTotalAmount;
                 PreDiscountTotalVat = model.PreDiscountTotalVat;
                 ProviderId = model.ProviderId;
+                ClientId = model.ClientId;
                 ProviderInvDate = model.ProviderInvDate;
                 ProviderInvId = model.ProviderInvId;
                 SafeId = model.SafeId;
@@ -557,6 +547,7 @@ namespace Smart_POS.ViewModels
             PreDiscountTotalAmount = 0;
             PreDiscountTotalVat = 0;
             ProviderId = null;
+            ClientId = null;
             ProviderInvDate = DateTime.Now;
             ProviderInvId = null;
             SafeId = null;

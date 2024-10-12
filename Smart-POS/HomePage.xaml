@@ -158,14 +158,43 @@
                         Header="فاتورة المشتريات"
                         Template="{StaticResource Item_Template}"
                         Click="PurchaseInvMenu_Click">
-
                         <MenuItem.Icon>
-
                             <Image Source="Assets/img_pop.png"
                                        Stretch="None" />
-
                         </MenuItem.Icon>
+                    </MenuItem>
 
+                    <MenuItem 
+                        Name="PurchaseReturnInvMenu"
+                        Header="فاتورة مردود المشتريات"
+                        Template="{StaticResource Item_Template}"
+                        Click="PurchaseReturnInvMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem 
+                        Name="SaleInvMenu"
+                        Header="فاتورة المبيعات"
+                        Template="{StaticResource Item_Template}"
+                        Click="SaleInvMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+
+                    <MenuItem 
+                        Name="SaleReturnInvMenu"
+                        Header="فاتورة مردود المبيعات"
+                        Template="{StaticResource Item_Template}"
+                        Click="SaleReturnInvMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
 

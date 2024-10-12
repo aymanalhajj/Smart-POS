@@ -11,10 +11,10 @@ using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseInvoiceViewModel : INotifyPropertyChanged
+    class PurchaseReturnInvoiceViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseInvoiceViewModel()
+        public PurchaseReturnInvoiceViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
             _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
@@ -36,14 +36,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new PurchaseReturnInvoiceRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private PurchaseReturnInvoiceRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
