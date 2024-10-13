@@ -196,6 +196,58 @@
                                        Stretch="None" />
                         </MenuItem.Icon>
                     </MenuItem>
+
+
+                    <MenuItem 
+                        Name="RentInvMenu"
+                        Header="فاتورة تأجير"
+                        Template="{StaticResource Item_Template}"
+                        Click="RentInvMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem 
+                        Name="PurchaseOrderMenu"
+                        Header="فاتورة طلب شراء"
+                        Template="{StaticResource Item_Template}"
+                        Click="PurchaseOrderMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem 
+                        Name="FirstPeriodStockMenu"
+                        Header="مخزون اول المدة"
+                        Template="{StaticResource Item_Template}"
+                        Click="FirstPeriodStockMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem 
+                        Name="StockInOrderMenu"
+                        Header="امر توريد مخزني"
+                        Template="{StaticResource Item_Template}"
+                        Click="StockInOrderMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem 
+                        Name="StockOutOrderMenu"
+                        Header="امر صرف مخزني"
+                        Template="{StaticResource Item_Template}"
+                        Click="StockOutOrderMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png"
+                                       Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="الموردين والعملاء"
