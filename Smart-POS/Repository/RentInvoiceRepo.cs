@@ -12,7 +12,7 @@ using System.Web;
 
 namespace Smart_POS.Repository
 {
-    internal class PurchaseInvoiceRepo : ApiRepository
+    internal class RentInvoiceRepo : ApiRepository
     {
 
         public InvoiceItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
@@ -20,7 +20,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_unit_price" +
+                    $"utils/get_product_unit_sell_price" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_product_id={HttpUtility.UrlEncode(productId)}" +
                     $"&p_quantity={HttpUtility.UrlEncode(quantity)}" +
@@ -49,7 +49,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_price" +
+                    $"utils/get_product_sell_price" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
@@ -75,7 +75,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_by_barcode" +
+                    $"utils/get_product_sell_price_by_barcode" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_barcode={HttpUtility.UrlEncode(barcode)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
@@ -101,7 +101,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice", UriKind.Absolute);
+                    $"invoices/rent_invoice", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -129,7 +129,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice" +
+                    $"invoices/rent_invoice" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -161,7 +161,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchases_invoices", UriKind.Absolute);
+                    $"invoices/rent_invoices", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
                 var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
 

@@ -129,8 +129,9 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/pur_return_invoice?p_company_id=0&" +
-                    $"p_first={HttpUtility.UrlEncode(first)}" +
+                    $"invoices/pur_return_invoice" +
+                    $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
+                    $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
                     $"&p_next={HttpUtility.UrlEncode(next)}" +
                     $"&p_prev={HttpUtility.UrlEncode(prev)}" +
