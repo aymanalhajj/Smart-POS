@@ -12,14 +12,15 @@ namespace Smart_POS.ViewModels
 {
     public class InvoiceViewModel : INotifyPropertyChanged
     {
-        public void ValidateInputData(string value)
-        {
-            if (value != null && !string.Equals(value, "test", StringComparison.OrdinalIgnoreCase))
-            {
-                throw new ArgumentException("Test is not valid.");
-            }
-        }
+        public delegate void ResetPaidCallbackEventHandler();
+        public event ResetPaidCallbackEventHandler ResetPaidCallback;
 
+        public delegate void ResetPaidCashCallbackEventHandler();
+        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
+
+        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
+
+        public event DiscountCallbackEventHandler DiscountCallback;
         public InvoiceViewModel()
         {
             InvoiceDate = DateTime.Now;
@@ -176,15 +177,6 @@ namespace Smart_POS.ViewModels
             }
         }
 
-        public delegate void ResetPaidCallbackEventHandler();
-        public event ResetPaidCallbackEventHandler ResetPaidCallback;
-
-        public delegate void ResetPaidCashCallbackEventHandler();
-        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
-
-        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
-
-        public event DiscountCallbackEventHandler DiscountCallback;
 
         public int _invoice_type { get; set; }
         public int InvoiceType
@@ -525,7 +517,45 @@ namespace Smart_POS.ViewModels
             }
 
         }
-        public void clear()
+
+        public InvoiceModel ToInvoiceModel()
+        {
+            InvoiceModel model = new()
+            {
+                BankAccId = this.BankAccId,
+                BranchId = this.BranchId,
+                ClientDiscount = this.ClientDiscount,
+                CompanyId = this.CompanyId,
+                CostCenterId = this.CostCenterId,
+                DeferredAmount = this.DeferredAmount,
+                InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
+                InvoiceId = this.InvoiceId,
+                InvoiceNo = this.InvoiceNo,
+                InvoiceTotalAmount = this.InvoiceTotalAmount,
+                InvoiceType = this.InvoiceType,
+                Notes = this.Notes,
+                PaidAmount = this.PaidAmount,
+                PaidBankAmount = this.PaidBankAmount,
+                PaymentType = this.PaymentType,
+                PostDiscountTotalAmount = this.PostDiscountTotalAmount,
+                PreDiscountTotalAmount = this.PreDiscountTotalAmount,
+                PreDiscountTotalVat = this.PreDiscountTotalVat,
+                ProviderId = this.ProviderId,
+                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
+                ProviderInvId = this.ProviderInvId,
+                SafeId = this.SafeId,
+                StoreDate = String.Format("{0:dd-MM-yyyy}", this.StoreDate),
+                PaidCashAmount = this.PaidCashAmount,
+                StoreId = this.StoreId,
+                TotalDiscount = this.TotalDiscount,
+                TotalQuantity = this.TotalQuantity,
+                TotalVat = this.TotalVat,
+                UserId = this.UserId,
+                Items = new List<InvoiceItemModel>()
+            };
+            return model;
+        }
+            public void clear()
         {
             BankAccId = null;
             BranchId = null;

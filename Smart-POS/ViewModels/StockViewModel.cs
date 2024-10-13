@@ -1,349 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using System.Windows;
 using POS_Desktop.Models;
-using System.Web;
+using Smart_POS.Models;
 
-namespace Smart_POS.Models
+namespace Smart_POS.ViewModels
 {
-    public class InvoiceDetailItem : INotifyPropertyChanged
+    public class StockViewModel : INotifyPropertyChanged
     {
+        public delegate void ResetPaidCallbackEventHandler();
+        public event ResetPaidCallbackEventHandler ResetPaidCallback;
 
-        public delegate void CalcSummaryCallbackEventHandler();
-        public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
+        public delegate void ResetPaidCashCallbackEventHandler();
+        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
 
-        public void Load_ProductUnits()
-        {
-            using var client = new HttpClient();
-            var requestUri = new Uri($"http://localhost:8000/ords/accounting/lists/product_unit_list?p_company_id=0&p_lang_id=2&p_product_id={HttpUtility.UrlEncode(ProductId.ToString())}", UriKind.Absolute);
+        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
 
-            //MessageBox.Show(requestUri.ToString());
-            var response = client.GetAsync(requestUri).Result;
-            var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
-            if (res != null)
-            {
-                ProductUnitList.Clear();
-                for (int i = 0; i < res.Items?.Count; i++)
-                {
-                    Item? item = res.Items[i];
-                    ProductUnitList.Add(item);
-                }
-            }
-        }
-        public InvoiceDetailItem()
-        {
-            ProductUnitList = new ObservableCollection<Item> { };
-        }
-
-        private ObservableCollection<Item> _productUnitList;
-
-
-        public ObservableCollection<Item> ProductUnitList
-        {
-            get { return _productUnitList; }
-            set
-            {
-
-                _productUnitList = value;
-
-                OnPropertyChanged("ProductUnitList");
-            }
-        }
-
-
-        public object _product_Id { get; set; }
-        public string? _product_barcode;
-
-        public string _product_unit_id;
-        public string? _price;
-        public string? _total_price;
-        public float? _discount_percentage;
-        public string? _discount_value;
-        public string? _post_discount_price;
-
-
-        public float? _vat_percentage;
-        public string? _vat_value;
-        public string? _total_amount;
-        public object? _change_total_amount;
-
-        public string? _quantity;
-        public object ProductId
-        {
-            get
-            {
-                return _product_Id;
-            }
-            set
-            {
-                _product_Id = value;
-                OnPropertyChanged("ProductId");
-            }
-        }
-        public string? ProductBarcode
-        {
-            get
-            {
-                if (_product_barcode == null)
-                {
-                    _product_barcode = "";
-                }
-                return _product_barcode;
-            }
-            set
-            {
-                _product_barcode = value;
-                OnPropertyChanged("ProductBarcode");
-            }
-        }
-        public string? Quantity
-        {
-            get
-            {
-                if (_quantity == null)
-                {
-                    _quantity = "";
-                }
-                return _quantity;
-            }
-            set
-            {
-                _quantity = value;
-                OnPropertyChanged("Quantity");
-            }
-        }
-        public string ProductUnitId
-        {
-            get
-            {
-                return _product_unit_id;
-            }
-            set
-            {
-                _product_unit_id = value;
-                OnPropertyChanged("ProductUnitId");
-            }
-        }
-        public string? Price
-        {
-            get
-            {
-                if (_price == null)
-                {
-                    _price = "";
-                }
-                return _price;
-            }
-            set
-            {
-                _price = value;
-                OnPropertyChanged("Price");
-            }
-        }
-        public string? TotalPrice
-        {
-            get
-            {
-                if (_total_price == null)
-                {
-                    _total_price = "";
-                }
-                return _total_price;
-            }
-            set
-            {
-                _total_price = value;
-                OnPropertyChanged("TotalPrice");
-            }
-        }
-        public float? DiscountPercentage
-        {
-            get
-            {
-                if (_discount_percentage == null)
-                {
-                    _discount_percentage = 0;
-                }
-                return _discount_percentage;
-            }
-            set
-            {
-                _discount_percentage = value;
-                OnPropertyChanged("DiscountPercentage");
-            }
-        }
-        public string? DiscountValue
-        {
-            get
-            {
-                if (_discount_value == null)
-                {
-                    _discount_value = "";
-                }
-                return _discount_value;
-            }
-            set
-            {
-                _discount_value = value;
-                OnPropertyChanged("DiscountValue");
-            }
-        }
-        public string? PostDiscountPrice
-        {
-            get
-            {
-                if (_post_discount_price == null)
-                {
-                    _post_discount_price = "";
-                }
-                return _post_discount_price;
-            }
-            set
-            {
-                _post_discount_price = value;
-                OnPropertyChanged("PostDiscountPrice");
-            }
-        }
-        public float? VatPercentage
-        {
-            get
-            {
-                return _vat_percentage;
-            }
-            set
-            {
-                _vat_percentage = value;
-                OnPropertyChanged("VatPercentage");
-            }
-        }
-        public string? _pre_discount_vat_value;
-        public string? PreDiscountVatValue
-        {
-            get
-            {
-                if (_pre_discount_vat_value == null)
-                {
-                    _pre_discount_vat_value = "0";
-                }
-                return _pre_discount_vat_value;
-            }
-            set
-            {
-                _pre_discount_vat_value = value;
-                OnPropertyChanged("PreDiscountVatValue");
-            }
-        }
-
-        public string? VatValue
-        {
-            get
-            {
-                if (_vat_value == null)
-                {
-                    _vat_value = "";
-                }
-                return _vat_value;
-            }
-            set
-            {
-                _vat_value = value;
-                OnPropertyChanged("VatValue");
-            }
-        }
-
-        public string? _original_price { get; set; }
-        public string? OriginalPrice
-        {
-            get
-            {
-                if (_original_price == null)
-                {
-                    _original_price = "";
-                }
-                return _original_price;
-            }
-            set
-            {
-                _original_price = value;
-                OnPropertyChanged("OriginalPrice");
-            }
-        }
-
-        public string? TotalAmount
-        {
-            get
-            {
-                if (_total_amount == null)
-                {
-                    _total_amount = "";
-                }
-                return _total_amount;
-            }
-            set
-            {
-                _total_amount = value;
-                OnPropertyChanged("TotalAmount");
-            }
-        }
-        public object? ChangeTotalAmount
-        {
-            get
-            {
-                return _change_total_amount;
-            }
-            set
-            {
-                _change_total_amount = value;
-                if (value != null && !value.Equals("0") && !value.Equals(""))
-                {
-                    DiscountPercentage = 0;
-                    Price = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage) / float.Parse(Quantity)).ToString();
-                    TotalPrice = (float.Parse(value.ToString()) * 100 / (100 + VatPercentage)).ToString();
-                    PreDiscountVatValue = (float.Parse(TotalPrice) * VatPercentage / 100).ToString();
-                    DiscountValue = (float.Parse(TotalPrice) * DiscountPercentage / 100).ToString();
-                    PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                    VatValue = (float.Parse(PostDiscountPrice) * VatPercentage / 100).ToString();
-                    TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
-                    if (CalcSummaryCallback != null)
-                    {
-                        CalcSummaryCallback();
-                    }
-                }
-                OnPropertyChanged("ChangeTotalAmount");
-            }
-        }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        #region INotifyPropertyChanged Members
-
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-    }
-
-    public class PurchaseInvoice : INotifyPropertyChanged
-    {
-        public PurchaseInvoice()
+        public event DiscountCallbackEventHandler DiscountCallback;
+        public StockViewModel()
         {
             InvoiceDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
-            items = new List<InvoiceDetailItem> { new InvoiceDetailItem() };
+            items = new List<InvoiceItemViewModel> { new InvoiceItemViewModel() };
             PaymentType = 1;
             InvoiceType = 1;
+            CompanyId = 1;
         }
         public int _invoice_id { get; set; }
         public int InvoiceId
@@ -376,10 +62,6 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (provider_inv_id == null)
-                {
-                    provider_inv_id = "0";
-                }
                 return provider_inv_id;
             }
             set
@@ -393,10 +75,6 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (_notes == null)
-                {
-                    _notes = "0";
-                }
                 return _notes;
             }
             set
@@ -423,10 +101,6 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (_provider_inv_date == null)
-                {
-                    _provider_inv_date = "0";
-                }
                 return _provider_inv_date;
             }
             set
@@ -440,10 +114,6 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (_store_date == null)
-                {
-                    _store_date = "0";
-                }
                 return _store_date;
             }
             set
@@ -458,10 +128,6 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (_branch_id == null)
-                {
-                    _branch_id = "0";
-                }
                 return _branch_id;
             }
             set
@@ -475,16 +141,26 @@ namespace Smart_POS.Models
         {
             get
             {
-                if (_provider_id == null)
-                {
-                    _provider_id = "0";
-                }
                 return _provider_id;
             }
             set
             {
                 _provider_id = value;
                 OnPropertyChanged("ProviderId");
+            }
+        }
+
+        public object _client_id { get; set; }
+        public object ClientId
+        {
+            get
+            {
+                return _client_id;
+            }
+            set
+            {
+                _client_id = value;
+                OnPropertyChanged("ClientId");
             }
         }
         public object _cost_ctr_id { get; set; }
@@ -501,14 +177,6 @@ namespace Smart_POS.Models
             }
         }
 
-        public delegate void ResetPaidCallbackEventHandler();
-        public event ResetPaidCallbackEventHandler ResetPaidCallback;
-
-        public delegate void ResetPaidCashCallbackEventHandler();
-        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
-
-        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
-        public event DiscountCallbackEventHandler DiscountCallback;
 
         public int _invoice_type { get; set; }
         public int InvoiceType
@@ -540,8 +208,8 @@ namespace Smart_POS.Models
                 OnPropertyChanged("StoreId");
             }
         }
-        public int safe_id { get; set; }
-        public int SafeId
+        public object safe_id { get; set; }
+        public object SafeId
         {
             get
             {
@@ -553,9 +221,7 @@ namespace Smart_POS.Models
                 OnPropertyChanged("SafeId");
             }
         }
-
-
-        public List<InvoiceDetailItem> items { get; set; }
+        public List<InvoiceItemViewModel> items { get; set; }
 
         public int _payment_type { get; set; }
         public int PaymentType
@@ -743,6 +409,8 @@ namespace Smart_POS.Models
         {
             get
             {
+                if (_user_id == 0)
+                    return 1;
                 return _user_id;
             }
             set
@@ -751,8 +419,8 @@ namespace Smart_POS.Models
                 OnPropertyChanged("UserId");
             }
         }
-        public int _bank_acc_id { get; set; }
-        public int BankAccId
+        public object _bank_acc_id { get; set; }
+        public object BankAccId
         {
             get
             {
@@ -807,6 +475,120 @@ namespace Smart_POS.Models
                 OnPropertyChanged("PaidAmount");
             }
         }
+        public void FromInvoiceModel(InvoiceModel model)
+        {
+            if (model != null)
+            {
+                BankAccId = model.BankAccId;
+                BranchId = model.BranchId;
+                ClientDiscount = model.ClientDiscount;
+                CompanyId = model.CompanyId;
+                CostCenterId = model.CostCenterId;
+                DeferredAmount = model.DeferredAmount;
+                InvoiceNo = model.InvoiceNo;
+                InvoiceId = model.InvoiceId;
+                InvoiceDate = model.InvoiceDate;
+                InvoiceTotalAmount = model.InvoiceTotalAmount;
+                InvoiceType = model.InvoiceType;
+                Notes = model.Notes;
+                PaidAmount = model.PaidAmount;
+                PaidBankAmount = model.PaidBankAmount;
+                PaidCashAmount = model.PaidCashAmount;
+                PaymentType = model.PaymentType;
+                PostDiscountTotalAmount = model.PostDiscountTotalAmount;
+                PreDiscountTotalAmount = model.PreDiscountTotalAmount;
+                PreDiscountTotalVat = model.PreDiscountTotalVat;
+                ProviderId = model.ProviderId;
+                ClientId = model.ClientId;
+                ProviderInvDate = model.ProviderInvDate;
+                ProviderInvId = model.ProviderInvId;
+                SafeId = model.SafeId;
+                StoreDate = model.StoreDate;
+                StoreId = model.StoreId;
+                TotalDiscount = model.TotalDiscount;
+                TotalQuantity = model.TotalQuantity;
+                TotalVat = model.TotalVat;
+                UserId = model.UserId;
+
+            }
+            else
+            {
+                this.clear();
+            }
+
+        }
+
+        public InvoiceModel ToInvoiceModel()
+        {
+            InvoiceModel model = new()
+            {
+                BankAccId = this.BankAccId,
+                BranchId = this.BranchId,
+                ClientDiscount = this.ClientDiscount,
+                CompanyId = this.CompanyId,
+                CostCenterId = this.CostCenterId,
+                DeferredAmount = this.DeferredAmount,
+                InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
+                InvoiceId = this.InvoiceId,
+                InvoiceNo = this.InvoiceNo,
+                InvoiceTotalAmount = this.InvoiceTotalAmount,
+                InvoiceType = this.InvoiceType,
+                Notes = this.Notes,
+                PaidAmount = this.PaidAmount,
+                PaidBankAmount = this.PaidBankAmount,
+                PaymentType = this.PaymentType,
+                PostDiscountTotalAmount = this.PostDiscountTotalAmount,
+                PreDiscountTotalAmount = this.PreDiscountTotalAmount,
+                PreDiscountTotalVat = this.PreDiscountTotalVat,
+                ProviderId = this.ProviderId,
+                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
+                ProviderInvId = this.ProviderInvId,
+                SafeId = this.SafeId,
+                StoreDate = String.Format("{0:dd-MM-yyyy}", this.StoreDate),
+                PaidCashAmount = this.PaidCashAmount,
+                StoreId = this.StoreId,
+                TotalDiscount = this.TotalDiscount,
+                TotalQuantity = this.TotalQuantity,
+                TotalVat = this.TotalVat,
+                UserId = this.UserId,
+                Items = new List<InvoiceItemModel>()
+            };
+            return model;
+        }
+            public void clear()
+        {
+            BankAccId = null;
+            BranchId = null;
+            ClientDiscount = 0;
+            CompanyId = 1;
+            CostCenterId = null;
+            DeferredAmount = 0;
+            InvoiceNo = 0;
+            InvoiceId = 0;
+            InvoiceDate = DateTime.Now;
+            InvoiceTotalAmount = 0;
+            InvoiceType = 1;
+            Notes = null;
+            PaidAmount = 0;
+            PaidBankAmount = 0;
+            PaidCashAmount = 0;
+            PaymentType = 1;
+            PostDiscountTotalAmount = 0;
+            PreDiscountTotalAmount = 0;
+            PreDiscountTotalVat = 0;
+            ProviderId = null;
+            ClientId = null;
+            ProviderInvDate = DateTime.Now;
+            ProviderInvId = null;
+            SafeId = null;
+            StoreDate = DateTime.Now;
+            StoreId = null;
+            TotalDiscount = 0;
+            TotalQuantity = 0;
+            TotalVat = 0;
+            UserId = 0;
+
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -819,23 +601,6 @@ namespace Smart_POS.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
         #endregion
-    }
-
-    public class Link
-    {
-        public string rel { get; set; }
-        public string href { get; set; }
-    }
-
-    public class PurchaseInvoicesResponse
-    {
-        public List<PurchaseInvoice> items { get; set; }
-        public bool hasMore { get; set; }
-        public int limit { get; set; }
-        public int offset { get; set; }
-        public int count { get; set; }
-        public List<Link> links { get; set; }
     }
 }

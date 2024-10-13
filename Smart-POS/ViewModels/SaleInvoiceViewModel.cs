@@ -360,40 +360,7 @@ namespace Smart_POS.ViewModels
         #endregion
         public InvoiceModel ToInvoiceModel()
         {
-            InvoiceModel model = new()
-            {
-                BankAccId = invoice.BankAccId,
-                BranchId = invoice.BranchId,
-                ClientDiscount = invoice.ClientDiscount,
-                CompanyId = invoice.CompanyId,
-                CostCenterId = invoice.CostCenterId,
-                DeferredAmount = invoice.DeferredAmount,
-                InvoiceDate = String.Format("{0:dd-MM-yyyy}", invoice.InvoiceDate),
-                InvoiceId = invoice.InvoiceId,
-                InvoiceNo = invoice.InvoiceNo,
-                InvoiceTotalAmount = invoice.InvoiceTotalAmount,
-                InvoiceType = invoice.InvoiceType,
-                Notes = invoice.Notes,
-                PaidAmount = invoice.PaidAmount,
-                PaidBankAmount = invoice.PaidBankAmount,
-                PaymentType = invoice.PaymentType,
-                PostDiscountTotalAmount = invoice.PostDiscountTotalAmount,
-                PreDiscountTotalAmount = invoice.PreDiscountTotalAmount,
-                PreDiscountTotalVat = invoice.PreDiscountTotalVat,
-                ProviderId = invoice.ProviderId,
-                ClientId = invoice.ClientId,
-                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", invoice.ProviderInvDate),
-                ProviderInvId = invoice.ProviderInvId,
-                SafeId = invoice.SafeId,
-                StoreDate = String.Format("{0:dd-MM-yyyy}", invoice.StoreDate),
-                PaidCashAmount = invoice.PaidCashAmount,
-                StoreId = invoice.StoreId,
-                TotalDiscount = invoice.TotalDiscount,
-                TotalQuantity = invoice.TotalQuantity,
-                TotalVat = invoice.TotalVat,
-                UserId = invoice.UserId,
-                Items = new List<InvoiceItemModel>()
-            };
+            InvoiceModel model = invoice.ToInvoiceModel();
             foreach (var item in InvoiceDetailItems)
             {
                 model.Items.Add(item.ToInvoiceItemModel());

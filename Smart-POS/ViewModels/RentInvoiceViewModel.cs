@@ -11,10 +11,10 @@ using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseReturnInvoiceViewModel : INotifyPropertyChanged
+    class RentInvoiceViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseReturnInvoiceViewModel()
+        public RentInvoiceViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
             _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
@@ -25,7 +25,7 @@ namespace Smart_POS.ViewModels
             SaveList = new ObservableCollection<Item> { };
             BankList = new ObservableCollection<Item> { };
             CostCenterList = new ObservableCollection<Item> { };
-            ProviderList = new ObservableCollection<Item> { };
+            ClientList = new ObservableCollection<Item> { };
 
             filters = new InvoiceViewModel();
             invoice = new InvoiceViewModel();
@@ -36,14 +36,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseReturnInvoiceRepo();
+            repo = new SaleInvoiceRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseReturnInvoiceRepo repo { get; set; }
+        private SaleInvoiceRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -59,7 +59,7 @@ namespace Smart_POS.ViewModels
         private ObservableCollection<Item> _saveList;
         private ObservableCollection<Item> _bankList;
         private ObservableCollection<Item> _costCenterList;
-        private ObservableCollection<Item> _providerList;
+        private ObservableCollection<Item> _clientList;
 
         public ICommand _SaveCommand;
         public ICommand _SearchCommand;
@@ -155,7 +155,7 @@ namespace Smart_POS.ViewModels
         public void InitLists()
         {
             BranchList = repo.GetBranchList();
-            ProviderList = repo.GetProviderList();
+            ClientList = repo.GetClientList();
             CostCenterList = repo.GetCostCenterList();
             SaveList = repo.GetSaveList();
             StoreList = repo.GetStoreList();
@@ -422,13 +422,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CostCenterList");
             }
         }
-        public ObservableCollection<Item> ProviderList
+        public ObservableCollection<Item> ClientList
         {
-            get { return _providerList; }
+            get { return _clientList; }
             set
             {
-                _providerList = value;
-                OnPropertyChanged("ProviderList");
+                _clientList = value;
+                OnPropertyChanged("ClientList");
             }
         }
 
