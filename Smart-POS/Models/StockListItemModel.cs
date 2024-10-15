@@ -41,7 +41,7 @@ namespace Smart_POS.Models
         public int UserId { get; set; }
 
         [JsonProperty("total_amount")]
-        public int TotalAmount { get; set; }
+        public float TotalAmount { get; set; }
 
         [JsonProperty("order_no")]
         public int OrderNo { get; set; }

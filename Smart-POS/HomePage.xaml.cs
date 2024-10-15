@@ -82,9 +82,9 @@ namespace Smart_POS
 
         private void StockOutOrderMenu_Click(object sender, RoutedEventArgs e)
         {
-            //StockOutOrderPage page = new SaleReturnInvoicePage();
-            //page.Owner = Application.Current.MainWindow;
-            //page.Show();
+            StockOutOrderPage page = new StockOutOrderPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
         }
 
         private void StockInOrderMenu_Click(object sender, RoutedEventArgs e)

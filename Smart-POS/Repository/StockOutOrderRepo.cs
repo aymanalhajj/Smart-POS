@@ -136,7 +136,7 @@ namespace Smart_POS.Repository
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    Utils.ShowMessage("مشكلة في الوصول.");
+                    Utils.ShowMessage("مشكلة في الوصول."+ response.Content.ReadAsStringAsync().Result);
                 }
                 else
                 {
