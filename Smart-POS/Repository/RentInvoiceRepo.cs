@@ -110,7 +110,7 @@ namespace Smart_POS.Repository
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    return new ActionStatusModel("لم يتم الحفظ", status: 0);
+                    return new ActionStatusModel("لم يتم الحفظ"+" بسبب: "+ response.Content.ReadAsStringAsync().Result, status: 0);
                 }
                 else
                 {

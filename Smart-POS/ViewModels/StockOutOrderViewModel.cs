@@ -99,9 +99,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -114,9 +114,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -170,7 +170,7 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowInvoice(InvoiceModel? model)
+        public void ShowInvoice(StockModel? model)
         {
             if (model != null && model.Items != null)
             {
@@ -354,9 +354,9 @@ namespace Smart_POS.ViewModels
         }
 
         #endregion
-        public InvoiceModel ToInvoiceModel()
+        public StockModel ToInvoiceModel()
         {
-            InvoiceModel model = invoice.ToInvoiceModel();
+            StockModel model = invoice.ToInvoiceModel();
             foreach (var item in InvoiceDetailItems)
             {
                 model.Items.Add(item.ToInvoiceItemModel());
@@ -397,7 +397,7 @@ namespace Smart_POS.ViewModels
             set
             {
                 _saveList = value;
-                OnPropertyChanged("SaveList");
+                OnPropertyChanged("AccountList");
             }
         }
         public ObservableCollection<Item> BankList

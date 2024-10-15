@@ -32,14 +32,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new FirstPeriodStockRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private FirstPeriodStockRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -429,7 +429,7 @@ namespace Smart_POS.ViewModels
             set
             {
                 _saveList = value;
-                OnPropertyChanged("SaveList");
+                OnPropertyChanged("AccountList");
             }
         }
         public ObservableCollection<Item> BankList

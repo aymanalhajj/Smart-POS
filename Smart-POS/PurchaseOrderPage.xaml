@@ -47,7 +47,7 @@
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الطلب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
                         <TextBox Grid.Row="1" Grid.Column="1" Height="26"
-                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}"
                             Margin="2" Width="150" VerticalAlignment="Top" />
                         <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
                         <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" 
@@ -67,7 +67,7 @@
                         <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" 
                                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <vl:SelectListValidator/>
@@ -393,7 +393,7 @@
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الطلب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
                     <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.InvoiceNo}"
                  Margin="2" Width="150" VerticalAlignment="Top" />
                     <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
@@ -404,7 +404,7 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الطلب</Label>
                     <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
                         <DatePicker.SelectedDate>
                             <Binding Path="Filters.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -482,17 +482,17 @@
                                         <MenuItem Header="Descending" />
                                     </ContextMenu>
                                 </GridView.ColumnHeaderContextMenu>
-                                <GridViewColumn Header="رقم الفاتورة" Width="80">
+                                <GridViewColumn Header="رقم الطلب" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding OrderNo}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="تاريخ الفاتورة" Width="80">
+                                <GridViewColumn Header="تاريخ الطلب" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceDate}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding OrderDate}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

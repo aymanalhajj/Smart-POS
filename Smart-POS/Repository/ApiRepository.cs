@@ -83,10 +83,19 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
+        
         public ObservableCollection<Item> GetSaveList()
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/save_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetAccountList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/account_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);

@@ -399,43 +399,31 @@ namespace Smart_POS.ViewModels
         }
         #endregion
 
-        public InvoiceItemModel ToInvoiceItemModel()
+        public StockItemModel ToInvoiceItemModel()
         {
-            InvoiceItemModel model = new()
+            StockItemModel model = new()
             {
                 Dtl_Id = this.Dtl_Id,
                 ProductBarcode = this.ProductBarcode,
                 Price = float.Parse(this.Price),
-                DiscountPercentage = float.Parse(this.DiscountPercentage),
-                DiscountValue = this.DiscountValue,
-                PostDiscountPrice = this.PostDiscountPrice,
                 ProductId = this.ProductId,
                 Quantity = int.Parse(this.Quantity),
                 TotalAmount = this.TotalAmount,
-                TotalPrice = this.TotalPrice,
-                ProductUnitId = this.ProductUnitId,
-                VatPercentage = float.Parse(this.VatPercentage),
-                VatValue = this.VatValue
+                ProductUnitId = this.ProductUnitId
             };
             return model;
         }
 
-        static public StockItemViewModel FromStockItemModel(InvoiceItemModel model)
+        static public StockItemViewModel FromStockItemModel(StockItemModel model)
         {
             StockItemViewModel viewModel = new()
             {
                 Dtl_Id = model.Dtl_Id,
                 ProductBarcode = model.ProductBarcode,
-                Price = model.Price.ToString(),
-                DiscountPercentage = model.DiscountPercentage.ToString(),
-                DiscountValue = model.DiscountValue,
-                PostDiscountPrice = model.PostDiscountPrice,
                 ProductId = model.ProductId,
                 Quantity = model.Quantity.ToString(),
-                TotalAmount = model.TotalAmount,
-                TotalPrice = model.TotalPrice,
-                VatPercentage = model.VatPercentage.ToString(),
-                VatValue = model.VatValue
+                Price = model.Price.ToString(),
+                TotalAmount = model.TotalAmount
             };
             viewModel.Load_ProductUnits();
             viewModel.ProductUnitId = model.ProductUnitId;

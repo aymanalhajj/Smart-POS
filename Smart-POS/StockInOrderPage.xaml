@@ -13,6 +13,7 @@
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
         <con:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+        <con:BoolIntConverter x:Key="BoolIntConverter" />
         <vm:StockInOrderViewModel x:Key="ViewModel" />
         <vm:StockInOrderViewModel x:Key="searchViewModel" />
         <Style TargetType="ListViewItem">
@@ -40,14 +41,14 @@
                             <ColumnDefinition Width="112"/>
                             <ColumnDefinition Width="155"/>
                             <ColumnDefinition Width="112"/>
-                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="155"/>
                             <ColumnDefinition Width="112"/>
                             <ColumnDefinition Width="155"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
                         <TextBox Grid.Row="1" Grid.Column="1" Height="26"
-                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}"
                             Margin="2" Width="150" VerticalAlignment="Top" />
                         <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
                         <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" 
@@ -64,10 +65,10 @@
                             </ComboBox.SelectedValue>
                         </ComboBox>
                         <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
-                        <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" 
+                        <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="150" 
                                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <vl:SelectListValidator/>
@@ -75,60 +76,9 @@
                                 </Binding>
                             </DatePicker.SelectedDate>
                         </DatePicker>
-                        <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
 
-                        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                            Name="cashInvoiceBtn" VerticalContentAlignment="Center"
-                            Content="نقد" HorizontalAlignment="Left"
-                            Margin="5,2" Width="50"
-                            GroupName="InvoiceType"
-                            IsChecked="{Binding 
-                            Path=Invoice.InvoiceType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=1}" />
-                        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                            Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
-                            Unchecked="deferredInvoiceBtn_Checked"
-                            Name="deferredInvoiceBtn" 
-                            Content="آجل" Width="50" Margin="5,2" 
-                            GroupName="InvoiceType" 
-                            IsChecked="{Binding 
-                            Path=Invoice.InvoiceType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=2}"/>
-
-                        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">رقم فاتورة المورد</Label>
-                        <TextBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top"
-                            Text="{Binding Path=Invoice.ProviderInvId, Mode=TwoWay}"
-                            Margin="2" Height="26"
-                            Width="150"  
-                            VerticalContentAlignment="Center" />
-                        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المورد</Label>
-                        <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding ProviderList}" Name="ProviderList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
-                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </ComboBox.SelectedValue>
-                        </ComboBox>
-                        <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ فاتورة المورد</Label>
-                        <DatePicker  Grid.Row="2" Grid.Column="5" VerticalContentAlignment="Center"  Margin="2" Width="110" Height="26" VerticalAlignment="Top"
-                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.ProviderInvDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
-                        <Label  Grid.Row="2" Grid.Column="6" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
-                        <ComboBox Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}" Name="StoreList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                        <Label  Grid.Row="1" Grid.Column="6" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
+                        <ComboBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}" Name="StoreList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -139,10 +89,12 @@
                                 </Binding>
                             </ComboBox.SelectedValue>
                         </ComboBox>
-                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الملاحظات</Label>
-                        <TextBox Grid.Row="3" Grid.Column="1" Height="26" VerticalAlignment="Top"  Text="{Binding Path=Invoice.Notes,Mode=TwoWay}" Margin="2" Width="150"  VerticalContentAlignment="Center" />
-                        <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مركز التكلفة</Label>
-                        <ComboBox Grid.Row="3" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding CostCenterList}" Name="CostCenterList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+
+                        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">رقم المرجع</Label>
+                        <TextBox Grid.Row="2" Grid.Column="1" Height="26" VerticalAlignment="Top"  Text="{Binding Path=Invoice.RefId,Mode=TwoWay}" Margin="2"  VerticalContentAlignment="Center"/>
+
+                        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مركز التكلفة</Label>
+                        <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding CostCenterList}" Name="CostCenterList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Invoice.CostCenterId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -153,23 +105,22 @@
                                 </Binding>
                             </ComboBox.SelectedValue>
                         </ComboBox>
-                        <Label Grid.Row="3" Grid.Column="4" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ التوريد</Label>
-                        <DatePicker Grid.Row="3" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="2" Width="110"  
-                                    Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                            <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.StoreDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
-                                        <vl:SelectListValidator/>
-                                    </Binding.ValidationRules>
-                                </Binding>
-                            </DatePicker.SelectedDate>
-                        </DatePicker>
-                        <Label Grid.Row="3" Grid.Column="6" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الخزينة</Label>
-                        <ComboBox Grid.Row="3" Grid.Column="7" Height="26" VerticalAlignment="Top"  ItemsSource="{Binding SaveList}" Name="SaveList" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
+
+                        <CheckBox Name="IsAccountableChck" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="2" VerticalAlignment="Top" Height="26"
+                            VerticalContentAlignment="Center"
+                            Content="انشاء قيد محاسبي" HorizontalAlignment="Center"
+                            Margin="5,2" Width="150"
+                            IsChecked="{Binding 
+                            Path=Invoice.Accountable, 
+                            Converter={StaticResource BoolIntConverter}, 
+                            ConverterParameter=1}"
+                                  />
+
+                        <Label Grid.Row="2" Grid.Column="6" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right" Content="الحساب"/>
+                        <ComboBox Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26" ItemsSource="{Binding AccountList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.SafeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.AccountId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <vl:SelectListValidator/>
@@ -178,18 +129,22 @@
                             </ComboBox.SelectedValue>
                         </ComboBox>
 
+
+
+                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الملاحظات</Label>
+                        <TextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="7" Height="26" VerticalAlignment="Top"  Text="{Binding Path=Invoice.Notes,Mode=TwoWay}" Margin="2"  VerticalContentAlignment="Center" />
                         <DataGrid VerticalAlignment="Top"
-            Grid.Row="4" Grid.ColumnSpan="9"
-                CellEditEnding="DetailsGrid_CellEditEnding"
-                ItemsSource="{Binding InvoiceDetailItems}"
-                HorizontalContentAlignment="Stretch"
-                Margin="5" Background="LightGray" AutoGenerateColumns = "False"
-                RowBackground="LightYellow" AlternatingRowBackground="LightBlue"
-                BorderBrush="Gray" SelectionMode="Single"
-                SelectionUnit="FullRow" BorderThickness="1"
-                VerticalScrollBarVisibility="Visible" GridLinesVisibility="All" 
-                Name="DetailsGrid" HorizontalAlignment="Stretch" MaxHeight="200"
-                SelectedIndex="{Binding Path=CurrentRow}" CanUserAddRows ="True">
+                                Grid.Row="4" Grid.ColumnSpan="9"
+                                CellEditEnding="DetailsGrid_CellEditEnding"
+                                ItemsSource="{Binding InvoiceDetailItems}"
+                                HorizontalContentAlignment="Stretch"
+                                Margin="5" Background="LightGray" AutoGenerateColumns = "False"
+                                RowBackground="LightYellow" AlternatingRowBackground="LightBlue"
+                                BorderBrush="Gray" SelectionMode="Single"
+                                SelectionUnit="FullRow" BorderThickness="1"
+                                VerticalScrollBarVisibility="Visible" GridLinesVisibility="All" 
+                                Name="DetailsGrid" HorizontalAlignment="Stretch" MaxHeight="200"
+                                SelectedIndex="{Binding Path=CurrentRow}" CanUserAddRows ="True">
                             <DataGrid.Resources>
                                 <Style x:Key="errorStyle" TargetType="{x:Type TextBox}">
                                     <Setter Property="Padding" Value="-2"/>
@@ -203,16 +158,16 @@
                             </DataGrid.Resources>
                             <DataGrid.Columns>
                                 <DataGridTextColumn 
-                        Header="الباركود" 
-                        Width="80" 
-                        Binding="{Binding ProductBarcode}"  />
+                                    Header="الباركود" 
+                                    Width="80" 
+                                    Binding="{Binding ProductBarcode}"  />
                                 <DataGridComboBoxColumn
-                        ItemsSource="{Binding ProductList}"
-                        SelectedValueBinding="{Binding ProductId}"
-                        x:Name="ProductComboBox"
-                        Header="المنتج" Width="150"
-                        DisplayMemberPath="name" 
-                        SelectedValuePath="id" >
+                                    ItemsSource="{Binding ProductList}"
+                                    SelectedValueBinding="{Binding ProductId}"
+                                    x:Name="ProductComboBox"
+                                    Header="المنتج" Width="150"
+                                    DisplayMemberPath="name" 
+                                    SelectedValuePath="id" >
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="{x:Type ComboBox}">
                                             <EventSetter Event="SelectionChanged" Handler="ProductSelectionChanged" />
@@ -235,11 +190,6 @@
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="السعر" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                                 <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="نسبة الخصم" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"   />
-                                <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"  />
-                                <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" EditingElementStyle="{StaticResource errorStyle}" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
                                 <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
                                 <DataGridTextColumn Header="تغيير الصافي" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay,TargetNullValue=''}"  />
                                 <DataGridTemplateColumn Header="حذف">
@@ -252,111 +202,22 @@
                             </DataGrid.Columns>
 
                         </DataGrid>
-                        <Border Grid.Row="5" Grid.ColumnSpan="9"
-                VerticalAlignment="Bottom"
-                CornerRadius="2"
-                BorderBrush="Gray"
-                Background="LightGray"
-                BorderThickness="2"
-                Margin="5"
-                Padding="8">
+                        <Border Grid.Row="4" Grid.ColumnSpan="9"
+                            VerticalAlignment="Bottom"
+                            CornerRadius="2"
+                            BorderBrush="Gray"
+                            Background="LightGray"
+                            BorderThickness="2"
+                            Margin="5"
+                            Padding="8">    
                             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
 
-                                <StackPanel Orientation="Horizontal" Margin="2">
-                                    <Label Width="100" FontSize="16" FontWeight="SemiBold" Margin="2"  HorizontalContentAlignment="Right">نوع الدفع</Label>
-                                    <RadioButton 
-                            VerticalContentAlignment="Center"
-                            FontSize="16"
-                            Name="cashBtn" 
-                            Content="نقد" 
-                            Margin="10,5,0,0" 
-                            GroupName="PaymentType"
-                            IsChecked="{Binding 
-                            Path=Invoice.PaymentType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=1}" />
-                                    <RadioButton 
-                        Checked="bankBtn_Checked"
-                        Unchecked="bankBtn_Checked"
-                            VerticalContentAlignment="Center"
-                            FontSize="16"
-                            Name="bankBtn" 
-                            Content="شبكة" 
-                            Margin="10,5,0,0" 
-                            GroupName="PaymentType" 
-                            IsChecked="{Binding 
-                            Path=Invoice.PaymentType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=2}"/>
-                                </StackPanel>
-
-
                                 <StackPanel Orientation="Horizontal">
-
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">البنك</Label>
-                                            <ComboBox ItemsSource="{Binding BankList}"  IsEnabled="False" Name="BankList" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=Invoice.BankAccId}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">المبلغ المدفوع</Label>
-                                            <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=Invoice.PaidAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="المدفوع نقدا" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Name="PaidCashTxt" Height="25" Text="{Binding Path=Invoice.PaidCashAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="2">
+                                        <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                                        <TextBox FontWeight="Bold" FontSize="20" Height="35" IsReadOnly="True" Text="{Binding Path=Invoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                     </StackPanel>
-
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">خصم العميل</Label>
-                                            <TextBox Text="{Binding Path=Invoice.ClientDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المبلغ المتبقي</Label>
-                                            <TextBox IsReadOnly="True" Name="DeferredAmountTxt" Text="{Binding Path=Invoice.DeferredAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="المدفوع عبر البنك" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Name="PaidBankTxt" Height="25" Text="{Binding Path=Invoice.PaidBankAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical" Margin="2">
-
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="الاجمالي قبل الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.PreDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="الاجمالي بعد الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox Height="25" IsReadOnly="True" Text="{Binding Path=Invoice.PostDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الكمية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalQuantity}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الضريبة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalVat}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox FontWeight="Bold" FontSize="20" Height="50" IsReadOnly="True" Text="{Binding Path=Invoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                    </StackPanel>
-
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"  Margin="2">
                                     <Button Command="{Binding NewCommand}" Name="New_Btn" Margin="6" Padding="20,5" Content="جديد"/>
@@ -394,7 +255,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.InvoiceNo}"
+                    <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.OrderNo}"
                  Margin="2" Width="150" VerticalAlignment="Top" />
                     <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
                     <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" >
@@ -407,7 +268,7 @@
                     <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
                     <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
                         <DatePicker.SelectedDate>
-                            <Binding Path="Filters.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                            <Binding Path="Filters.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </DatePicker.SelectedDate>
@@ -416,44 +277,15 @@
                     <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
                     <DatePicker Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
                         <DatePicker.SelectedDate>
-                            <Binding Path="Filters.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                            <Binding Path="Filters.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </DatePicker.SelectedDate>
                     </DatePicker>
-                    <Label Grid.Row="2" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
 
-                    <RadioButton Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                            Name="searchCashInvoiceBtn" VerticalContentAlignment="Center"
-                            Content="نقد" HorizontalAlignment="Left"
-                            Margin="5,2" Width="50"
-                            GroupName="SearchInvoiceType"
-                            IsChecked="{Binding 
-                            Path=Filters.InvoiceType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=1}" />
-                    <RadioButton Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                     Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
-                     Unchecked="deferredInvoiceBtn_Checked" HorizontalAlignment="Right"
-                     Name="searchDeferredInvoiceBtn"  Content="آجل" Width="50" Margin="15,2" 
-                     GroupName="SearchInvoiceType" IsChecked="{Binding 
-                            Path=Filters.InvoiceType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=2}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المورد</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding ProviderList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
-                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
-                        <ComboBox.SelectedValue>
-                            <Binding Path="Filters.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-
-                            </Binding>
-                        </ComboBox.SelectedValue>
-                    </ComboBox>
-
-                    <Label  Grid.Row="2" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                    <Label  Grid.Row="2" Grid.Column="0" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
+                    <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                         <ComboBox.SelectedValue>
                             <Binding Path="Filters.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -462,17 +294,7 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الخزينة</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="5" Height="26" VerticalAlignment="Top"  ItemsSource="{Binding SaveList}" Margin="2" Width="110"  DisplayMemberPath="name" SelectedValuePath="id" >
-                        <ComboBox.SelectedValue>
-                            <Binding Path="Filters.SafeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
-                             NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
-
-                            </Binding>
-                        </ComboBox.SelectedValue>
-                    </ComboBox>
                     <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
-
                     <ListView MouseDoubleClick="InvoicesList_MouseDoubleClick" SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
@@ -482,80 +304,60 @@
                                         <MenuItem Header="Descending" />
                                     </ContextMenu>
                                 </GridView.ColumnHeaderContextMenu>
-                                <GridViewColumn Header="رقم الفاتورة" Width="80">
+                                <GridViewColumn Header="رقم الفاتورة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding OrderNo}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="تاريخ الفاتورة" Width="80">
+                                <GridViewColumn Header="تاريخ الفاتورة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceDate}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding OrderDate}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الإجمالي قبل الضريبة" Width="130">
+                                <GridViewColumn Header="اجمالي الفاتورة" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding PreDiscountTotalAmount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TotalAmount}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="خصم العميل" Width="100">
+                                <GridViewColumn Header="الملاحظات" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TotalDiscount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding Notes}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="ضريبة القيمة المضافة" Width="120">
+                                <GridViewColumn Header="المخزن" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TotalVat}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding StoreName}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="اجمالي الفاتورة" Width="100">
+                                <GridViewColumn Header="مركز التكلفة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceTotalAmount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding CostCenterName}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المدفوع نقداً" Width="80">
+
+                                <GridViewColumn Header="انشاء قيد محاسبي" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding PaidCashAmount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding Accountable}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المدفوع عبر البنك" Width="120">
+                                <GridViewColumn Header="الحساب" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding PaidBankAmount}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="نوع الفاتورة" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding InvoiceType}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="طريقة الدفع" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding PaymentType}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="المورد" Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding AccountName}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

@@ -401,7 +401,7 @@ namespace Smart_POS.ViewModels
             set
             {
                 _saveList = value;
-                OnPropertyChanged("SaveList");
+                OnPropertyChanged("AccountList");
             }
         }
         public ObservableCollection<Item> BankList

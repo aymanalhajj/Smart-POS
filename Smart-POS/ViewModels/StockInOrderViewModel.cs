@@ -17,10 +17,11 @@ namespace Smart_POS.ViewModels
             ProductList = new ObservableCollection<Item> { };
 
             BranchList = new ObservableCollection<Item> { };
-            StoreList = new ObservableCollection<Item> { };
-            SaveList = new ObservableCollection<Item> { };
-            BankList = new ObservableCollection<Item> { };
             CostCenterList = new ObservableCollection<Item> { };
+            StoreList = new ObservableCollection<Item> { };
+
+            AccountList = new ObservableCollection<Item> { };
+            BankList = new ObservableCollection<Item> { };
             ProviderList = new ObservableCollection<Item> { };
 
             filters = new StockViewModel();
@@ -52,7 +53,7 @@ namespace Smart_POS.ViewModels
         private ObservableCollection<Item> _productList;
         private ObservableCollection<Item> _branchList;
         private ObservableCollection<Item> _storeList;
-        private ObservableCollection<Item> _saveList;
+        private ObservableCollection<Item> _accountList;
         private ObservableCollection<Item> _bankList;
         private ObservableCollection<Item> _costCenterList;
         private ObservableCollection<Item> _providerList;
@@ -74,9 +75,9 @@ namespace Smart_POS.ViewModels
                 var res = repo.PostPurchaseInoice(ToInvoiceModel());
                 if (res != null && res.Status == 1)
                 {
-                    MessageBox.Show(res.Message);
                     ClearForm();
                 }
+                    MessageBox.Show(res.Message);
             }
             catch (Exception ex)
             {
@@ -99,9 +100,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -114,9 +115,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -151,11 +152,11 @@ namespace Smart_POS.ViewModels
         public void InitLists()
         {
             BranchList = repo.GetBranchList();
-            ProviderList = repo.GetProviderList();
-            CostCenterList = repo.GetCostCenterList();
-            SaveList = repo.GetSaveList();
             StoreList = repo.GetStoreList();
-            BankList = repo.GetBankList();
+            CostCenterList = repo.GetCostCenterList();
+            AccountList = repo.GetAccountList();
+            //ProviderList = repo.GetProviderList();
+            //BankList = repo.GetBankList();
             ProductList = repo.GetProductList();
         }
         private void ClearForm()
@@ -170,7 +171,7 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowInvoice(InvoiceModel? model)
+        public void ShowInvoice(StockModel? model)
         {
             if (model != null && model.Items != null)
             {
@@ -354,9 +355,9 @@ namespace Smart_POS.ViewModels
         }
 
         #endregion
-        public InvoiceModel ToInvoiceModel()
+        public StockModel ToInvoiceModel()
         {
-            InvoiceModel model = invoice.ToInvoiceModel();
+            StockModel model = invoice.ToInvoiceModel();
             foreach (var item in InvoiceDetailItems)
             {
                 model.Items.Add(item.ToInvoiceItemModel());
@@ -391,13 +392,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("StoreList");
             }
         }
-        public ObservableCollection<Item> SaveList
+        public ObservableCollection<Item> AccountList
         {
-            get { return _saveList; }
+            get { return _accountList; }
             set
             {
-                _saveList = value;
-                OnPropertyChanged("SaveList");
+                _accountList = value;
+                OnPropertyChanged("AccountList");
             }
         }
         public ObservableCollection<Item> BankList

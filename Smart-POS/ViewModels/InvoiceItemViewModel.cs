@@ -335,7 +335,7 @@ namespace Smart_POS.ViewModels
                 if (value != null && value != 0 && !value.Equals(""))
                 {
                     DiscountPercentage = "0";
-                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
+                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage)) / int.Parse(Quantity)).ToString();
                     RecalcPrice();                    
                     if (CalcSummaryCallback != null)
                     {

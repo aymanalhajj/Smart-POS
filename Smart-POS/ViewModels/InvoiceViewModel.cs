@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using POS_Desktop.Models;
+﻿using System.ComponentModel;
 using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels
@@ -23,6 +16,7 @@ namespace Smart_POS.ViewModels
         public event DiscountCallbackEventHandler DiscountCallback;
         public InvoiceViewModel()
         {
+            OrderDate = DateTime.Now;
             InvoiceDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
@@ -81,6 +75,20 @@ namespace Smart_POS.ViewModels
             {
                 _notes = value;
                 OnPropertyChanged("Notes");
+            }
+        }
+        
+        public object _order_date { get; set; }
+        public object OrderDate
+        {
+            get
+            {
+                return _order_date;
+            }
+            set
+            {
+                _order_date = value;
+                OnPropertyChanged("OrderDate");
             }
         }
         public object _invoice_date { get; set; }
@@ -432,6 +440,32 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("BankAccId");
             }
         }
+        public int _order_id { get; set; }
+        public int OrderId
+        {
+            get
+            {
+                return _order_id;
+            }
+            set
+            {
+                _order_id = value;
+                OnPropertyChanged("OrderId");
+            }
+        }
+        public object _order_no { get; set; }
+        public object OrderNo
+        {
+            get
+            {
+                return _order_no;
+            }
+            set
+            {
+                _order_no = value;
+                OnPropertyChanged("OrderNo");
+            }
+        }
         public double _paid_amount { get; set; }
         public double PaidAmount
         {
@@ -479,6 +513,8 @@ namespace Smart_POS.ViewModels
         {
             if (model != null)
             {
+                OrderId = model.OrderId;
+                OrderNo = model.OrderNo;
                 BankAccId = model.BankAccId;
                 BranchId = model.BranchId;
                 ClientDiscount = model.ClientDiscount;
@@ -522,6 +558,8 @@ namespace Smart_POS.ViewModels
         {
             InvoiceModel model = new()
             {
+                OrderId = this.OrderId,
+                OrderNo = this.OrderNo,
                 BankAccId = this.BankAccId,
                 BranchId = this.BranchId,
                 ClientDiscount = this.ClientDiscount,
@@ -529,6 +567,7 @@ namespace Smart_POS.ViewModels
                 CostCenterId = this.CostCenterId,
                 DeferredAmount = this.DeferredAmount,
                 InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
+                OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
                 InvoiceId = this.InvoiceId,
                 InvoiceNo = this.InvoiceNo,
                 InvoiceTotalAmount = this.InvoiceTotalAmount,
@@ -541,6 +580,7 @@ namespace Smart_POS.ViewModels
                 PreDiscountTotalAmount = this.PreDiscountTotalAmount,
                 PreDiscountTotalVat = this.PreDiscountTotalVat,
                 ProviderId = this.ProviderId,
+                ClientId = this.ClientId,
                 ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
                 ProviderInvId = this.ProviderInvId,
                 SafeId = this.SafeId,
@@ -555,8 +595,10 @@ namespace Smart_POS.ViewModels
             };
             return model;
         }
-            public void clear()
+        public void clear()
         {
+            OrderId = 0;
+            OrderNo = null;
             BankAccId = null;
             BranchId = null;
             ClientDiscount = 0;

@@ -5,24 +5,18 @@ namespace Smart_POS.Models
     public class StockItemModel
     {
         [JsonProperty("dtl_id")]
-        public int DtlId { get; set; }
-
+        public string? Dtl_Id { get; set; }
         [JsonProperty("product_id")]
-        public int ProductId { get; set; }
-
+        public string? ProductId { get; set; }
         [JsonProperty("barcode")]
-        public string Barcode { get; set; }
-
-        [JsonProperty("unit_id")]
-        public int UnitId { get; set; }
-
+        public string? ProductBarcode { get; set; }
         [JsonProperty("quantity")]
         public int Quantity { get; set; }
-
+        [JsonProperty("unit_id")]
+        public string ProductUnitId { get; set; }
         [JsonProperty("base_price")]
-        public int BasePrice { get; set; }
-
+        public float? Price { get; set; }
         [JsonProperty("total_amount")]
-        public int TotalAmount { get; set; }
+        public string? TotalAmount { get; set; }
     }
 }

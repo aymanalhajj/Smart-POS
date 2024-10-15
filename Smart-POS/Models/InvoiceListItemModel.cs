@@ -9,9 +9,18 @@ namespace Smart_POS.Models
 {
     public class InvoiceListItemModel
     {
+        [JsonProperty("order_date")]
+        public object? OrderDate { get; set; }
 
         [JsonProperty("invoice_id")]
         public object InvoiceId { get; set; }
+
+        [JsonProperty("order_id")]
+        public object OrderId { get; set; }
+
+        [JsonProperty("order_no")]
+        public int OrderNo { get; set; }
+
         [JsonProperty("invoice_no")]
         public object InvoiceNo { get;set; }
         [JsonProperty("provider_inv_id")]

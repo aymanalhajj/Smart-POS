@@ -36,14 +36,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new SaleInvoiceRepo();
+            repo = new RentInvoiceRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private SaleInvoiceRepo repo { get; set; }
+        private RentInvoiceRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -75,10 +75,10 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.PostPurchaseInoice(ToInvoiceModel());
-                if (res != null && res.Status == 1)
-                {
+                var res = repo.PostPurchaseInoice(ToInvoiceModel());                {
                     MessageBox.Show(res.Message);
+
+                if (res != null && res.Status == 1)
                     ClearForm();
                 }
             }
@@ -401,7 +401,7 @@ namespace Smart_POS.ViewModels
             set
             {
                 _saveList = value;
-                OnPropertyChanged("SaveList");
+                OnPropertyChanged("AccountList");
             }
         }
         public ObservableCollection<Item> BankList

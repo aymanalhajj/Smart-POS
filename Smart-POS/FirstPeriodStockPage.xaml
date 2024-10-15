@@ -86,9 +86,7 @@
                             Path=Invoice.InvoiceType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=1}" />
-                        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                            Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
-                            Unchecked="deferredInvoiceBtn_Checked"
+                        <RadioButton Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" Height="26"  VerticalContentAlignment="Center"
                             Name="deferredInvoiceBtn" 
                             Content="آجل" Width="50" Margin="5,2" 
                             GroupName="InvoiceType" 
@@ -235,11 +233,6 @@
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="السعر" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                                 <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="نسبة الخصم" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"   />
-                                <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"  />
-                                <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" EditingElementStyle="{StaticResource errorStyle}" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
                                 <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
                                 <DataGridTextColumn Header="تغيير الصافي" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay,TargetNullValue=''}"  />
                                 <DataGridTemplateColumn Header="حذف">
@@ -262,101 +255,16 @@
                 Padding="8">
                             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
 
-                                <StackPanel Orientation="Horizontal" Margin="2">
-                                    <Label Width="100" FontSize="16" FontWeight="SemiBold" Margin="2"  HorizontalContentAlignment="Right">نوع الدفع</Label>
-                                    <RadioButton 
-                            VerticalContentAlignment="Center"
-                            FontSize="16"
-                            Name="cashBtn" 
-                            Content="نقد" 
-                            Margin="10,5,0,0" 
-                            GroupName="PaymentType"
-                            IsChecked="{Binding 
-                            Path=Invoice.PaymentType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=1}" />
-                                    <RadioButton 
-                        Checked="bankBtn_Checked"
-                        Unchecked="bankBtn_Checked"
-                            VerticalContentAlignment="Center"
-                            FontSize="16"
-                            Name="bankBtn" 
-                            Content="شبكة" 
-                            Margin="10,5,0,0" 
-                            GroupName="PaymentType" 
-                            IsChecked="{Binding 
-                            Path=Invoice.PaymentType, 
-                            Converter={StaticResource RadioButtonCheckedConverter}, 
-                            ConverterParameter=2}"/>
-                                </StackPanel>
-
 
                                 <StackPanel Orientation="Horizontal">
-
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">البنك</Label>
-                                            <ComboBox ItemsSource="{Binding BankList}"  IsEnabled="False" Name="BankList" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=Invoice.BankAccId}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">المبلغ المدفوع</Label>
-                                            <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=Invoice.PaidAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="المدفوع نقدا" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Name="PaidCashTxt" Height="25" Text="{Binding Path=Invoice.PaidCashAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">خصم العميل</Label>
-                                            <TextBox Text="{Binding Path=Invoice.ClientDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right">المبلغ المتبقي</Label>
-                                            <TextBox IsReadOnly="True" Name="DeferredAmountTxt" Text="{Binding Path=Invoice.DeferredAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="المدفوع عبر البنك" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Name="PaidBankTxt" Height="25" Text="{Binding Path=Invoice.PaidBankAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical" Margin="2">
-
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="الاجمالي قبل الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.PreDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalDiscount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="الاجمالي بعد الخصم" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox Height="25" IsReadOnly="True" Text="{Binding Path=Invoice.PostDiscountTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-
-                                    </StackPanel>
-                                    <StackPanel Orientation="Vertical" Margin="2">
-                                        <StackPanel Orientation="Horizontal" Margin="2">
+                                    <StackPanel Orientation="Horizontal" Margin="2">
                                             <Label Content="اجمالي الكمية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
                                             <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalQuantity}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                         </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الضريبة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Text="{Binding Path=Invoice.TotalVat}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
-                                            <TextBox FontWeight="Bold" FontSize="20" Height="50" IsReadOnly="True" Text="{Binding Path=Invoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                                        </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="2">
+                                        <Label Content="اجمالي الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="130" HorizontalContentAlignment="Right" />
+                                        <TextBox FontWeight="Bold" FontSize="20" Height="35" IsReadOnly="True" Text="{Binding Path=Invoice.InvoiceTotalAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                     </StackPanel>
-
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal"  Margin="2">
                                     <Button Command="{Binding NewCommand}" Name="New_Btn" Margin="6" Padding="20,5" Content="جديد"/>
@@ -372,7 +280,7 @@
                     </Grid>
                 </AdornerDecorator>
             </TabItem>
-            <TabItem Header="بحث" Width="150">
+            <TabItem Header="بحث" Width="150" Height="22" Margin="0,-2,0,0" VerticalAlignment="Top">
 
                 <Grid x:Name="searchLayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
                     <Grid.RowDefinitions>
@@ -433,8 +341,7 @@
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=1}" />
                     <RadioButton Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26"
-                     Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
-                     Unchecked="deferredInvoiceBtn_Checked" HorizontalAlignment="Right"
+                     VerticalContentAlignment="Center"  HorizontalAlignment="Right"
                      Name="searchDeferredInvoiceBtn"  Content="آجل" Width="50" Margin="15,2" 
                      GroupName="SearchInvoiceType" IsChecked="{Binding 
                             Path=Filters.InvoiceType, 
@@ -482,77 +389,35 @@
                                         <MenuItem Header="Descending" />
                                     </ContextMenu>
                                 </GridView.ColumnHeaderContextMenu>
-                                <GridViewColumn Header="رقم الفاتورة" Width="80">
+                                <GridViewColumn Header="رقم الفاتورة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding InvoiceNo}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="تاريخ الفاتورة" Width="80">
+                                <GridViewColumn Header="تاريخ الفاتورة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding InvoiceDate}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الإجمالي قبل الضريبة" Width="130">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding PreDiscountTotalAmount}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="خصم العميل" Width="100">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding TotalDiscount}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="ضريبة القيمة المضافة" Width="120">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding TotalVat}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="اجمالي الفاتورة" Width="100">
+                                <GridViewColumn Header="اجمالي الفاتورة" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding InvoiceTotalAmount}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المدفوع نقداً" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding PaidCashAmount}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="المدفوع عبر البنك" Width="120">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding PaidBankAmount}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="نوع الفاتورة" Width="80">
+                                <GridViewColumn Header="نوع الفاتورة" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding InvoiceType}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="طريقة الدفع" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding PaymentType}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="المورد" Width="150">
+                                <GridViewColumn Header="المورد" Width="200">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />

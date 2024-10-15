@@ -64,36 +64,6 @@ namespace Smart_POS
                 viewModel.GetProductPriceByBarcode(productBarcode);
             }
         }
-        private void deferredInvoiceBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            if (deferredInvoiceBtn.IsChecked == true)
-            {
-                PaidAmountTxt.IsReadOnly = false;
-                DeferredAmountTxt.IsReadOnly = false;
-            }
-            else
-            {
-                PaidAmountTxt.IsReadOnly = true;
-                DeferredAmountTxt.IsReadOnly = true;
-            }
-        }
-        private void bankBtn_Checked(object sender, RoutedEventArgs e)
-        {
-            if (bankBtn.IsChecked == true)
-            {
-                PaidCashTxt.IsReadOnly = false;
-                PaidBankTxt.IsReadOnly = false;
-                BankList.IsEnabled = true;
-            }
-            else
-            {
-                PaidCashTxt.IsReadOnly = true;
-                PaidBankTxt.IsReadOnly = true;
-                BankList.IsEnabled = false;
-            }
-
-
-        }
         private void InvoicesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }

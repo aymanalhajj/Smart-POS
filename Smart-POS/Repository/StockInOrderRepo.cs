@@ -91,7 +91,7 @@ namespace Smart_POS.Repository
             return null;
         }
 
-        public ActionStatusModel PostPurchaseInoice(InvoiceModel model)
+        public ActionStatusModel PostPurchaseInoice(StockModel model)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace Smart_POS.Repository
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    return new ActionStatusModel("لم يتم الحفظ", status: 0);
+                    return new ActionStatusModel("لم يتم الحفظ"+ response.Content.ReadAsStringAsync().Result, status: 0);
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace Smart_POS.Repository
             return null;
         }
 
-        public InvoiceModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
+        public StockModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Smart_POS.Repository
                     $"&p_prev={HttpUtility.UrlEncode(prev)}" +
                     $"&p_invoice_id={HttpUtility.UrlEncode(invoiceId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<StockModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
