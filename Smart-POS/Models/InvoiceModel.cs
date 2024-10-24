@@ -4,6 +4,13 @@ namespace Smart_POS.Models
 {
     public class InvoiceModel
     {
+
+        [JsonProperty("order_id")]
+        public int OrderId;
+
+        [JsonProperty("order_no")]
+        public object OrderNo;
+
         [JsonProperty("invoice_id")]
         public int InvoiceId;
         [JsonProperty("invoice_no")]
@@ -11,7 +18,9 @@ namespace Smart_POS.Models
         [JsonProperty("provider_inv_id")]
         public object? ProviderInvId;
         [JsonProperty("notes")]
-        public object? Notes;
+        public object? Notes; 
+        [JsonProperty("order_date")]
+        public object? OrderDate;
         [JsonProperty("invoice_date")]
         public object? InvoiceDate;
         [JsonProperty("provider_inv_date")]
@@ -19,9 +28,11 @@ namespace Smart_POS.Models
         [JsonProperty("store_date")]
         public object? StoreDate;
         [JsonProperty("branch_id")]
-        public object? BranchId;
+        public object? BranchId; 
         [JsonProperty("provider_id")]
         public object? ProviderId;
+        [JsonProperty("client_id")]
+        public object? ClientId;
         [JsonProperty("cost_ctr_id")]
         public object? CostCenterId;
         [JsonProperty("invoice_type")]

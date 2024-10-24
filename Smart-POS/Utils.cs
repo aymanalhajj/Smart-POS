@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Smart_POS.View
+namespace Smart_POS
 {
     internal class Utils
     {
-        static public void  ShowMessage(string message)
+        static public void ShowMessage(string message)
         {
             MessageBox.Show(message);
         }

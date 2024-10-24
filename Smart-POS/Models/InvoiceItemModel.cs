@@ -45,6 +45,7 @@ namespace Smart_POS.Models
 
         [JsonProperty("pre_discount_vat_value")]
         public string? PreDiscountVatValue;
+
         [JsonProperty("original_price")]
         public string? OriginalPrice;
     }

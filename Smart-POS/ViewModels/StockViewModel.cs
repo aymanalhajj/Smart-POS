@@ -1,9 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using POS_Desktop.Models;
 using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels
 {
-    public class InvoiceViewModel : INotifyPropertyChanged
+    public class StockViewModel : INotifyPropertyChanged
     {
         public delegate void ResetPaidCallbackEventHandler();
         public event ResetPaidCallbackEventHandler ResetPaidCallback;
@@ -14,41 +21,41 @@ namespace Smart_POS.ViewModels
         public delegate void DiscountCallbackEventHandler(float DiscountPercent);
 
         public event DiscountCallbackEventHandler DiscountCallback;
-        public InvoiceViewModel()
+        public StockViewModel()
         {
             OrderDate = DateTime.Now;
-            InvoiceDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
             items = new List<InvoiceItemViewModel> { new InvoiceItemViewModel() };
             PaymentType = 1;
-            InvoiceType = 1;
+            Accountable = 0;
             CompanyId = 1;
+
         }
-        public int _invoice_id { get; set; }
-        public int InvoiceId
+        public int _order_id { get; set; }
+        public int OrderId
         {
             get
             {
-                return _invoice_id;
+                return _order_id;
             }
             set
             {
-                _invoice_id = value;
-                OnPropertyChanged("InvoiceId");
+                _order_id = value;
+                OnPropertyChanged("OrderId");
             }
         }
-        public int _invoice_no { get; set; }
-        public int InvoiceNo
+        public int _order_no { get; set; }
+        public int OrderNo
         {
             get
             {
-                return _invoice_no;
+                return _order_no;
             }
             set
             {
-                _invoice_no = value;
-                OnPropertyChanged("InvoiceNo");
+                _order_no = value;
+                OnPropertyChanged("OrderNo");
             }
         }
         public object provider_inv_id;
@@ -77,7 +84,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Notes");
             }
         }
-        
         public object _order_date { get; set; }
         public object OrderDate
         {
@@ -89,19 +95,6 @@ namespace Smart_POS.ViewModels
             {
                 _order_date = value;
                 OnPropertyChanged("OrderDate");
-            }
-        }
-        public object _invoice_date { get; set; }
-        public object InvoiceDate
-        {
-            get
-            {
-                return _invoice_date;
-            }
-            set
-            {
-                _invoice_date = value;
-                OnPropertyChanged("InvoiceDate");
             }
         }
         public object _provider_inv_date { get; set; }
@@ -130,7 +123,19 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("StoreDate");
             }
         }
-
+        public object _ref_id { get; set; }
+        public object RefId
+        {
+            get
+            {
+                return _ref_id;
+            }
+            set
+            {
+                _ref_id = value;
+                OnPropertyChanged("RefId");
+            }
+        }
         public object _branch_id { get; set; }
         public object BranchId
         {
@@ -142,6 +147,33 @@ namespace Smart_POS.ViewModels
             {
                 _branch_id = value;
                 OnPropertyChanged("BranchId");
+            }
+        }
+        public int _accountable { get; set; }
+        public int Accountable
+        {
+            get
+            {
+                return _accountable;
+            }
+            set
+            {
+                _accountable = value;
+                OnPropertyChanged("Accountable");
+            }
+        }
+
+        public object _account_id { get; set; }
+        public object AccountId
+        {
+            get
+            {
+                return _account_id;
+            }
+            set
+            {
+                _account_id = value;
+                OnPropertyChanged("AccountId");
             }
         }
         public object _provider_id { get; set; }
@@ -440,32 +472,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("BankAccId");
             }
         }
-        public int _order_id { get; set; }
-        public int OrderId
-        {
-            get
-            {
-                return _order_id;
-            }
-            set
-            {
-                _order_id = value;
-                OnPropertyChanged("OrderId");
-            }
-        }
-        public object _order_no { get; set; }
-        public object OrderNo
-        {
-            get
-            {
-                return _order_no;
-            }
-            set
-            {
-                _order_no = value;
-                OnPropertyChanged("OrderNo");
-            }
-        }
         public double _paid_amount { get; set; }
         public double PaidAmount
         {
@@ -509,41 +515,24 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PaidAmount");
             }
         }
-        public void FromInvoiceModel(InvoiceModel model)
+        public void FromInvoiceModel(StockModel model)
         {
             if (model != null)
             {
-                OrderId = model.OrderId;
-                OrderNo = model.OrderNo;
-                BankAccId = model.BankAccId;
                 BranchId = model.BranchId;
-                ClientDiscount = model.ClientDiscount;
                 CompanyId = model.CompanyId;
-                CostCenterId = model.CostCenterId;
-                DeferredAmount = model.DeferredAmount;
-                InvoiceNo = model.InvoiceNo;
-                InvoiceId = model.InvoiceId;
-                InvoiceDate = model.InvoiceDate;
-                InvoiceTotalAmount = model.InvoiceTotalAmount;
-                InvoiceType = model.InvoiceType;
+                AccountId = model.AccountId;
+                RefId = model.RefId;
+                CostCenterId = model.CostCtrId;
+                CostCenterId = model.CostCtrId;
+                Accountable = model.Accountable;
+                OrderNo = model.OrderNo;
+                OrderId = model.OrderId;
+                OrderDate = model.OrderDate;
+                InvoiceTotalAmount = model.TotalAmount;
                 Notes = model.Notes;
-                PaidAmount = model.PaidAmount;
-                PaidBankAmount = model.PaidBankAmount;
-                PaidCashAmount = model.PaidCashAmount;
-                PaymentType = model.PaymentType;
-                PostDiscountTotalAmount = model.PostDiscountTotalAmount;
-                PreDiscountTotalAmount = model.PreDiscountTotalAmount;
-                PreDiscountTotalVat = model.PreDiscountTotalVat;
-                ProviderId = model.ProviderId;
-                ClientId = model.ClientId;
-                ProviderInvDate = model.ProviderInvDate;
-                ProviderInvId = model.ProviderInvId;
-                SafeId = model.SafeId;
-                StoreDate = model.StoreDate;
                 StoreId = model.StoreId;
-                TotalDiscount = model.TotalDiscount;
-                TotalQuantity = model.TotalQuantity;
-                TotalVat = model.TotalVat;
+                InvoiceTotalAmount = model.TotalAmount;
                 UserId = model.UserId;
 
             }
@@ -554,60 +543,41 @@ namespace Smart_POS.ViewModels
 
         }
 
-        public InvoiceModel ToInvoiceModel()
+        public StockModel ToInvoiceModel()
         {
-            InvoiceModel model = new()
+            StockModel model = new()
             {
                 OrderId = this.OrderId,
                 OrderNo = this.OrderNo,
-                BankAccId = this.BankAccId,
-                BranchId = this.BranchId,
-                ClientDiscount = this.ClientDiscount,
-                CompanyId = this.CompanyId,
-                CostCenterId = this.CostCenterId,
-                DeferredAmount = this.DeferredAmount,
-                InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
                 OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
-                InvoiceId = this.InvoiceId,
-                InvoiceNo = this.InvoiceNo,
-                InvoiceTotalAmount = this.InvoiceTotalAmount,
-                InvoiceType = this.InvoiceType,
+                BranchId = this.BranchId,
+                RefId = this.RefId,
+                TotalAmount = this.InvoiceTotalAmount,
                 Notes = this.Notes,
-                PaidAmount = this.PaidAmount,
-                PaidBankAmount = this.PaidBankAmount,
-                PaymentType = this.PaymentType,
-                PostDiscountTotalAmount = this.PostDiscountTotalAmount,
-                PreDiscountTotalAmount = this.PreDiscountTotalAmount,
-                PreDiscountTotalVat = this.PreDiscountTotalVat,
-                ProviderId = this.ProviderId,
-                ClientId = this.ClientId,
-                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
-                ProviderInvId = this.ProviderInvId,
-                SafeId = this.SafeId,
-                StoreDate = String.Format("{0:dd-MM-yyyy}", this.StoreDate),
-                PaidCashAmount = this.PaidCashAmount,
                 StoreId = this.StoreId,
-                TotalDiscount = this.TotalDiscount,
-                TotalQuantity = this.TotalQuantity,
-                TotalVat = this.TotalVat,
+                CostCtrId = this.CostCenterId,
+                Accountable = this.Accountable,
+                AccountId = this.AccountId,
+                CompanyId = this.CompanyId,
                 UserId = this.UserId,
-                Items = new List<InvoiceItemModel>()
+                Items = new List<StockItemModel>()
             };
             return model;
         }
-        public void clear()
+            public void clear()
         {
-            OrderId = 0;
-            OrderNo = null;
             BankAccId = null;
+            AccountId = null;
+            RefId = null;
             BranchId = null;
+            Accountable = 0;
             ClientDiscount = 0;
             CompanyId = 1;
             CostCenterId = null;
             DeferredAmount = 0;
-            InvoiceNo = 0;
-            InvoiceId = 0;
-            InvoiceDate = DateTime.Now;
+            OrderNo = 0;
+            OrderId = 0;
+            OrderDate = DateTime.Now;
             InvoiceTotalAmount = 0;
             InvoiceType = 1;
             Notes = null;

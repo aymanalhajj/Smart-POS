@@ -1,20 +1,16 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http;
-using System.Text;
-using System.Web;
 using System.Windows;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using Smart_POS.Models;
 using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseInvoiceViewModel : INotifyPropertyChanged
+    class FirstPeriodStockViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseInvoiceViewModel()
+        public FirstPeriodStockViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
             _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
@@ -36,14 +32,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new FirstPeriodStockRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private FirstPeriodStockRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -360,7 +356,39 @@ namespace Smart_POS.ViewModels
         #endregion
         public InvoiceModel ToInvoiceModel()
         {
-            InvoiceModel model = invoice.ToInvoiceModel();
+            InvoiceModel model = new()
+            {
+                BankAccId = invoice.BankAccId,
+                BranchId = invoice.BranchId,
+                ClientDiscount = invoice.ClientDiscount,
+                CompanyId = invoice.CompanyId,
+                CostCenterId = invoice.CostCenterId,
+                DeferredAmount = invoice.DeferredAmount,
+                InvoiceDate = String.Format("{0:dd-MM-yyyy}", invoice.InvoiceDate),
+                InvoiceId = invoice.InvoiceId,
+                InvoiceNo = invoice.InvoiceNo,
+                InvoiceTotalAmount = invoice.InvoiceTotalAmount,
+                InvoiceType = invoice.InvoiceType,
+                Notes = invoice.Notes,
+                PaidAmount = invoice.PaidAmount,
+                PaidBankAmount = invoice.PaidBankAmount,
+                PaymentType = invoice.PaymentType,
+                PostDiscountTotalAmount = invoice.PostDiscountTotalAmount,
+                PreDiscountTotalAmount = invoice.PreDiscountTotalAmount,
+                PreDiscountTotalVat = invoice.PreDiscountTotalVat,
+                ProviderId = invoice.ProviderId,
+                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", invoice.ProviderInvDate),
+                ProviderInvId = invoice.ProviderInvId,
+                SafeId = invoice.SafeId,
+                StoreDate = String.Format("{0:dd-MM-yyyy}", invoice.StoreDate),
+                PaidCashAmount = invoice.PaidCashAmount,
+                StoreId = invoice.StoreId,
+                TotalDiscount = invoice.TotalDiscount,
+                TotalQuantity = invoice.TotalQuantity,
+                TotalVat = invoice.TotalVat,
+                UserId = invoice.UserId,
+                Items = new List<InvoiceItemModel>()
+            };
             foreach (var item in InvoiceDetailItems)
             {
                 model.Items.Add(item.ToInvoiceItemModel());

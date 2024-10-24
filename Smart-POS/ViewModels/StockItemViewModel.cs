@@ -9,7 +9,7 @@ using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    public class InvoiceItemViewModel : INotifyPropertyChanged
+    public class StockItemViewModel : INotifyPropertyChanged
     {
         public delegate void CalcSummaryCallbackEventHandler();
         public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
@@ -20,7 +20,7 @@ namespace Smart_POS.ViewModels
         {
             ProductUnitList = ApiRepository.getInstance().GetProductUnitList(ProductId.ToString());
         }
-        public InvoiceItemViewModel()
+        public StockItemViewModel()
         {
             ProductUnitList = new ObservableCollection<Item> { };
         }
@@ -335,7 +335,7 @@ namespace Smart_POS.ViewModels
                 if (value != null && value != 0 && !value.Equals(""))
                 {
                     DiscountPercentage = "0";
-                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage)) / int.Parse(Quantity)).ToString();
+                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
                     RecalcPrice();                    
                     if (CalcSummaryCallback != null)
                     {
@@ -399,43 +399,31 @@ namespace Smart_POS.ViewModels
         }
         #endregion
 
-        public InvoiceItemModel ToInvoiceItemModel()
+        public StockItemModel ToInvoiceItemModel()
         {
-            InvoiceItemModel model = new()
+            StockItemModel model = new()
             {
                 Dtl_Id = this.Dtl_Id,
                 ProductBarcode = this.ProductBarcode,
                 Price = float.Parse(this.Price),
-                DiscountPercentage = float.Parse(this.DiscountPercentage),
-                DiscountValue = this.DiscountValue,
-                PostDiscountPrice = this.PostDiscountPrice,
                 ProductId = this.ProductId,
                 Quantity = int.Parse(this.Quantity),
                 TotalAmount = this.TotalAmount,
-                TotalPrice = this.TotalPrice,
-                ProductUnitId = this.ProductUnitId,
-                VatPercentage = float.Parse(this.VatPercentage),
-                VatValue = this.VatValue
+                ProductUnitId = this.ProductUnitId
             };
             return model;
         }
 
-        static public InvoiceItemViewModel FromInvoiceItemModel(InvoiceItemModel model)
+        static public StockItemViewModel FromStockItemModel(StockItemModel model)
         {
-            InvoiceItemViewModel viewModel = new()
+            StockItemViewModel viewModel = new()
             {
                 Dtl_Id = model.Dtl_Id,
                 ProductBarcode = model.ProductBarcode,
-                Price = model.Price.ToString(),
-                DiscountPercentage = model.DiscountPercentage.ToString(),
-                DiscountValue = model.DiscountValue,
-                PostDiscountPrice = model.PostDiscountPrice,
                 ProductId = model.ProductId,
                 Quantity = model.Quantity.ToString(),
-                TotalAmount = model.TotalAmount,
-                TotalPrice = model.TotalPrice,
-                VatPercentage = model.VatPercentage.ToString(),
-                VatValue = model.VatValue
+                Price = model.Price.ToString(),
+                TotalAmount = model.TotalAmount
             };
             viewModel.Load_ProductUnits();
             viewModel.ProductUnitId = model.ProductUnitId;

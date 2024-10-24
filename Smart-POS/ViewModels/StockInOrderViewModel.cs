@@ -1,62 +1,59 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http;
-using System.Text;
-using System.Web;
 using System.Windows;
 using System.Windows.Input;
-using Newtonsoft.Json;
 using Smart_POS.Models;
 using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseInvoiceViewModel : INotifyPropertyChanged
+    class StockInOrderViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseInvoiceViewModel()
+        public StockInOrderViewModel()
         {
-            _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
-            _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
+            _InvoiceDetailItems = new ObservableCollection<StockItemViewModel> { };
+            _InvoiceListItems = new ObservableCollection<StockListItemModel> { };
             ProductList = new ObservableCollection<Item> { };
 
             BranchList = new ObservableCollection<Item> { };
-            StoreList = new ObservableCollection<Item> { };
-            SaveList = new ObservableCollection<Item> { };
-            BankList = new ObservableCollection<Item> { };
             CostCenterList = new ObservableCollection<Item> { };
+            StoreList = new ObservableCollection<Item> { };
+
+            AccountList = new ObservableCollection<Item> { };
+            BankList = new ObservableCollection<Item> { };
             ProviderList = new ObservableCollection<Item> { };
 
-            filters = new InvoiceViewModel();
-            invoice = new InvoiceViewModel();
+            filters = new StockViewModel();
+            invoice = new StockViewModel();
 
-            invoice.ResetPaidCallback += new InvoiceViewModel.ResetPaidCallbackEventHandler(ResetPaid);
-            invoice.DiscountCallback += new InvoiceViewModel.DiscountCallbackEventHandler(DistributeDiscount);
-            invoice.ResetPaidCashCallback += new InvoiceViewModel.ResetPaidCashCallbackEventHandler(ResetCashBankPaid);
+            invoice.ResetPaidCallback += new StockViewModel.ResetPaidCallbackEventHandler(ResetPaid);
+            invoice.DiscountCallback += new StockViewModel.DiscountCallbackEventHandler(DistributeDiscount);
+            invoice.ResetPaidCashCallback += new StockViewModel.ResetPaidCashCallbackEventHandler(ResetCashBankPaid);
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new StockInOrderRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private StockInOrderRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
-        private InvoiceViewModel invoice;
-        private InvoiceViewModel filters;
-        private ObservableCollection<InvoiceItemViewModel> _InvoiceDetailItems;
-        private ObservableCollection<InvoiceListItemModel> _InvoiceListItems;
+        private StockViewModel invoice;
+        private StockViewModel filters;
+        private ObservableCollection<StockItemViewModel> _InvoiceDetailItems;
+        private ObservableCollection<StockListItemModel> _InvoiceListItems;
 
 
 
         private ObservableCollection<Item> _productList;
         private ObservableCollection<Item> _branchList;
         private ObservableCollection<Item> _storeList;
-        private ObservableCollection<Item> _saveList;
+        private ObservableCollection<Item> _accountList;
         private ObservableCollection<Item> _bankList;
         private ObservableCollection<Item> _costCenterList;
         private ObservableCollection<Item> _providerList;
@@ -78,9 +75,9 @@ namespace Smart_POS.ViewModels
                 var res = repo.PostPurchaseInoice(ToInvoiceModel());
                 if (res != null && res.Status == 1)
                 {
-                    MessageBox.Show(res.Message);
                     ClearForm();
                 }
+                    MessageBox.Show(res.Message);
             }
             catch (Exception ex)
             {
@@ -103,9 +100,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -118,9 +115,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -155,11 +152,11 @@ namespace Smart_POS.ViewModels
         public void InitLists()
         {
             BranchList = repo.GetBranchList();
-            ProviderList = repo.GetProviderList();
-            CostCenterList = repo.GetCostCenterList();
-            SaveList = repo.GetSaveList();
             StoreList = repo.GetStoreList();
-            BankList = repo.GetBankList();
+            CostCenterList = repo.GetCostCenterList();
+            AccountList = repo.GetAccountList();
+            //ProviderList = repo.GetProviderList();
+            //BankList = repo.GetBankList();
             ProductList = repo.GetProductList();
         }
         private void ClearForm()
@@ -174,7 +171,7 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowInvoice(InvoiceModel? model)
+        public void ShowInvoice(StockModel? model)
         {
             if (model != null && model.Items != null)
             {
@@ -183,9 +180,9 @@ namespace Smart_POS.ViewModels
 
                 foreach (var item in model.Items)
                 {
-                    var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
-                    itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                    itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                    var itemViewModel = StockItemViewModel.FromStockItemModel(item);
+                    itemViewModel.CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    itemViewModel.GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
                     InvoiceDetailItems.Add(itemViewModel);
                 }
@@ -198,7 +195,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -214,11 +211,11 @@ namespace Smart_POS.ViewModels
             {
 
                 InvoiceDetailItems[CurrentRow].Load_ProductUnits();
-                InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
-                InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
                 var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
@@ -248,11 +245,11 @@ namespace Smart_POS.ViewModels
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
                     InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
-                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
-                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
                     CalcSummary();
                 }
             }
@@ -358,9 +355,9 @@ namespace Smart_POS.ViewModels
         }
 
         #endregion
-        public InvoiceModel ToInvoiceModel()
+        public StockModel ToInvoiceModel()
         {
-            InvoiceModel model = invoice.ToInvoiceModel();
+            StockModel model = invoice.ToInvoiceModel();
             foreach (var item in InvoiceDetailItems)
             {
                 model.Items.Add(item.ToInvoiceItemModel());
@@ -395,12 +392,12 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("StoreList");
             }
         }
-        public ObservableCollection<Item> SaveList
+        public ObservableCollection<Item> AccountList
         {
-            get { return _saveList; }
+            get { return _accountList; }
             set
             {
-                _saveList = value;
+                _accountList = value;
                 OnPropertyChanged("AccountList");
             }
         }
@@ -432,19 +429,19 @@ namespace Smart_POS.ViewModels
             }
         }
 
-        public InvoiceViewModel Invoice
+        public StockViewModel Invoice
         {
             get { return invoice; }
             set { invoice = value; }
         }
 
-        public InvoiceViewModel Filters
+        public StockViewModel Filters
         {
             get { return filters; }
             set { filters = value; }
         }
 
-        public ObservableCollection<InvoiceItemViewModel> InvoiceDetailItems
+        public ObservableCollection<StockItemViewModel> InvoiceDetailItems
         {
             get { return _InvoiceDetailItems; }
             set
@@ -453,7 +450,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("InvoiceDetailItems");
             }
         }
-        public ObservableCollection<InvoiceListItemModel> InvoiceListItems
+        public ObservableCollection<StockListItemModel> InvoiceListItems
         {
             get { return _InvoiceListItems; }
             set

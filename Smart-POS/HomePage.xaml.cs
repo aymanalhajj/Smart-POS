@@ -53,8 +53,64 @@ namespace Smart_POS
             //MainWindow mainW = new MainWindow();
             //mainW.Show();
             //currentWin.Close();
-            PurchaseInvoicePage page = new PurchaseInvoicePage();
             //page.ShowInTaskbar = false;
+            PurchaseInvoicePage page = new PurchaseInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void SaleInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SaleInvoicePage page = new SaleInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void PurchaseReturnInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+            PurchaseReturnInvoicePage page = new PurchaseReturnInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void SaleReturnInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SaleReturnInvoicePage page = new SaleReturnInvoicePage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void StockOutOrderMenu_Click(object sender, RoutedEventArgs e)
+        {
+            StockOutOrderPage page = new StockOutOrderPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void StockInOrderMenu_Click(object sender, RoutedEventArgs e)
+        {
+            StockInOrderPage page = new StockInOrderPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void FirstPeriodStockMenu_Click(object sender, RoutedEventArgs e)
+        {
+            FirstPeriodStockPage page = new FirstPeriodStockPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void PurchaseOrderMenu_Click(object sender, RoutedEventArgs e)
+        {
+            PurchaseOrderPage page = new PurchaseOrderPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+
+        private void RentInvMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RentInvoicePage page = new RentInvoicePage();
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }

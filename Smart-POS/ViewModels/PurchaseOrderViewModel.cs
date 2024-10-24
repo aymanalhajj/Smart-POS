@@ -11,10 +11,10 @@ using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
-    class PurchaseInvoiceViewModel : INotifyPropertyChanged
+    class PurchaseOrderViewModel : INotifyPropertyChanged
     {
 
-        public PurchaseInvoiceViewModel()
+        public PurchaseOrderViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
             _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
@@ -36,14 +36,14 @@ namespace Smart_POS.ViewModels
 
             CurrentRow = 0;
             InvoiceToEditIndex = 0;
-            repo = new PurchaseInvoiceRepo();
+            repo = new PurchaseOrderRepo();
 
             InitLists();
         }
 
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private PurchaseInvoiceRepo repo { get; set; }
+        private PurchaseOrderRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private InvoiceViewModel invoice;
@@ -103,9 +103,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -118,9 +118,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.InvoiceId != 0)
+                if (Invoice.OrderId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -198,7 +198,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].InvoiceId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].OrderId.ToString());
                     ShowInvoice(res);
                 }
             }
