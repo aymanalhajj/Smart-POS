@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:Smart_POS"
       xmlns:src="clr-namespace:Smart_POS"
       xmlns:con="clr-namespace:Smart_POS.Converters"
-      xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+      xmlns:vm="clr-namespace:Smart_POS.ViewModels" 
       xmlns:vl="clr-namespace:Smart_POS.Validators"
       mc:Ignorable="d"
       FlowDirection="RightToLeft"
