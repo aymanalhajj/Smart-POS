@@ -15,7 +15,7 @@ namespace Smart_POS.Repository
         static ApiRepository _instance;
         string companyId = "0";
         string langId = "2";
-        static private string baseUrl = "http://localhost:8000/ords/accounting/";
+        static private string baseUrl = "http://localhost:8088/ords/accounting/";
         //static private string baseUrl = "https://apex.oracle.com/pls/apex/smart_pos/";
         readonly HttpClient _client;
         static public ApiRepository getInstance()

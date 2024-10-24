@@ -383,7 +383,8 @@
                         <RowDefinition Height="5" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="112"/>
+                        <ColumnDefinition Width="82"/>
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="155"/>
                         <ColumnDefinition Width="112"/>
                         <ColumnDefinition Width="155"/>
@@ -393,19 +394,19 @@
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.InvoiceNo}"
-                 Margin="2" Width="150" VerticalAlignment="Top" />
-                    <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
-                    <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" >
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" Grid.ColumnSpan="2" />
+                    <TextBox Grid.Row="1" Grid.Column="2" Height="26" Text="{Binding Path=Filters.InvoiceNo}"
+                 Margin="2,2,3,0" Width="150" VerticalAlignment="Top" />
+                    <Label Grid.Row="1" Grid.Column="3" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
+                    <ComboBox Grid.Row="1" Grid.Column="4" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="3,2,2,0" Width="150" DisplayMemberPath="name" SelectedValuePath="id" >
                         <ComboBox.SelectedValue>
                             <Binding Path="Filters.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
-                    <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
+                    <Label Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+                    <DatePicker Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2,2,3,0" Width="110" >
                         <DatePicker.SelectedDate>
                             <Binding Path="Filters.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
@@ -413,36 +414,36 @@
                         </DatePicker.SelectedDate>
                     </DatePicker>
 
-                    <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
-                    <DatePicker Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
+                    <Label Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+                    <DatePicker Grid.Row="1" Grid.Column="8" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="5,2,5,0" Width="110" >
                         <DatePicker.SelectedDate>
                             <Binding Path="Filters.InvoiceDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </DatePicker.SelectedDate>
                     </DatePicker>
-                    <Label Grid.Row="2" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
+                    <Label Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">نوع الفاتورة</Label>
 
-                    <RadioButton Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26"
+                    <RadioButton Grid.Row="2" Grid.Column="8" VerticalAlignment="Top" Height="26"
                             Name="searchCashInvoiceBtn" VerticalContentAlignment="Center"
                             Content="نقد" HorizontalAlignment="Left"
-                            Margin="5,2" Width="50"
+                            Margin="5,2,0,0" Width="50"
                             GroupName="SearchInvoiceType"
                             IsChecked="{Binding 
                             Path=Filters.InvoiceType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=1}" />
-                    <RadioButton Grid.Row="2" Grid.Column="7" VerticalAlignment="Top" Height="26"
+                    <RadioButton Grid.Row="2" Grid.Column="8" VerticalAlignment="Top" Height="26"
                      Checked="deferredInvoiceBtn_Checked"  VerticalContentAlignment="Center"
                      Unchecked="deferredInvoiceBtn_Checked" HorizontalAlignment="Right"
-                     Name="searchDeferredInvoiceBtn"  Content="آجل" Width="50" Margin="15,2" 
+                     Name="searchDeferredInvoiceBtn"  Content="آجل" Width="50" Margin="0,2,15,0" 
                      GroupName="SearchInvoiceType" IsChecked="{Binding 
                             Path=Filters.InvoiceType, 
                             Converter={StaticResource RadioButtonCheckedConverter}, 
                             ConverterParameter=2}"/>
 
-                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المورد</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding ProviderList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
+                    <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right" Grid.ColumnSpan="2">المورد</Label>
+                    <ComboBox Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" Height="26" ItemsSource="{Binding ProviderList}" Margin="2,2,3,0" Width="150"  DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                         <ComboBox.SelectedValue>
                             <Binding Path="Filters.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -452,8 +453,8 @@
                         </ComboBox.SelectedValue>
                     </ComboBox>
 
-                    <Label  Grid.Row="2" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                    <Label  Grid.Row="2" Grid.Column="3" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">المخزن</Label>
+                    <ComboBox Grid.Row="2" Grid.Column="4" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="3,2,2,0" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                         <ComboBox.SelectedValue>
                             <Binding Path="Filters.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -462,8 +463,8 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Label Grid.Row="2" Grid.Column="4" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الخزينة</Label>
-                    <ComboBox Grid.Row="2" Grid.Column="5" Height="26" VerticalAlignment="Top"  ItemsSource="{Binding SaveList}" Margin="2" Width="110"  DisplayMemberPath="name" SelectedValuePath="id" >
+                    <Label Grid.Row="2" Grid.Column="5" VerticalAlignment="Top"  FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0" Width="110" HorizontalContentAlignment="Right">الخزينة</Label>
+                    <ComboBox Grid.Row="2" Grid.Column="6" Height="26" VerticalAlignment="Top"  ItemsSource="{Binding SaveList}" Margin="2,2,3,0" Width="110"  DisplayMemberPath="name" SelectedValuePath="id" >
                         <ComboBox.SelectedValue>
                             <Binding Path="Filters.SafeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
@@ -471,9 +472,9 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
+                    <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="2" Grid.Column="9" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10,0,0,10" VerticalAlignment="Bottom" Grid.Row="1" />
 
-                    <ListView MouseDoubleClick="InvoicesList_MouseDoubleClick" SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
+                    <ListView MouseDoubleClick="InvoicesList_MouseDoubleClick" SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="10" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
                                 <GridView.ColumnHeaderContextMenu>

@@ -1,0 +1,174 @@
+﻿<Window x:Class="Smart_POS.SalesProvider"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Smart_POS"
+      xmlns:src="clr-namespace:Smart_POS"
+      xmlns:con="clr-namespace:Smart_POS.Converters"
+      xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+      xmlns:vl="clr-namespace:Smart_POS.Validators"
+      mc:Ignorable="d"
+      FlowDirection="RightToLeft"
+      Title="الموردين" Height="650" Width="1500" 
+      WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <con:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+        <vm:PurchaseInvoiceViewModel x:Key="ViewModel" />
+        <vm:PurchaseInvoiceViewModel x:Key="searchViewModel" />
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl Name="myTab">
+            <TabItem Header="بيانات الموردين" Width="150">
+                <AdornerDecorator>
+                    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="0" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="112"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="112"/>
+                            <ColumnDefinition Width="155"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم المورد" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,2,0" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الاسم بالعربي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الاسم بالانجليزي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الموبايل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم التلفون" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الفاكس" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الايميل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الرقم الضريبي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="2,2,3,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="9" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الحساب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="9" Grid.Column="1" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding BranchList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                     ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="البلد" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="2" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding BranchList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المدينة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="3" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding BranchList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المنطقة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="4" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding BranchList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="5" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المبنى" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="3,2,2,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="6" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الشارع" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="3,2,2,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="7" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الرمز البريدي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="7" Grid.Column="3" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="3,2,2,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="8" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الملاحظات" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="8" Grid.Column="3" Height="26"
+                            Text="{Binding Path=Invoice.InvoiceNo, Mode=TwoWay}"
+                            Margin="3,2,2,0" VerticalAlignment="Top"/>
+                        <Label Grid.Row="9" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الحالة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <RadioButton Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" Height="26"
+                            Name="cashInvoiceBtn" VerticalContentAlignment="Center"
+                            Content="فعال" HorizontalAlignment="Left"
+                            Margin="5,2,0,0" Width="50"/>
+                        <RadioButton Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" Height="26"
+                            VerticalContentAlignment="Center"
+                            Content="غير فعال" Margin="53,2,27,0"/>
+                        <StackPanel Grid.Row="10" Orientation="Horizontal" Margin="2,0,-950,-131" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray"
+                                    VerticalAlignment="Bottom" Height="143">
+                            <Button Command="{Binding NewCommand}" Name="New_Btn" Margin="6" Padding="20,5" Content="جديد" Width="193" Height="52"/>
+                            <Button Command="{Binding SaveCommand}" Name="Save_Btn" Margin="6" Padding="20,5" Content="حفظ" Width="193" Height="52"/>
+                            <Button Command="{Binding FirstCommand}" Name="First_Btn" Margin="6" Padding="20,5" Content="الأول" Width="193" Height="52"/>
+                            <Button Command="{Binding PrevCommand}" Name="Prev_Btn" Margin="6" Padding="20,5" Content="السابق" Width="193" Height="52"/>
+                            <Button Command="{Binding NextCommand}" Name="Next_Btn" Margin="6" Padding="20,5" Content="التالي" Width="193" Height="52"/>
+                            <Button Command="{Binding LastCommand}" x:Name="Last_Btn" Padding="20,5" Content="الأخير" Width="193" Height="52"/>
+                        </StackPanel>
+                    </Grid>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="بحث" Width="150">
+
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>
