@@ -6,18 +6,22 @@ using System.Web;
 using System.Windows;
 using Newtonsoft.Json;
 using Smart_POS.Models;
-using Smart_POS.View;
+//using Smart_POS.View;
 
 namespace Smart_POS.Repository
 {
     public class ApiRepository
     {
         static ApiRepository _instance;
-        string companyId = "0";
+        public string companyId = "0";
         string langId = "2";
-        static private string baseUrl = "http://localhost:8088/ords/accounting/";
+        protected static string baseUrl = "http://localhost:8088/ords/accounting/";
         //static private string baseUrl = "https://apex.oracle.com/pls/apex/smart_pos/";
         readonly HttpClient _client;
+        public HttpClient MyClient()
+        {
+            return _client;
+        }
         static public ApiRepository getInstance()
         {
             if (_instance == null)
@@ -37,6 +41,9 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetSelectList(Uri uri)
         {
             ObservableCollection<Item> _list = new ObservableCollection<Item>();
+            try
+            {
+
             var response = _client.GetAsync(uri).Result;
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
@@ -52,6 +59,9 @@ namespace Smart_POS.Repository
                         _list.Add(res.Items[i]);
                     }
                 }
+            }
+            }
+            catch (Exception ex) { 
             }
             return _list;
         }
