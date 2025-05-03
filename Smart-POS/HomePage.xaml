@@ -248,10 +248,17 @@
                                        Stretch="None" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem 
+                        Name="StoreTransferMenu" Header="تحويل مخزني" 
+                        Template="{StaticResource Item_Template}" Click="StoreTrnasferMenu_Click">
+                        <MenuItem.Icon>
+                            <Image Source="Assets/img_pop.png" Stretch="None" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="الموردين والعملاء"
-                          Template="{StaticResource Menu_Template}">
+                          Template="{StaticResource Menu_SubMenu_Template}" >
 
                     <MenuItem.Icon>
 
@@ -259,6 +266,25 @@
                                Stretch="Fill" />
 
                     </MenuItem.Icon>
+
+                    <MenuItem Name="ProvMenu" Click="ProvMenu_Click" Header="الموردين" Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Name="ClientMenu" Click="ClientMenu_Click" Header="العملاء" Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
 
                 </MenuItem>
 

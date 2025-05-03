@@ -14,11 +14,11 @@ namespace Smart_POS.Validators
         {
             if (value is null or (object)"")
                 return new ValidationResult(false, "هذا الحقل مطلوب");
-            else if (value.ToString().Length > 3)
-                return new ValidationResult(false, "Name cannot be more than 3 characters long.");
+            //else if (value.ToString().Length > 3)
+            //    return new ValidationResult(false, "Name cannot be more than 3 characters long.");
 
 
-            //MessageBox.Show(value.ToString());
+            ////MessageBox.Show(value.ToString());
             return ValidationResult.ValidResult;
         }
     }

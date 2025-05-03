@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Smart_POS.Validators;
+using Smart_POS.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,42 @@ namespace Smart_POS
     /// </summary>
     public partial class SalesProvider : Window
     {
+        public SalesProvider()
+        {
+            InitializeComponent();
+            viewModel = (ProviderViewModel)LayoutRoot.DataContext;
+            viewModel.ValidateCallback += new ProviderViewModel.ValidateCallbackEventHandler(ValidateForm);
+        }
+        ProviderViewModel viewModel;
+        public bool ValidateForm()
+        {
+            var valid = Validator.IsValid(this);
 
+            if (!valid)
+            {
+                MessageBox.Show("عذرا، يجب التاكد من اكمال ادخال البيانات");
+            }
+            return valid;
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void CountryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.LoadCity();
+        }
+
+        private void CityCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.LoadRegion();
+        }
+
+        private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

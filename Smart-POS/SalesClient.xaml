@@ -1,0 +1,435 @@
+﻿<Window x:Class="Smart_POS.SalesClient"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Smart_POS"
+      xmlns:src="clr-namespace:Smart_POS"
+      xmlns:con="clr-namespace:Smart_POS.Converters"
+      xmlns:vm="clr-namespace:Smart_POS.ViewModels" 
+      xmlns:vl="clr-namespace:Smart_POS.Validators"
+      mc:Ignorable="d"
+      FlowDirection="RightToLeft"
+      Title="العملاء" Height="650" Width="1500" 
+      WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <con:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
+        <vm:ClientViewModel x:Key="ViewModel" />
+        <vm:ClientViewModel x:Key="searchViewModel" />
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl Name="myTab">
+            <TabItem Header="بيانات العملاء" Width="150">
+                <AdornerDecorator>
+                    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="45" />
+                            <RowDefinition Height="50" />
+                            <RowDefinition Height="0" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="112"/>
+                            <ColumnDefinition Width="155"/>
+                            <ColumnDefinition Width="112"/>
+                            <ColumnDefinition Width="155"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم العميل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Height="26"
+                                Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
+
+                                Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.ClientId" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+
+                                </Binding>
+                            </TextBox.Text>
+
+                        </TextBox>
+                        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الاسم بالعربي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Height="26"
+                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}"
+                            
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.NameAr" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الاسم بالانجليزي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.NameEn" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الموبايل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.MobileNo" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم التلفون" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="5" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.TelNo" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الفاكس" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.Fax" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الايميل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الرقم الضريبي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Height="26"
+                            Margin="2,2,3,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.TaxNo" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="9" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الحساب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="9" Grid.Column="1" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding AccountList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Client.AccountId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                     ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="2" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="البلد" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox SelectionChanged="CountryCombo_SelectionChanged" Name="CountryCombo" Grid.Row="2" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding CountryList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Client.CountryId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المدينة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Name="CityCombo" SelectionChanged="CityCombo_SelectionChanged" Grid.Row="3" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding CityList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Client.CityId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="4" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المنطقة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <ComboBox Grid.Row="4" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding RegionList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                                  Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                            <ComboBox.SelectedValue>
+                                <Binding Path="Client.RegionId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                    ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <vl:SelectListValidator/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </ComboBox.SelectedValue>
+                        </ComboBox>
+                        <Label Grid.Row="5" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المبنى" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="5" Grid.Column="3" Height="26"
+                            Margin="3,2,2,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.BuildingNo" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="6" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الشارع" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="6" Grid.Column="3" Height="26"
+                            Margin="3,2,2,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.Sreet" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="7" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الرمز البريدي" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="7" Grid.Column="3" Height="26"
+                            Margin="3,2,2,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.PostCode" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="8" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الملاحظات" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <TextBox Grid.Row="8" Grid.Column="3" Height="26"
+                            Margin="3,2,2,0" VerticalAlignment="Top">
+                            <TextBox.Text>
+                                <Binding Path="Client.Note" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" >
+                                    <Binding.ValidationRules>
+                                        <vl:RequiredTextValidator />
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Grid.Row="9" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الحالة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
+                        <RadioButton Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" Height="26"
+                            Name="cashInvoiceBtn" VerticalContentAlignment="Center"
+                            Content="فعال" HorizontalAlignment="Left"
+                            GroupName="Status"
+                            IsChecked="{Binding 
+                            Path=Client.Status, 
+                            Converter={StaticResource RadioButtonCheckedConverter}, 
+                            ConverterParameter=1}" 
+                            Margin="5,2,0,0" Width="50"/>
+                        <RadioButton Grid.Row="9" Grid.Column="3" VerticalAlignment="Top" Height="26"
+                            VerticalContentAlignment="Center"
+                                     
+                            GroupName="Status"
+                            IsChecked="{Binding 
+                            Path=Client.Status, 
+                            Converter={StaticResource RadioButtonCheckedConverter}, 
+                            ConverterParameter=0}" 
+                            Content="غير فعال" Margin="53,2,27,0"/>
+                        <StackPanel Grid.Row="10" Orientation="Horizontal" Margin="2,0,-950,-131" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray"
+                                    VerticalAlignment="Bottom" Height="143">
+                            <Button Command="{Binding NewCommand}" Name="New_Btn" Margin="6" Padding="20,5" Content="جديد" Width="193" Height="52"/>
+                            <Button Command="{Binding SaveCommand}" Name="Save_Btn" Margin="6" Padding="20,5" Content="حفظ" Width="193" Height="52"/>
+                            <Button Command="{Binding FirstCommand}" Name="First_Btn" Margin="6" Padding="20,5" Content="الأول" Width="193" Height="52"/>
+                            <Button Command="{Binding PrevCommand}" Name="Prev_Btn" Margin="6" Padding="20,5" Content="السابق" Width="193" Height="52"/>
+                            <Button Command="{Binding NextCommand}" Name="Next_Btn" Margin="6" Padding="20,5" Content="التالي" Width="193" Height="52"/>
+                            <Button Command="{Binding LastCommand}" x:Name="Last_Btn" Padding="20,5" Content="الأخير" Width="193" Height="52"/>
+                        </StackPanel>
+                    </Grid>
+                </AdornerDecorator>
+            </TabItem>
+            <TabItem Header="بحث" Width="150" Height="20" VerticalAlignment="Bottom">
+
+                <Grid x:Name="searchLayoutRoot" DataContext="{Binding Source={StaticResource searchViewModel}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="35" />
+                        <RowDefinition Height="*" MinHeight="150" />
+                        <RowDefinition Height="5" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="10" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10,0,0,10" VerticalAlignment="Bottom" Grid.Row="1" />
+
+                    <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, 
+                        UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="16" 
+                              ItemsSource="{Binding Path=ListItems}" Name="DataList"
+                              HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="true">
+                                <GridView.ColumnHeaderContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Ascending" />
+                                        <MenuItem Header="Descending" />
+                                    </ContextMenu>
+                                </GridView.ColumnHeaderContextMenu>
+                                <GridViewColumn Header="رقم العميل" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding ClientID}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الاسم بالعربي" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding NameAr}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الاسم بالانجليزي" Width="120">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding NameEn}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="رقم الموبايل" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding MobileNo}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="رقم التلفون" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding TelNo}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الفاكس" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Fax}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الايميل" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Email}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الرقم الضريبي" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding TaxNo}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="رقم الحساب" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding AccountId}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="البلد" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CountryId}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="المدينة" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CityId}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="المنطقة" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding RegionId}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="المبنى" Width="80">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding BuildingNo}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الشارع" Width="90">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Sreet}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الرمز البريدي" Width="90">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding PostCode}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الملاحظات" Width="130">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Note}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="الحالة" Width="70">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Status}" TextAlignment="Center" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

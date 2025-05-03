@@ -11,8 +11,8 @@ namespace Smart_POS.Converters
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            int integer = (int)value;
-            if (integer == int.Parse(parameter.ToString()))
+            long integer = Int64.Parse(value.ToString());
+            if (integer == long.Parse(parameter.ToString()))
                 return true;
             else
                 return false;

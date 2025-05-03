@@ -114,5 +114,29 @@ namespace Smart_POS
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }
+
+        private void ProvMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SalesProvider page = new SalesProvider();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
+
+        private void ClientMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SalesClient page = new SalesClient();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
+
+        private void StoreTrnasferMenu_Click(object sender, RoutedEventArgs e)
+        {
+            StoreTransferPage page = new StoreTransferPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
     }
 }
