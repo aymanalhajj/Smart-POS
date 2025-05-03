@@ -40,6 +40,9 @@ namespace Smart_POS.Repository
         public ObservableCollection<Item> GetSelectList(Uri uri)
         {
             ObservableCollection<Item> _list = new ObservableCollection<Item>();
+            try
+            {
+
             var response = _client.GetAsync(uri).Result;
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
@@ -55,6 +58,9 @@ namespace Smart_POS.Repository
                         _list.Add(res.Items[i]);
                     }
                 }
+            }
+            }
+            catch (Exception ex) { 
             }
             return _list;
         }

@@ -181,5 +181,10 @@ namespace Smart_POS.Repository
             }
             return list;
         }
+
+        internal ObservableCollection<Item> GetAccountList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
