@@ -6,16 +6,15 @@ using System.Web;
 using System.Windows;
 using Newtonsoft.Json;
 using Smart_POS.Models;
-//using Smart_POS.View;
 
 namespace Smart_POS.Repository
 {
     public class ApiRepository
     {
         static ApiRepository _instance;
-        public string companyId = "0";
+        public string companyId = "1";
         string langId = "2";
-        protected static string baseUrl = "http://localhost:8088/ords/accounting/";
+        static protected string baseUrl = "http://localhost:8088/ords/accounting/";
         //static private string baseUrl = "https://apex.oracle.com/pls/apex/smart_pos/";
         readonly HttpClient _client;
         public HttpClient MyClient()
@@ -44,24 +43,25 @@ namespace Smart_POS.Repository
             try
             {
 
-            var response = _client.GetAsync(uri).Result;
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                Utils.ShowMessage("لايوجد بيانات.");
-            }
-            else
-            {
-                var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
-                if (res != null)
+                var response = _client.GetAsync(uri).Result;
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    for (int i = 0; i < res.Items?.Count; i++)
+                    Utils.ShowMessage("لايوجد بيانات.");
+                }
+                else
+                {
+                    var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
+                    if (res != null)
                     {
-                        _list.Add(res.Items[i]);
+                        for (int i = 0; i < res.Items?.Count; i++)
+                        {
+                            _list.Add(res.Items[i]);
+                        }
                     }
                 }
             }
-            }
-            catch (Exception ex) { 
+            catch (Exception ex)
+            {
             }
             return _list;
         }
@@ -90,10 +90,27 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
+
+        public ObservableCollection<Item> GetProviderList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/provider_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
         public ObservableCollection<Item> GetSaveList()
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/save_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetAccountList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/account_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -114,12 +131,42 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-        public ObservableCollection<Item> GetProviderList()
+
+        public ObservableCollection<Item> GetClientList()
         {
             var requestUri = new Uri($"{baseUrl}" +
-                $"lists/provider_list" +
+                $"lists/client_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+
+        public ObservableCollection<Item> GetCountryList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/country_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetCityList(string countryId)
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/city_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
+                $"&p_country_id={HttpUtility.UrlEncode(countryId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+
+        public ObservableCollection<Item> GetRegionList(string countryId, string cityId)
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/region_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
+                $"&p_country_id={HttpUtility.UrlEncode(countryId)}" +
+                $"&p_city_id={HttpUtility.UrlEncode(cityId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
         public ObservableCollection<Item> GetProductUnitList(string productId)
@@ -130,177 +177,6 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
                 $"&p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
-        }
-
-
-        public InvoiceItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
-        {
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_unit_price" +
-                    $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
-                    $"&p_product_id={HttpUtility.UrlEncode(productId)}" +
-                    $"&p_quantity={HttpUtility.UrlEncode(quantity)}" +
-                    $"&p_product_unit_id={HttpUtility.UrlEncode(productUnitId)}", UriKind.Absolute);
-                var response = _client.GetAsync(requestUri).Result;
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    Utils.ShowMessage("مشكلة في الوصول.");
-                }
-                else
-                {
-                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
-                    return res;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return null;
-        }
-
-
-        public InvoiceItemModel? GetProductPrice(string productId)
-        {
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_price?p_company_id=0&" +
-                    $"p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
-                var response = _client.GetAsync(requestUri).Result;
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    Utils.ShowMessage("مشكلة في الوصول.");
-                }
-                else
-                {
-                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
-                    return res;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return null;
-        }
-
-        public InvoiceItemModel? GetProductPriceByBarcode(string barcode)
-        {
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"utils/get_product_by_barcode" +
-                    $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
-                    $"&p_barcode={HttpUtility.UrlEncode(barcode)}", UriKind.Absolute);
-                var response = _client.GetAsync(requestUri).Result;
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    Utils.ShowMessage("مشكلة في الوصول.");
-                }
-                else
-                {
-                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
-                    return res;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return null;
-        }
-
-        public ActionStatusModel PostPurchaseInoice(InvoiceModel model)
-        {
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice", UriKind.Absolute);
-
-                var json = JsonConvert.SerializeObject(model);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = _client.PostAsync(requestUri, data).Result;
-                //var res = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    return new ActionStatusModel("لم يتم الحفظ", status: 0);
-                }
-                else
-                {
-                    return new ActionStatusModel(response.Content.ReadAsStringAsync().Result);
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return null;
-        }
-
-        public InvoiceModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
-        {
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice?p_company_id=0&" +
-                    $"p_first={HttpUtility.UrlEncode(first)}" +
-                    $"&p_last={HttpUtility.UrlEncode(last)}" +
-                    $"&p_next={HttpUtility.UrlEncode(next)}" +
-                    $"&p_prev={HttpUtility.UrlEncode(prev)}" +
-                    $"&p_invoice_id={HttpUtility.UrlEncode(invoiceId)}", UriKind.Absolute);
-                var response = _client.GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    Utils.ShowMessage("مشكلة في الوصول.");
-                }
-                else
-                {
-                    return res;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return null;
-        }
-
-        public ObservableCollection<InvoiceListItemModel> GetAllPurchaseInoices()
-        {
-            ObservableCollection<InvoiceListItemModel> list = new ObservableCollection<InvoiceListItemModel>();
-            try
-            {
-                var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchases_invoices", UriKind.Absolute);
-                var response = _client.GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
-
-                if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                {
-                    Utils.ShowMessage("مشكلة في الوصول.");
-                }
-                else
-                {
-                    if (res != null)
-                    {
-                        foreach (var item in res.items)
-                        {
-                            list.Add(item);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.ShowMessage(ex.Message);
-            }
-            return list;
         }
 
     }
