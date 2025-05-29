@@ -17,8 +17,8 @@ namespace Smart_POS.ViewModels
     {
         public SetupBranchViewModel()
         {
-            repo = new ProviderRepo();
-            Provider = new ProviderItemViewModel();
+            repo = new SetupBranchRepo();
+            Branch = new SetupBranchItemViewModel();
             InitLists();
         }
 
@@ -36,12 +36,12 @@ namespace Smart_POS.ViewModels
         #endregion
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private ProviderRepo repo { get; set; }
+        private SetupBranchRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
-        private ProviderItemViewModel provider;
+        private SetupBranchItemViewModel branch;
         private ObservableCollection<Item> _accountList;
-        private ObservableCollection<ProviderListItemModel> _ListItems;
+        private ObservableCollection<SetupBranchListItemModel> _ListItems;
         private ObservableCollection<Item> _countryList;
         private ObservableCollection<Item> _cityList;
         private ObservableCollection<Item> _regionList;
@@ -62,7 +62,7 @@ namespace Smart_POS.ViewModels
 
             if (Provider.CountryId != null)
             {
-                CityList = repo.GetCityList(Provider.CountryId.ToString());
+                CityList = repo.GetCityList(Branch.CountryId.ToString());
             }
         }
 
@@ -70,7 +70,7 @@ namespace Smart_POS.ViewModels
         {
             if (Provider.CountryId != null && Provider.CityId != null)
             {
-                RegionList = repo.GetRegionList(Provider.CountryId.ToString(), Provider.CityId.ToString());
+                RegionList = repo.GetRegionList(Branch.CountryId.ToString(), Branch.CityId.ToString());
             }
         }
         public ObservableCollection<Item> CityList

@@ -20,7 +20,7 @@ namespace Smart_POS.ViewModels
             InvoiceDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
-            items = new List<StoreTransferItemViewModel> { new StoreTransferItemViewModel() };
+            //items = new List<StoreTransferItemViewModel> { new StoreTransferItemViewModel() };
             PaymentType = 1;
             InvoiceType = 1;
             CompanyId = 1;

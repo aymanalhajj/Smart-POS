@@ -22,7 +22,7 @@ namespace Smart_POS
             InitializeComponent();
             viewModel = (StockInOrderViewModel)LayoutRoot.DataContext;
             viewModel.ValidateCallback += new StockInOrderViewModel.ValidateCallbackEventHandler(ValidateForm);
-            ProductComboBox.ItemsSource = viewModel.ProductList;
+            //ProductComboBox.ItemsSource = viewModel.ProductList;
         }
         public bool ValidateForm()
         {
@@ -45,7 +45,7 @@ namespace Smart_POS
         }
         private void DeleteRow_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(DetailsGrid.Items.Count.ToString());
+            //MessageBox.Show(DetailsGrid.Items.Count.ToString());
             if (viewModel.CurrentRow >= 0 && viewModel.InvoiceDetailItems.Count > 0 && viewModel.CurrentRow < viewModel.InvoiceDetailItems.Count)
             {
                 viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);

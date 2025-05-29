@@ -3,65 +3,64 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Smart_POS.Models
 {
     public class ClientModel
     {
-        [JsonPropertyName("client_id")]
+        [JsonProperty("client_id")]
         public object ClientId { get; set; }
 
-        [JsonPropertyName("name_ar")]
+        [JsonProperty("name_ar")]
         public string NameAr { get; set; }
 
-        [JsonPropertyName("name_en")]
+        [JsonProperty("name_en")]
         public string NameEn { get; set; }
 
-        [JsonPropertyName("mobile_no")]
+        [JsonProperty("mobile_no")]
         public string MobileNo { get; set; }
 
         [JsonProperty("company_id")]
         public object CompanyId { get; set; }
 
-        [JsonPropertyName("tel_no")]
+        [JsonProperty("tel_no")]
         public string TelNo { get; set; }
 
-        [JsonPropertyName("fax")]
+        [JsonProperty("fax")]
         public string Fax { get; set; }
 
-        [JsonPropertyName("email")]
+        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonPropertyName("tax_no")]
+        [JsonProperty("tax_no")]
         public string TaxNo { get; set; }
 
-        [JsonPropertyName("country_id")]
+        [JsonProperty("country_id")]
         public object CountryId { get; set; }
 
-        [JsonPropertyName("city_id")]
+        [JsonProperty("city_id")]
         public object CityId { get; set; }
 
-        [JsonPropertyName("region_id")]
+        [JsonProperty("region_id")]
         public object RegionId { get; set; }
 
-        [JsonPropertyName("building_no")]
+        [JsonProperty("building_no")]
         public string BuildingNo { get; set; }
 
-        [JsonPropertyName("sreet")]
+        [JsonProperty("sreet")]
         public string Sreet { get; set; }
 
-        [JsonPropertyName("post_code")]
+        [JsonProperty("post_code")]
         public string PostCode { get; set; }
 
-        [JsonPropertyName("note")]
+        [JsonProperty("note")]
         public string Note { get; set; }
 
-        [JsonPropertyName("status")]
+        [JsonProperty("status")]
         public object Status { get; set; }
 
-        [JsonPropertyName("account_id")]
+        [JsonProperty("account_id")]
         public object AccountId { get; set; }
     }
 }

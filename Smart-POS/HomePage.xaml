@@ -70,7 +70,7 @@
 
                     </MenuItem.Icon>
 
-                    <MenuItem Header="بيانات الفروع"
+                    <MenuItem Name="BranchMenu" Click="BranchMenu_Click" Header="بيانات الفروع"
                               Template="{StaticResource Item_Template}">
 
                         <MenuItem.Icon>
@@ -82,13 +82,35 @@
 
                     </MenuItem>
 
-                    <MenuItem Header="بيانات المنتجات"
+                    <MenuItem Name="ProductMenu" Click="ProductMenu_Click" Header="بيانات المنتجات"
                               Template="{StaticResource Item_Template}">
 
                         <MenuItem.Icon>
 
                             <Image Source="Assets/img_hotkey.png"
                                    Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="CurrencyMenu" Click="CurrencyMenu_Click" Header="بيانات العملات"
+                            Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="BankMenu" Click="BankMenu_Click" Header="بيانات البنوك"
+                            Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
 
                         </MenuItem.Icon>
 

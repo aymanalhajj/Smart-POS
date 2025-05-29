@@ -14,18 +14,18 @@ using System.DirectoryServices.ActiveDirectory;
 
 namespace Smart_POS.Repository
 {
-    internal class AccAccountsRepo : ApiRepository
+    internal class ProductRepo : ApiRepository
     {
-        public ObservableCollection<AccAccountsListItemModel> GetAll()
+        public ObservableCollection<ProductListItemModel> GetAll()
         {
-            ObservableCollection<AccAccountsListItemModel> list = new ObservableCollection<AccAccountsListItemModel>();
+            ObservableCollection<ProductListItemModel> list = new ObservableCollection<ProductListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
                     $"setup/providers" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<AccAccountsListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<ProductListModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -48,7 +48,7 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-        public AccAccountsModel Get(string? first, string? last, string? next, string? prev, string? Id)
+        public ProductModel Get(string? first, string? last, string? next, string? prev, string? Id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<AccAccountsModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<ProductModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -77,7 +77,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-        public ActionStatusModel Post(AccAccountsModel model)
+        public ActionStatusModel Post(ProductModel model)
         {
             try
             {
@@ -127,3 +127,4 @@ namespace Smart_POS.Repository
         }
     }
 }
+

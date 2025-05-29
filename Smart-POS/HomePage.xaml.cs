@@ -138,5 +138,37 @@ namespace Smart_POS
             page.Show();
 
         }
+
+        private void BranchMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupBranchPage page = new SetupBranchPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
+
+        private void ProductMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SalesProductPage page = new SalesProductPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
+
+        private void CurrencyMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupCurrencyPage page = new SetupCurrencyPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
+
+        private void BankMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupBankPage page = new SetupBankPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+
+        }
     }
 }

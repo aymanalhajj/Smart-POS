@@ -13,12 +13,12 @@ using Newtonsoft.Json.Linq;
 
 namespace Smart_POS.ViewModels
 {
-    internal class ProviderViewModel : INotifyPropertyChanged
+    class AccAccountsViewModel : INotifyPropertyChanged
     {
-        public ProviderViewModel()
+        public AccAccountsViewModel()
         {
-            repo = new ProviderRepo();
-            Provider = new ProviderItemViewModel();
+            repo = new AccAccountsRepo();
+            Account = new AccAccountsItemViewModel();
             InitLists();
         }
 
@@ -36,67 +36,12 @@ namespace Smart_POS.ViewModels
         #endregion
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private ProviderRepo repo { get; set; }
+        private AccAccountsRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
-        private ProviderItemViewModel provider;
+        private AccAccountsItemViewModel account;
         private ObservableCollection<Item> _accountList;
-        private ObservableCollection<ProviderListItemModel> _ListItems;
-        private ObservableCollection<Item> _countryList;
-        private ObservableCollection<Item> _cityList;
-        private ObservableCollection<Item> _regionList;
-        public ObservableCollection<Item> CountryList
-        {
-            get
-            {
-                return _countryList;
-            }
-            set
-            {
-                _countryList = value;
-                OnPropertyChanged("CountryList");
-            }
-        }
-        public void LoadCity()
-        {
-
-            if (Provider.CountryId != null)
-            {
-                CityList = repo.GetCityList(Provider.CountryId.ToString());
-            }
-        }
-
-        public void LoadRegion()
-        {
-            if (Provider.CountryId != null && Provider.CityId != null)
-            {
-                RegionList = repo.GetRegionList(Provider.CountryId.ToString(), Provider.CityId.ToString());
-            }
-        }
-        public ObservableCollection<Item> CityList
-        {
-            get
-            {
-                return _cityList;
-            }
-            set
-            {
-                _cityList = value;
-                OnPropertyChanged("CityList");
-            }
-        }
-        public ObservableCollection<Item> RegionList
-        {
-            get
-            {
-                return _regionList;
-            }
-            set
-            {
-                _regionList = value;
-                OnPropertyChanged("RegionList");
-            }
-        }
+        private ObservableCollection<AccAccountsListItemModel> _ListItems;
         public ObservableCollection<Item> AccountList
         {
             get
@@ -109,7 +54,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountList");
             }
         }
-        public ObservableCollection<ProviderListItemModel> ListItems
+        public ObservableCollection<AccAccountsListItemModel> ListItems
         {
             get
             {
@@ -121,42 +66,39 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-        public ProviderItemViewModel Provider
+        public AccAccountsItemViewModel Account
         {
             get
             {
-                return provider;
+                return account;
             }
             set
             {
-                provider = value;
-                OnPropertyChanged("Provider");
+                account = value;
+                OnPropertyChanged("Account");
             }
         }
-        private ProviderItemViewModel filters;
+        private AccAccountsItemViewModel filters;
         public void InitLists()
         {
             AccountList = repo.GetAccountList();
-            CountryList = repo.GetCountryList();
-            //CityList = repo.GetCityList();
-            //RegionList = repo.GetRegionList();
         }
         private void ClearForm()
         {
             try
             {
-                Provider.clear();
+                Account.clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowData(ProviderModel? model)
+        public void ShowData(AccAccountsModel? model)
         {
             if (model != null)
             {
-                Provider.FromModel(model);
+                Account.FromModel(model);
             }
         }
         public void LoadData()
@@ -166,7 +108,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].AccountId.ToString());
                     ShowData(res);
                 }
             }
@@ -190,7 +132,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(provider.ToModel());
+                var res = repo.Post(Account.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);
@@ -223,9 +165,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Account.AccountId != null && !Account.AccountId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Account.AccountId.ToString());
                     ShowData(res);
                 }
             }
@@ -238,9 +180,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Account.AccountId != null && !Account.AccountId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Account.AccountId.ToString());
                     ShowData(res);
                 }
             }

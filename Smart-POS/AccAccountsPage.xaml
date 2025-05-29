@@ -12,7 +12,7 @@
         Title="الدليل المحاسبي" Height="650" Width="1500"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-
+        
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -46,41 +46,53 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الحساب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
-                        <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
+                        <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Account.AccountId, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
 
                         <Label Grid.Row="2" Grid.Column="0" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الحساب الاب</Label>
-                        <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                        <ComboBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding AccountList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Account.AccountParent"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                 </Binding>
                             </ComboBox.SelectedValue>
                         </ComboBox>
 
                         <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="1,2,1,0" Width="110" HorizontalContentAlignment="Right">الاسم بالعربي</Label>
-                        <TextBox Grid.Row="3" Grid.Column="1" Height="26" Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
+                        <TextBox Grid.Row="3" Grid.Column="1" Height="26" Text="{Binding Path=Account.AccountNameAr, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
 
                         <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="1,2,1,0" Width="110" HorizontalContentAlignment="Right">الاسم بالانجليزي</Label>
-                        <TextBox Grid.Row="4" Grid.Column="1" Height="26" Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
+                        <TextBox Grid.Row="4" Grid.Column="1" Height="26" Text="{Binding Path=Account.AccountNameEn, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
 
-                        <Label Grid.Row="5" Grid.Column="0" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الحساب الاب</Label>
-                        <ComboBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
+                        <Label Grid.Row="5" Grid.Column="0" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">نوع الحساب</Label>
+                        <ComboBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Top" Height="26" ItemsSource="{Binding AccountList}" Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Account.AccountType"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                 </Binding>
                             </ComboBox.SelectedValue>
                         </ComboBox>
                         
                         <Label Grid.Row="5" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="طبيعة الحساب" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <RadioButton Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Height="26" Name="cashInvoiceBtn" GroupName="Status" Margin="5,2,0,0"
-                            VerticalContentAlignment="Center" Content="نعم" HorizontalAlignment="Left" Width="72"/>
-                        <RadioButton Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Height="26" VerticalContentAlignment="Center" GroupName="Status"
-                            Content="لا" Margin="77,2,0,0"/>
+                        <RadioButton Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Height="26" Name="cashInvoiceBtn" GroupName="AccountNature" Margin="5,2,0,0"
+                            VerticalContentAlignment="Center" Content="مدين" HorizontalAlignment="Left" Width="72" 
+                            IsChecked="{Binding 
+                            Path=Account.AccountNature, 
+                            Converter={StaticResource RadioButtonCheckedConverter}, 
+                            ConverterParameter=1}"/>
+                        <RadioButton Grid.Row="5" Grid.Column="3" VerticalAlignment="Top" Height="26" VerticalContentAlignment="Center" GroupName="AccountNature"
+                            Content="دائن" Margin="77,2,0,0"
+                            IsChecked="{Binding 
+                            Path=Account.AccountNature, 
+                            Converter={StaticResource RadioButtonCheckedConverter}, 
+                            ConverterParameter=2}"/>
 
-                        <CheckBox Grid.Row="5" Grid.Column="4" Content="الحساب فرعي" VerticalAlignment="Top" Height="26" VerticalContentAlignment="Center"></CheckBox>
+                        <CheckBox Grid.Row="5" Grid.Column="4" Content="الحساب فرعي" VerticalAlignment="Top" Height="26" VerticalContentAlignment="Center"
+                                  IsChecked="{Binding Path=Account.SubAccount,
+                                  Converter={StaticResource RadioButtonCheckedConverter},
+                                  ConverterParameter=1}">
+                        </CheckBox>
 
                         <Border Grid.Row="6" Grid.ColumnSpan="9"
                             VerticalAlignment="Bottom" CornerRadius="2" BorderBrush="Gray" Background="LightGray" BorderThickness="2" Margin="5" Padding="8">
@@ -106,7 +118,7 @@
             </TabItem>
             <TabItem Header="بحث" Width="150">
 
-                <Grid x:Name="searchLayoutRoot" >
+                <Grid x:Name="searchLayoutRoot">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="30" />
                         <RowDefinition Height="35" />
