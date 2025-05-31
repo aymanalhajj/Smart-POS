@@ -37,6 +37,7 @@ namespace Smart_POS.ViewModels
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
         private SetupBranchRepo repo { get; set; }
+        private SetupBranchItemViewModel Branch { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private SetupBranchItemViewModel branch;
@@ -109,7 +110,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountList");
             }
         }
-        public ObservableCollection<ProviderListItemModel> ListItems
+        public ObservableCollection<SetupBranchListItemModel> ListItems
         {
             get
             {
@@ -121,15 +122,16 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-        public ProviderItemViewModel Provider
+        public SetupBranchItemViewModel _provider;
+        public SetupBranchItemViewModel Provider
         {
             get
             {
-                return provider;
+                return _provider;
             }
             set
             {
-                provider = value;
+                _provider = value;
                 OnPropertyChanged("Provider");
             }
         }
@@ -166,7 +168,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].BranchId.ToString());
                     ShowData(res);
                 }
             }
@@ -190,7 +192,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(provider.ToModel());
+                var res = repo.Post(_provider.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);

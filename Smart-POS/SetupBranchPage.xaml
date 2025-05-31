@@ -210,7 +210,7 @@
                         </ComboBox.SelectedValue>
                     </ComboBox>
                     <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
-                    <ListView MouseDoubleClick="InvoicesList_MouseDoubleClick" SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
+                    <ListView SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
                                 <GridView.ColumnHeaderContextMenu>

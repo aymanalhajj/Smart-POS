@@ -16,16 +16,16 @@ namespace Smart_POS.Repository
 {
     internal class SetupBranchRepo : ApiRepository
     {
-        public ObservableCollection<ProviderListItemModel> GetAll()
+        public ObservableCollection<SetupBranchListItemModel> GetAll()
         {
-            ObservableCollection<ProviderListItemModel> list = new ObservableCollection<ProviderListItemModel>();
+            ObservableCollection<SetupBranchListItemModel> list = new ObservableCollection<SetupBranchListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
                     $"setup/providers" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<ProviderListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<SetupBranchListItemModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -35,10 +35,10 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
-                        {
-                            list.Add(item);
-                        }
+                        //foreach (var item in res.items)
+                        //{
+                        //    list.Add(item);
+                        //}
                     }
                 }
             }
