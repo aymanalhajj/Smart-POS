@@ -22,10 +22,10 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/branchs" +
+                    $"setup/providers" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<SetupBranchListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<SetupBranchListItemModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -35,10 +35,10 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
-                        {
-                            list.Add(item);
-                        }
+                        //foreach (var item in res.items)
+                        //{
+                        //    list.Add(item);
+                        //}
                     }
                 }
             }
@@ -48,12 +48,12 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-        public SetupBranchModel Get(string? first, string? last, string? next, string? prev, string? Id)
+        public ProviderModel Get(string? first, string? last, string? next, string? prev, string? Id)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/branch" +
+                    $"setup/provider" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -67,7 +67,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<SetupBranchModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<ProviderModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -77,12 +77,12 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-        public ActionStatusModel Post(SetupBranchModel model)
+        public ActionStatusModel Post(ProviderModel model)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/branch", UriKind.Absolute);
+                    $"setup/provider", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -107,7 +107,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/branch" +
+                    $"setup/provider" +
                     $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

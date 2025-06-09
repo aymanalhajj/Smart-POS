@@ -37,6 +37,7 @@ namespace Smart_POS.ViewModels
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
         private SetupBranchRepo repo { get; set; }
+        private SetupBranchItemViewModel Branch { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private SetupBranchItemViewModel branch;
@@ -60,7 +61,7 @@ namespace Smart_POS.ViewModels
         public void LoadCity()
         {
 
-            if (Branch.CountryId != null)
+            if (Provider.CountryId != null)
             {
                 CityList = repo.GetCityList(Branch.CountryId.ToString());
             }
@@ -68,7 +69,7 @@ namespace Smart_POS.ViewModels
 
         public void LoadRegion()
         {
-            if (Branch.CountryId != null && Branch.CityId != null)
+            if (Provider.CountryId != null && Provider.CityId != null)
             {
                 RegionList = repo.GetRegionList(Branch.CountryId.ToString(), Branch.CityId.ToString());
             }
@@ -97,6 +98,18 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("RegionList");
             }
         }
+        public ObservableCollection<Item> AccountList
+        {
+            get
+            {
+                return _accountList;
+            }
+            set
+            {
+                _accountList = value;
+                OnPropertyChanged("AccountList");
+            }
+        }
         public ObservableCollection<SetupBranchListItemModel> ListItems
         {
             get
@@ -109,41 +122,43 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-
-        public SetupBranchItemViewModel _branch;
-        public SetupBranchItemViewModel Branch
+        public SetupBranchItemViewModel _provider;
+        public SetupBranchItemViewModel Provider
         {
             get
             {
-                return _branch;
+                return _provider;
             }
             set
             {
-                _branch = value;
-                OnPropertyChanged("Branch");
+                _provider = value;
+                OnPropertyChanged("Provider");
             }
         }
-        private SetupBranchItemViewModel filters;
+        private ProviderItemViewModel filters;
         public void InitLists()
         {
+            AccountList = repo.GetAccountList();
             CountryList = repo.GetCountryList();
+            //
+            //RegionList = repo.GetRegionList()
         }
         private void ClearForm()
         {
             try
             {
-                Branch.clear();
+                Provider.clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowData(SetupBranchModel? model)
+        public void ShowData(ProviderModel? model)
         {
             if (model != null)
             {
-                Branch.FromModel(model);
+                Provider.FromModel(model);
             }
         }
         public void LoadData()
@@ -177,7 +192,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(Branch.ToModel());
+                var res = repo.Post(_provider.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);
@@ -210,9 +225,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Branch.BranchId != null && !Branch.BranchId.Equals("0"))
+                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Branch.BranchId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Provider.ProviderId.ToString());
                     ShowData(res);
                 }
             }
@@ -225,9 +240,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Branch.BranchId != null && !Branch.BranchId.Equals("0"))
+                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Branch.BranchId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Provider.ProviderId.ToString());
                     ShowData(res);
                 }
             }
