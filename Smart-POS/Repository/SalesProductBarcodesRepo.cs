@@ -16,16 +16,16 @@ namespace Smart_POS.Repository
 {
     internal class SalesProductBarcodesRepo : ApiRepository
     {
-        public ObservableCollection<ProviderListItemModel> GetAll()
+        public ObservableCollection<SalesProductBarcodesListItemModel> GetAll()
         {
-            ObservableCollection<ProviderListItemModel> list = new ObservableCollection<ProviderListItemModel>();
+            ObservableCollection<SalesProductBarcodesListItemModel> list = new ObservableCollection<SalesProductBarcodesListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/providers" +
+                    $"setup/product_barcodes" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<ProviderListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<SalesProductBarcodesListModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -48,12 +48,12 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-        public ProviderModel Get(string? first, string? last, string? next, string? prev, string? Id)
+        public SalesProductBarcodesModel Get(string? first, string? last, string? next, string? prev, string? Id)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
+                    $"setup/product_barcode" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -67,7 +67,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<ProviderModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<SalesProductBarcodesModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -77,12 +77,12 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-        public ActionStatusModel Post(ProviderModel model)
+        public ActionStatusModel Post(SalesProductBarcodesModel model)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider", UriKind.Absolute);
+                    $"setup/product_barcode", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -107,7 +107,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
+                    $"setup/product_barcode" +
                     $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

@@ -121,15 +121,16 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
+        public ProviderItemViewModel _provider;
         public ProviderItemViewModel Provider
         {
             get
             {
-                return provider;
+                return _provider;
             }
             set
             {
-                provider = value;
+                _provider = value;
                 OnPropertyChanged("Provider");
             }
         }
@@ -190,7 +191,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(provider.ToModel());
+                var res = repo.Post(Provider.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);

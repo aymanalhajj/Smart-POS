@@ -24,89 +24,84 @@ namespace Smart_POS.ViewModels
             }
         }
 
-        internal ProviderModel ToModel()
+        internal SetupBranchModel ToModel()
         {
-            ProviderModel model = new()
+            SetupBranchModel model = new()
             {
-
-                AccountId = this.AccountId,
-                BuildingNo  = BuildingNo.ToString(),
-                CityId = this.CityId,
-                CompanyId = this.CompanyId,
-                CountryId = this.CountryId,
-                Email = this.Email,
-                Fax = this.Fax.ToString(),
-                MobileNo= this.MobileNo.ToString(),
-                NameAr = this.NameAr.ToString(),
+                BranchId = this.BranchId,
+                NameAr  = NameAr.ToString(),
                 NameEn = this.NameEn.ToString(),
-                Note = this.Note.ToString(),
-                PostCode = this.PostCode.ToString(),
-                ProviderId =this.ProviderId,
-                RegionId = this.RegionId,
-                Sreet = this.Sreet.ToString(),
-                Status = this.Status,
+                TelNo = this.TelNo.ToString(),
+                MobileNo= this.MobileNo.ToString(),
+                Fax = this.Fax.ToString(),
+                Email = this.Email,
+                ComercialRecNo = this.ComercialRecNo.ToString(),
                 TaxNo = this.TaxNo.ToString(),
-                TelNo = this.TelNo.ToString()
-
+                CountryId = this.CountryId,
+                CityId = this.CityId,
+                RegionId = this.RegionId,
+                BuildingNo = this.BuildingNo.ToString(),
+                Sreet = this.Sreet.ToString(),
+                PostCode = this.PostCode.ToString(),
+                Note = this.Note.ToString(),
+                CompanyId = this.CompanyId
             };
             return model;
         }
 
         internal void clear()
         {
-            AccountId = null;
-            BuildingNo = null;
-            CityId = null;
-            CompanyId = null;
-            CountryId = null;
-            Email = null;
-            Fax = null;
-            MobileNo = null;
+            BranchId = null;
             NameAr = null;
             NameEn = null;
-            Note = null;
-            PostCode = null;
-            ProviderId = null;
-            RegionId = null;
-            Sreet = null;
-            Status = 0;
-            TaxNo = null;
             TelNo = null;
+            MobileNo = null;
+            Fax = null;
+            Email = null;
+            ComercialRecNo = null;
+            TaxNo = null;
+            CountryId = null;
+            CityId = null;
+            RegionId = null;
+            BuildingNo = null;
+            Sreet = null;
+            PostCode = null;
+            Note = null;
+            CompanyId = null;
         }
 
-        internal void FromModel(ProviderModel model)
+        internal void FromModel(SetupBranchModel model)
         {
-            AccountId = model.AccountId;
-            BuildingNo = model.BuildingNo;
-            CompanyId = model.CompanyId;
+            BranchId = model.BranchId;
+            NameAr = model.NameAr;
+            NameEn = model.NameEn;
+            TelNo = model.TelNo;
+            MobileNo = model.MobileNo;
+            Fax = model.Fax;
+            Email = model.Email;
+            ComercialRecNo = model.ComercialRecNo;
+            TaxNo = model.TaxNo;
             CountryId = model.CountryId;
             CityId = model.CityId;
             RegionId = model.RegionId;
-            Email = model.Email;
-            Fax = model.Fax;
-            MobileNo = model.MobileNo;
-            NameAr = model.NameAr;
-            NameEn = model.NameEn;
-            Note = model.Note;
-            PostCode = model.PostCode;
-            ProviderId = model.ProviderId;
+            BuildingNo = model.BuildingNo;
             Sreet = model.Sreet;
-            Status = model.Status;
-            TaxNo = model.TaxNo;
-            TelNo = model.TelNo;
+            PostCode = model.PostCode;
+            Note = model.Note;
+            CompanyId = model.CompanyId;
         }
         #endregion
-        public object _provider_id { get; set; }
-        public object ProviderId
+        public object _branch_id { get; set; }
+        public object BranchId
         {
             get
             {
-                return _provider_id;
+                return _branch_id;
             }
             set
             {
-                _provider_id = value;
-                OnPropertyChanged("ProviderId");
+                _branch_id = value;
+                OnPropertyChanged("BranchId");
             }
         }
 
@@ -137,35 +132,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("NameEn");
             }
         }
-
-        public object _mobile_no { get; set; }
-        public object MobileNo
-        {
-            get
-            {
-                return _mobile_no;
-            }
-            set
-            {
-                _mobile_no = value;
-                OnPropertyChanged("MobileNo");
-            }
-        }
-
-        public object _company_id { get; set; }
-        public object CompanyId
-        {
-            get
-            {
-                return _company_id;
-            }
-            set
-            {
-                _company_id = value;
-                OnPropertyChanged("CompanyId");
-            }
-        }
-
         public object _tel_no { get; set; }
         public object TelNo
         {
@@ -177,6 +143,19 @@ namespace Smart_POS.ViewModels
             {
                 _tel_no = value;
                 OnPropertyChanged("TelNo");
+            }
+        }
+        public object _mobile_no { get; set; }
+        public object MobileNo
+        {
+            get
+            {
+                return _mobile_no;
+            }
+            set
+            {
+                _mobile_no = value;
+                OnPropertyChanged("MobileNo");
             }
         }
 
@@ -207,7 +186,19 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Email");
             }
         }
-
+        public object _comercial_rec_no { get; set; }
+        public object ComercialRecNo
+        {
+            get
+            {
+                return _comercial_rec_no;
+            }
+            set
+            {
+                _comercial_rec_no = value;
+                OnPropertyChanged("ComercialRecNo");
+            }
+        }
         public object _tax_no { get; set; }
         public object TaxNo
         {
@@ -263,7 +254,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("RegionId");
             }
         }
-
         public object _building_no { get; set; }
         public object BuildingNo
         {
@@ -277,7 +267,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("BuildingNo");
             }
         }
-
         public object _sreet { get; set; }
         public object Sreet
         {
@@ -319,34 +308,17 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Note");
             }
         }
-
-        public object _status { get; set; }
-        public object Status
+        public object _company_id { get; set; }
+        public object CompanyId
         {
             get
             {
-                if (_status == null)
-                    return 0;
-                return _status;
+                return _company_id;
             }
             set
             {
-                _status = value;
-                OnPropertyChanged("Status");
-            }
-        }
-
-        public object _account_id { get; set; }
-        public object AccountId
-        {
-            get
-            {
-                return _account_id;
-            }
-            set
-            {
-                _account_id = value;
-                OnPropertyChanged("AccountId");
+                _company_id = value;
+                OnPropertyChanged("CompanyId");
             }
         }
     }

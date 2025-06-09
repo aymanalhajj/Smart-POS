@@ -14,8 +14,8 @@
       WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
         <con:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter" />
-        <vm:ProviderViewModel x:Key="vModel" />
-        <vm:ProviderViewModel x:Key="searchViewModel" />
+        <vm:ProductViewModel x:Key="vModel" />
+        <vm:ProductViewModel x:Key="searchViewModel" />
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -80,8 +80,8 @@
                             </TextBox.Text>
                         </TextBox>
                         <Label Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المجموعة الضريبية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <ComboBox Grid.Row="4" Grid.Column="1" Height="26" VerticalAlignment="Top" 
-                                ItemsSource="{Binding RegionList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                        <ComboBox SelectionChanged="TaxGroupCombo_SelectionChanged" Name="TaxGroupCombo" Grid.Row="4" Grid.Column="1" Height="26" 
+                                ItemsSource="{Binding TaxGroupList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" VerticalAlignment="Top"
                                 Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Product.TaxGroupId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -104,9 +104,9 @@
                             </TextBox.Text>
                         </TextBox>
                         <Label Grid.Row="5" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="الوحدة الافتراضية" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <ComboBox Grid.Row="5" Grid.Column="1" Height="26" VerticalAlignment="Top" 
-                              ItemsSource="{Binding AccountList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" 
-                              Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                        <ComboBox SelectionChanged="UnitCombo_SelectionChanged" Name="UnitCombo" Grid.Row="5" Grid.Column="1" 
+                              ItemsSource="{Binding UnitList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" Height="26"
+                              Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" VerticalAlignment="Top">
                             <ComboBox.SelectedValue>
                                 <Binding Path="Product.DefaultUnitId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
@@ -129,9 +129,9 @@
                             </TextBox.Text>
                         </TextBox>
                         <Label Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المورد" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <ComboBox Grid.Row="7" Grid.Column="1" Height="26" VerticalAlignment="Top" 
-                              ItemsSource="{Binding AccountList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" 
-                              Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
+                        <ComboBox SelectionChanged="ProviderCombo_SelectionChanged" Name="ProviderCombo" Grid.Row="7" Grid.Column="1"  
+                              ItemsSource="{Binding ProviderList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" Height="26"
+                              Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" VerticalAlignment="Top">
                             <ComboBox.SelectedValue>
                                 <Binding Path="Product.ProviderId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
@@ -154,8 +154,8 @@
                             </TextBox.Text>
                         </TextBox>
                         <Label Grid.Row="5" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="المجموعة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <ComboBox SelectionChanged="CountryCombo_SelectionChanged" Name="CountryCombo" Grid.Row="5" Grid.Column="3" Height="26" VerticalAlignment="Top" 
-                                  ItemsSource="{Binding CountryList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                        <ComboBox SelectionChanged="GroupCombo_SelectionChanged" Name="GroupCombo" Grid.Row="5" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding GroupList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Product.ProductGroupId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -167,8 +167,8 @@
                             </ComboBox.SelectedValue>
                         </ComboBox>
                         <Label Grid.Row="3" Grid.Column="2" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="النوع" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2,2,0,0"/>
-                        <ComboBox Name="CityCombo" SelectionChanged="CityCombo_SelectionChanged" Grid.Row="3" Grid.Column="3" Height="26" VerticalAlignment="Top" 
-                                  ItemsSource="{Binding CityList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
+                        <ComboBox Name="TypeCombo" SelectionChanged="TypeCombo_SelectionChanged" Grid.Row="3" Grid.Column="3" Height="26" VerticalAlignment="Top" 
+                                  ItemsSource="{Binding TypeList}" Margin="3,2,2,0" DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
                                 <Binding Path="Product.TypeId"  Mode="TwoWay" ValidatesOnExceptions="True" 
@@ -255,7 +255,7 @@
 
                     <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, 
                         UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="16" 
-                              ItemsSource="{Binding Path=ListItems}" Name="DataList"
+                              ItemsSource="{Binding Path=DataList}" Name="DataList"
                               HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
@@ -265,122 +265,101 @@
                                         <MenuItem Header="Descending" />
                                     </ContextMenu>
                                 </GridView.ColumnHeaderContextMenu>
-                                <GridViewColumn Header="رقم المورد" Width="70">
+                                <GridViewColumn Header="رقم المنتج" Width="70">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="الاسم بالعربي" Width="120">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding NameAr}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductNameAr}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
                                 <GridViewColumn Header="الاسم بالانجليزي" Width="120">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding NameEn}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductNameEn}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="رقم الموبايل" Width="80">
+                                <GridViewColumn Header="الباركود" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding MobileNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding Barcode}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="رقم التلفون" Width="80">
+                                <GridViewColumn Header="النوع" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TelNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TypeId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الفاكس" Width="80">
+                                <GridViewColumn Header="المجموعة الضريبية" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Fax}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TaxGroupId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الايميل" Width="80">
+                                <GridViewColumn Header="قيمة الضريبة" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Email}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TaxValue}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الرقم الضريبي" Width="80">
+                                <GridViewColumn Header="الوحدة الافتراضية" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TaxNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding DefaultUnitId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="رقم الحساب" Width="80">
+                                <GridViewColumn Header="المجموعة" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding AccountId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductGroupId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="البلد" Width="80">
+                                <GridViewColumn Header="سعر الشراء" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TaxNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding PurchasePrice}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المدينة" Width="80">
+                                <GridViewColumn Header="سعر البيع" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding SellPrice}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المنطقة" Width="80">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="المبنى" Width="80">
+                                <GridViewColumn Header="المورد" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الشارع" Width="90">
+                                <GridViewColumn Header="الحالة" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductStatus}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الرمز البريدي" Width="90">
+                                <GridViewColumn Header="رقم المنتج" Width="90">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="الملاحظات" Width="130">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Note}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="الحالة" Width="70">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProductNo}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

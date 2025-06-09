@@ -24,92 +24,78 @@ namespace Smart_POS.ViewModels
             }
         }
 
-        internal ProviderModel ToModel()
+        internal SetupCurrencyModel ToModel()
         {
-            ProviderModel model = new()
+            SetupCurrencyModel model = new()
             {
-
-                AccountId = this.AccountId,
-                BuildingNo  = BuildingNo.ToString(),
-                CityId = this.CityId,
-                CompanyId = this.CompanyId,
-                CountryId = this.CountryId,
-                Email = this.Email,
-                Fax = this.Fax.ToString(),
-                MobileNo= this.MobileNo.ToString(),
+                CurrencyId = this.CurrencyId,
+                CodeAr  = CodeAr.ToString(),
                 NameAr = this.NameAr.ToString(),
+                CreatedBy = this.CreatedBy.ToString(),
+                CreatedAt = this.CreatedAt,
+                ModifiedBy = this.ModifiedBy,
+                ModifiedAt = this.ModifiedAt,
+                CompanyId= this.CompanyId,
                 NameEn = this.NameEn.ToString(),
-                Note = this.Note.ToString(),
-                PostCode = this.PostCode.ToString(),
-                ProviderId =this.ProviderId,
-                RegionId = this.RegionId,
-                Sreet = this.Sreet.ToString(),
-                Status = this.Status,
-                TaxNo = this.TaxNo.ToString(),
-                TelNo = this.TelNo.ToString()
-
+                CodeEn = this.CodeEn.ToString()
             };
             return model;
         }
 
         internal void clear()
         {
-            AccountId = null;
-            BuildingNo = null;
-            CityId = null;
-            CompanyId = null;
-            CountryId = null;
-            Email = null;
-            Fax = null;
-            MobileNo = null;
+            CurrencyId = null;
+            CodeAr = null;
             NameAr = null;
+            CreatedBy = null;
+            CreatedAt = null;
+            ModifiedBy = null;
+            ModifiedAt = null;
+            CompanyId = null;
             NameEn = null;
-            Note = null;
-            PostCode = null;
-            ProviderId = null;
-            RegionId = null;
-            Sreet = null;
-            Status = 0;
-            TaxNo = null;
-            TelNo = null;
+            CodeEn = null;
         }
 
-        internal void FromModel(ProviderModel model)
+        internal void FromModel(SetupCurrencyModel model)
         {
-            AccountId = model.AccountId;
-            BuildingNo = model.BuildingNo;
-            CompanyId = model.CompanyId;
-            CountryId = model.CountryId;
-            CityId = model.CityId;
-            RegionId = model.RegionId;
-            Email = model.Email;
-            Fax = model.Fax;
-            MobileNo = model.MobileNo;
+            CurrencyId = model.CurrencyId;
+            CodeAr = model.CodeAr;
             NameAr = model.NameAr;
+            CreatedBy = model.CreatedBy;
+            CreatedAt = model.CreatedAt;
+            ModifiedBy = model.ModifiedBy;
+            ModifiedAt = model.ModifiedAt;
+            CompanyId = model.CompanyId;
             NameEn = model.NameEn;
-            Note = model.Note;
-            PostCode = model.PostCode;
-            ProviderId = model.ProviderId;
-            Sreet = model.Sreet;
-            Status = model.Status;
-            TaxNo = model.TaxNo;
-            TelNo = model.TelNo;
+            CodeEn = model.CodeEn;
         }
         #endregion
-        public object _provider_id { get; set; }
-        public object ProviderId
+        public object _currency_id { get; set; }
+        public object CurrencyId
         {
             get
             {
-                return _provider_id;
+                return _currency_id;
             }
             set
             {
-                _provider_id = value;
-                OnPropertyChanged("ProviderId");
+                _currency_id = value;
+                OnPropertyChanged("CurrencyId");
             }
         }
-
+        public object _code_ar { get; set; }
+        public object CodeAr
+        {
+            get
+            {
+                return _code_ar;
+            }
+            set
+            {
+                _code_ar = value;
+                OnPropertyChanged("CodeAr");
+            }
+        }
         public object _name_ar { get; set; }
         public object NameAr
         {
@@ -123,35 +109,58 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("NameAr");
             }
         }
-
-        public object _name_en { get; set; }
-        public object NameEn
+        public object _created_by { get; set; }
+        public object CreatedBy
         {
             get
             {
-                return _name_en;
+                return _created_by;
             }
             set
             {
-                _name_en = value;
-                OnPropertyChanged("NameEn");
+                _created_by = value;
+                OnPropertyChanged("CreatedBy");
             }
         }
-
-        public object _mobile_no { get; set; }
-        public object MobileNo
+        public object _created_at { get; set; }
+        public object CreatedAt
         {
             get
             {
-                return _mobile_no;
+                return _created_at;
             }
             set
             {
-                _mobile_no = value;
-                OnPropertyChanged("MobileNo");
+                _created_at = value;
+                OnPropertyChanged("CreatedAt");
             }
         }
-
+        public object _modified_by { get; set; }
+        public object ModifiedBy
+        {
+            get
+            {
+                return _modified_by;
+            }
+            set
+            {
+                _modified_by = value;
+                OnPropertyChanged("ModifiedBy");
+            }
+        }
+        public object _modified_at { get; set; }
+        public object ModifiedAt
+        {
+            get
+            {
+                return _modified_at;
+            }
+            set
+            {
+                _modified_at = value;
+                OnPropertyChanged("ModifiedAt");
+            }
+        }
         public object _company_id { get; set; }
         public object CompanyId
         {
@@ -165,188 +174,30 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CompanyId");
             }
         }
-
-        public object _tel_no { get; set; }
-        public object TelNo
+        public object _name_en { get; set; }
+        public object NameEn
         {
             get
             {
-                return _tel_no;
+                return _name_en;
             }
             set
             {
-                _tel_no = value;
-                OnPropertyChanged("TelNo");
+                _name_en = value;
+                OnPropertyChanged("NameEn");
             }
         }
-
-        public object _fax { get; set; }
-        public object Fax
+        public object _code_en { get; set; }
+        public object CodeEn
         {
             get
             {
-                return _fax;
+                return _code_en;
             }
             set
             {
-                _fax = value;
-                OnPropertyChanged("Fax");
-            }
-        }
-
-        public string _email { get; set; }
-        public string Email
-        {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-                OnPropertyChanged("Email");
-            }
-        }
-
-        public object _tax_no { get; set; }
-        public object TaxNo
-        {
-            get
-            {
-                return _tax_no;
-            }
-            set
-            {
-                _tax_no = value;
-                OnPropertyChanged("TaxNo");
-            }
-        }
-
-        public object _country_id { get; set; }
-        public object CountryId
-        {
-            get
-            {
-                return _country_id;
-            }
-            set
-            {
-                _country_id = value;
-                OnPropertyChanged("CountryId");
-            }
-        }
-
-        public object _city_id { get; set; }
-        public object CityId
-        {
-            get
-            {
-                return _city_id;
-            }
-            set
-            {
-                _city_id = value;
-                OnPropertyChanged("CityId");
-            }
-        }
-
-        public object _region_id { get; set; }
-        public object RegionId
-        {
-            get
-            {
-                return _region_id;
-            }
-            set
-            {
-                _region_id = value;
-                OnPropertyChanged("RegionId");
-            }
-        }
-
-        public object _building_no { get; set; }
-        public object BuildingNo
-        {
-            get
-            {
-                return _building_no;
-            }
-            set
-            {
-                _building_no = value;
-                OnPropertyChanged("BuildingNo");
-            }
-        }
-
-        public object _sreet { get; set; }
-        public object Sreet
-        {
-            get
-            {
-                return _sreet;
-            }
-            set
-            {
-                _sreet = value;
-                OnPropertyChanged("Sreet");
-            }
-        }
-
-        public object _post_code { get; set; }
-        public object PostCode
-        {
-            get
-            {
-                return _post_code;
-            }
-            set
-            {
-                _post_code = value;
-                OnPropertyChanged("PostCode");
-            }
-        }
-
-        public object _note { get; set; }
-        public object Note
-        {
-            get
-            {
-                return _note;
-            }
-            set
-            {
-                _note = value;
-                OnPropertyChanged("Note");
-            }
-        }
-
-        public object _status { get; set; }
-        public object Status
-        {
-            get
-            {
-                if (_status == null)
-                    return 0;
-                return _status;
-            }
-            set
-            {
-                _status = value;
-                OnPropertyChanged("Status");
-            }
-        }
-
-        public object _account_id { get; set; }
-        public object AccountId
-        {
-            get
-            {
-                return _account_id;
-            }
-            set
-            {
-                _account_id = value;
-                OnPropertyChanged("AccountId");
+                _code_en = value;
+                OnPropertyChanged("CodeEn");
             }
         }
     }

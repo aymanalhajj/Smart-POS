@@ -22,7 +22,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/s_clients" +
+                    $"setup/clients" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
                 var res = JsonConvert.DeserializeObject<ClientListModel>(response.Content.ReadAsStringAsync().Result);
@@ -53,7 +53,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/s_client" +
+                    $"setup/client" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -82,7 +82,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/s_client", UriKind.Absolute);
+                    $"setup/client", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -107,7 +107,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/s_client" +
+                    $"setup/client" +
                     $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

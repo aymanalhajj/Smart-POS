@@ -99,7 +99,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductId");
             }
         }
-
         public object _product_name_ar { get; set; }
         public object ProductNameAr
         {
@@ -113,7 +112,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductNameAr");
             }
         }
-
         public object _product_name_en { get; set; }
         public object ProductNameEn
         {
@@ -127,7 +125,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductNameEn");
             }
         }
-
         public object _barcode { get; set; }
         public object Barcode
         {
@@ -141,7 +138,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Barcode");
             }
         }
-
         public object _type_id { get; set; }
         public object TypeId
         {
@@ -155,7 +151,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("TypeId");
             }
         }
-
         public object _tax_group_id { get; set; }
         public object TaxGroupId
         {
@@ -169,7 +164,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("TaxGroupId");
             }
         }
-
         public string _tax_value { get; set; }
         public string TaxValue
         {
@@ -183,7 +177,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("TaxValue");
             }
         }
-
         public object _default_unit_id { get; set; }
         public object DefaultUnitId
         {
@@ -197,7 +190,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("DefaultUnitId");
             }
         }
-
         public object _product_group_id { get; set; }
         public object ProductGroupId
         {
@@ -211,7 +203,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductGroupId");
             }
         }
-
         public object _purchase_price { get; set; }
         public object PurchasePrice
         {
@@ -225,7 +216,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PurchasePrice");
             }
         }
-
         public object _sell_price { get; set; }
         public object SellPrice
         {
@@ -239,7 +229,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("SellPrice");
             }
         }
-
         public object _provider_id { get; set; }
         public object ProviderId
         {
@@ -253,12 +242,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProviderId");
             }
         }
-
         public object _product_status { get; set; }
         public object ProductStatus
         {
             get
             {
+                if (_product_status == null)
+                    return 0;
                 return _product_status;
             }
             set
@@ -267,7 +257,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductStatus");
             }
         }
-
         public object _company_id { get; set; }
         public object CompanyId
         {

@@ -28,7 +28,7 @@ namespace Smart_POS.Models
         public object SellPrice { get; set; }
 
         [JsonProperty("barcode")]
-        public object Barcode { get; set; }
+        public string Barcode { get; set; }
 
         [JsonProperty("company_id")]
         public object CompanyId { get; set; }

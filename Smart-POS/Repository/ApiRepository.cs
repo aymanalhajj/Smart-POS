@@ -29,14 +29,12 @@ namespace Smart_POS.Repository
             }
             return _instance;
         }
-
         public ApiRepository()
         {
             _client = new HttpClient();
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
             _client.DefaultRequestHeaders.Add("token", "tokenaaaaa111222");
         }
-
         public ObservableCollection<Item> GetSelectList(Uri uri)
         {
             ObservableCollection<Item> _list = new ObservableCollection<Item>();
@@ -64,7 +62,6 @@ namespace Smart_POS.Repository
             }
             return _list;
         }
-
         public ObservableCollection<Item> GetBranchList()
         {
             var requestUri = new Uri($"{baseUrl}" +
@@ -89,7 +86,6 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-
         public ObservableCollection<Item> GetProviderList()
         {
             var requestUri = new Uri($"{baseUrl}" +
@@ -130,7 +126,6 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-
         public ObservableCollection<Item> GetClientList()
         {
             var requestUri = new Uri($"{baseUrl}" +
@@ -139,7 +134,38 @@ namespace Smart_POS.Repository
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-        
+        public ObservableCollection<Item> GetGroupList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/group_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetGroupTaxList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/tax_group_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetUnitList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/unit_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetTypeList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/type_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
         public ObservableCollection<Item> GetCountryList()
         {
             var requestUri = new Uri($"{baseUrl}" +
@@ -157,7 +183,6 @@ namespace Smart_POS.Repository
                 $"&p_country_id={HttpUtility.UrlEncode(countryId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-
         public ObservableCollection<Item> GetRegionList(string countryId, string cityId)
         {
             var requestUri = new Uri($"{baseUrl}" +
@@ -177,6 +202,5 @@ namespace Smart_POS.Repository
                 $"&p_product_id={HttpUtility.UrlEncode(productId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
-
     }
 }

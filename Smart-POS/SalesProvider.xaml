@@ -1,7 +1,8 @@
 ﻿<Window x:Class="Smart_POS.SalesProvider"
+      xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Smart_POS"
       xmlns:src="clr-namespace:Smart_POS"
@@ -251,6 +252,7 @@
                             Converter={StaticResource RadioButtonCheckedConverter},
                             ConverterParameter=0}" 
                             Content="غير فعال" Margin="53,2,27,0"/>
+                        
                         <StackPanel Grid.Row="10" Orientation="Horizontal" Margin="2,0,-950,-131" Grid.ColumnSpan="4" Grid.RowSpan="2" Background="LightGray"
                                     VerticalAlignment="Bottom" Height="143">
                             <Button Command="{Binding NewCommand}" Name="New_Btn" Margin="6" Padding="20,5" Content="جديد" Width="193" Height="52"/>
@@ -293,10 +295,9 @@
                     </Grid.ColumnDefinitions>
                     <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="2" Grid.ColumnSpan="2" Grid.Column="10" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10,0,0,10" VerticalAlignment="Bottom" Grid.Row="1" />
 
-                    <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, 
-                        UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="16" 
-                              ItemsSource="{Binding Path=ListItems}" Name="DataList"
-                              HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
+                    <ListView MouseDoubleClick="DataList_MouseDoubleClick" Grid.Row="3" Grid.ColumnSpan="16" HorizontalContentAlignment="Stretch"
+                              SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Name="DataList" Margin="5,5,5,5"
+                              ItemsSource="{Binding Path=ListItems}">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
                                 <GridView.ColumnHeaderContextMenu>
@@ -368,7 +369,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="البلد" Width="80">
+                                <GridViewColumn Header="الدولة" Width="80">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding TaxNo}" TextAlignment="Center" />

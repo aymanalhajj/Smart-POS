@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Newtonsoft.Json;
 using Smart_POS.Models;
 using Smart_POS.Validators;
@@ -16,12 +17,12 @@ namespace Smart_POS
     /// </summary>
     public partial class SalesProductFilesPage : Window
     {
-        StockInOrderViewModel viewModel;
+        SalesProductFilesViewModel viewModel;
         public SalesProductFilesPage()
         {
             InitializeComponent();
-            viewModel = (StockInOrderViewModel)LayoutRoot.DataContext;
-            viewModel.ValidateCallback += new StockInOrderViewModel.ValidateCallbackEventHandler(ValidateForm);
+            viewModel = (SalesProductFilesViewModel)LayoutRoot.DataContext;
+            viewModel.ValidateCallback += new SalesProductFilesViewModel.ValidateCallbackEventHandler(ValidateForm);
             //ProductComboBox.ItemsSource = viewModel.ProductList;
         }
         public bool ValidateForm()
@@ -34,46 +35,10 @@ namespace Smart_POS
             }
             return valid;
         }
-        private void ProductSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var comboBox = sender as ComboBox;
-            if (comboBox?.SelectedValue != null && !comboBox.SelectedValue.Equals(viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId))
-            {
-                viewModel.InvoiceDetailItems[viewModel.CurrentRow].ProductId = comboBox?.SelectedValue.ToString();
-                viewModel.GetProductPrice();
-            }
-        }
-        private void DeleteRow_Click(object sender, RoutedEventArgs e)
-        {
-            //MessageBox.Show(DetailsGrid.Items.Count.ToString());
-            if (viewModel.CurrentRow >= 0 && viewModel.InvoiceDetailItems.Count > 0 && viewModel.CurrentRow < viewModel.InvoiceDetailItems.Count)
-            {
-                viewModel.InvoiceDetailItems.RemoveAt(viewModel.CurrentRow);
-            }
-        }
-        private void DetailsGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            if (e.Column.DisplayIndex == 2 || e.Column.DisplayIndex == 4 || e.Column.DisplayIndex == 6 || e.Column.DisplayIndex == 9)
-            {
-                viewModel.RecalcPrice();
-            }
-            if (e.Column.DisplayIndex == 0)
-            {
-                TextBox t = e.EditingElement as TextBox;
-                string productBarcode = t.Text.ToString();
-                viewModel.GetProductPriceByBarcode(productBarcode);
-            }
-        }
-
-        private void InvoicesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void InvoicesList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
-        {
-            viewModel.LoadInvoiceData();
+            viewModel.LoadData();
             myTab.SelectedIndex = 0;
         }
-
     }
 }

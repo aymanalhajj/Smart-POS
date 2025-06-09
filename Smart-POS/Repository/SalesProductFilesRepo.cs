@@ -16,16 +16,16 @@ namespace Smart_POS.Repository
 {
     internal class SalesProductFilesRepo : ApiRepository
     {
-        public ObservableCollection<ProviderListItemModel> GetAll()
+        public ObservableCollection<SalesProductFilesListItemModel> GetAll()
         {
-            ObservableCollection<ProviderListItemModel> list = new ObservableCollection<ProviderListItemModel>();
+            ObservableCollection<SalesProductFilesListItemModel> list = new ObservableCollection<SalesProductFilesListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
                     $"setup/providers" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<ProviderListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<SalesProductFilesListModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -48,7 +48,7 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-        public ProviderModel Get(string? first, string? last, string? next, string? prev, string? Id)
+        public SalesProductFilesModel Get(string? first, string? last, string? next, string? prev, string? Id)
         {
             try
             {
@@ -67,7 +67,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<ProviderModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<SalesProductFilesModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -77,7 +77,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-        public ActionStatusModel Post(ProviderModel model)
+        public ActionStatusModel Post(SalesProductFilesModel model)
         {
             try
             {

@@ -70,32 +70,50 @@
 
                     </MenuItem.Icon>
 
-                    <MenuItem Name="BranchMenu" Click="BranchMenu_Click" Header="بيانات الفروع"
-                              Template="{StaticResource Item_Template}">
+                    <MenuItem Name="UnitMenu" Click="UnitMenu_Click" Header="بيانات الوحدات"
+                          Template="{StaticResource Item_Template}">
 
                         <MenuItem.Icon>
 
-                            <Image Source="Assets/img_input.png"
-                                   Stretch="None" />
-
-                        </MenuItem.Icon>
-
-                    </MenuItem>
-
-                    <MenuItem Name="ProductMenu" Click="ProductMenu_Click" Header="بيانات المنتجات"
-                              Template="{StaticResource Item_Template}">
-
-                        <MenuItem.Icon>
-
-                            <Image Source="Assets/img_hotkey.png"
-                                   Stretch="None" />
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
 
                         </MenuItem.Icon>
 
                     </MenuItem>
 
                     <MenuItem Name="CurrencyMenu" Click="CurrencyMenu_Click" Header="بيانات العملات"
-                            Template="{StaticResource Item_Template}">
+                          Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="CountryMenu" Click="CountryMenu_Click" Header="بيانات الدول"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Name="CityMenu" Click="CityMenu_Click" Header="بيانات المحافظات"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Name="RegionMenu" Click="RegionMenu_Click" Header="بيانات المناطق"
+                              Template="{StaticResource Item_Template}">
 
                         <MenuItem.Icon>
 
@@ -106,7 +124,7 @@
                     </MenuItem>
 
                     <MenuItem Name="BankMenu" Click="BankMenu_Click" Header="بيانات البنوك"
-                            Template="{StaticResource Item_Template}">
+                          Template="{StaticResource Item_Template}">
 
                         <MenuItem.Icon>
 
@@ -116,6 +134,58 @@
 
                     </MenuItem>
 
+                    <MenuItem Name="BranchMenu" Click="BranchMenu_Click" Header="بيانات الفروع"
+                                  Template="{StaticResource Item_Template}">
+
+                            <MenuItem.Icon>
+
+                                <Image Source="Assets/img_input.png" Stretch="None" />
+
+                            </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="ProductMenu" Click="ProductMenu_Click" Header="بيانات المنتجات"
+                                  Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="ProdUnitMenu" Click="ProdUnitMenu_Click" Header="وحدات المنتجات"
+                                  Template="{StaticResource Item_Template}">
+
+                            <MenuItem.Icon>
+
+                                <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                            </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Name="ProdFileMenu" Click="ProdFileMenu_Click" Header="ملفات المنتجات"
+                                  Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <MenuItem Name="ProdBarcodeMenu" Click="ProdBarcodeMenu_Click" Header="باركود المنتجات"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
                 </MenuItem>
 
                 <MenuItem Header="الحسابات"

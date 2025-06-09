@@ -42,7 +42,6 @@ namespace Smart_POS.ViewModels
         private ProductItemViewModel product;
         private ObservableCollection<Item> _accountList;
         private ObservableCollection<ProductListItemModel> _ListItems;
-        
         public ObservableCollection<Item> AccountList
         {
             get
@@ -53,6 +52,71 @@ namespace Smart_POS.ViewModels
             {
                 _accountList = value;
                 OnPropertyChanged("AccountList");
+            }
+        }
+        private ObservableCollection<Item> _providerList;
+        public ObservableCollection<Item> ProviderList
+        {
+            get
+            {
+                return _providerList;
+            }
+            set
+            {
+                _providerList = value;
+                OnPropertyChanged("ProviderList");
+            }
+        }
+        private ObservableCollection<Item> _unitList;
+        public ObservableCollection<Item> UnitList
+        {
+            get
+            {
+                return _unitList;
+            }
+            set
+            {
+                _unitList = value;
+                OnPropertyChanged("UnitList");
+            }
+        }
+        private ObservableCollection<Item> _typeList;
+        public ObservableCollection<Item> TypeList
+        {
+            get
+            {
+                return _typeList;
+            }
+            set
+            {
+                _typeList = value;
+                OnPropertyChanged("TypeList");
+            }
+        }
+        private ObservableCollection<Item> _groupList;
+        public ObservableCollection<Item> GroupList
+        {
+            get
+            {
+                return _groupList;
+            }
+            set
+            {
+                _groupList = value;
+                OnPropertyChanged("GroupList");
+            }
+        }
+        private ObservableCollection<Item> _taxGroupList;
+        public ObservableCollection<Item> TaxGroupList
+        {
+            get
+            {
+                return _taxGroupList;
+            }
+            set
+            {
+                _taxGroupList = value;
+                OnPropertyChanged("TaxGroupList");
             }
         }
         public ObservableCollection<ProductListItemModel> ListItems
@@ -67,25 +131,27 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
+        public ProductItemViewModel _product;
         public ProductItemViewModel Product
         {
             get
             {
-                return product;
+                return _product;
             }
             set
             {
-                product = value;
+                _product = value;
                 OnPropertyChanged("Product");
             }
         }
         private ProductItemViewModel filters;
         public void InitLists()
         {
-            AccountList = repo.GetAccountList();
-            //CountryList = repo.GetCountryList();
-            //
-            //RegionList = repo.GetRegionList()
+            TypeList = repo.GetTypeList();
+            ProviderList = repo.GetProviderList();
+            UnitList = repo.GetUnitList();
+            GroupList = repo.GetGroupList();
+            TaxGroupList = repo.GetGroupTaxList();
         }
         private void ClearForm()
         {

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommunityToolkit.Mvvm;
 
 namespace Smart_POS
 {
@@ -39,12 +40,6 @@ namespace Smart_POS
             }
             return valid;
         }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void CountryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             viewModel.LoadCity();
@@ -57,7 +52,8 @@ namespace Smart_POS
 
         private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            viewModel.LoadData();
+            myTab.SelectedIndex = 0;
         }
     }
 }

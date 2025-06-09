@@ -24,120 +24,113 @@ namespace Smart_POS.ViewModels
             }
         }
 
-        internal ProviderModel ToModel()
+        internal SetupBankModel ToModel()
         {
-            ProviderModel model = new()
+            SetupBankModel model = new()
             {
-
-                AccountId = this.AccountId,
-                BuildingNo  = BuildingNo.ToString(),
-                CityId = this.CityId,
-                CompanyId = this.CompanyId,
+                BankAccId = this.BankAccId,
+                AccNameAr  = AccNameAr.ToString(),
+                AccountId = this.AccountId.ToString(),
+                TelNo = this.TelNo.ToString(),
+                MobileNo = this.MobileNo.ToString(),
                 CountryId = this.CountryId,
-                Email = this.Email,
-                Fax = this.Fax.ToString(),
-                MobileNo= this.MobileNo.ToString(),
-                NameAr = this.NameAr.ToString(),
-                NameEn = this.NameEn.ToString(),
-                Note = this.Note.ToString(),
-                PostCode = this.PostCode.ToString(),
-                ProviderId =this.ProviderId,
+                CityId = this.CityId,
                 RegionId = this.RegionId,
-                Sreet = this.Sreet.ToString(),
-                Status = this.Status,
-                TaxNo = this.TaxNo.ToString(),
-                TelNo = this.TelNo.ToString()
-
+                Note = this.Note.ToString(),
+                ForAllBranches = this.ForAllBranches.ToString(),
+                Status = this.Status.ToString(),
+                CompanyId = this.CompanyId,
+                AccNameEn = this.AccNameEn.ToString()
             };
             return model;
         }
 
         internal void clear()
         {
+            BankAccId = null;
+            AccNameAr = null;
             AccountId = null;
-            BuildingNo = null;
-            CityId = null;
-            CompanyId = null;
-            CountryId = null;
-            Email = null;
-            Fax = null;
-            MobileNo = null;
-            NameAr = null;
-            NameEn = null;
-            Note = null;
-            PostCode = null;
-            ProviderId = null;
-            RegionId = null;
-            Sreet = null;
-            Status = 0;
-            TaxNo = null;
             TelNo = null;
+            MobileNo = null;
+            CountryId = null;
+            CityId = null;
+            RegionId = null;
+            Note = null;
+            ForAllBranches = null;
+            Status = null;
+            CompanyId = null;
+            AccNameEn = null;
         }
 
-        internal void FromModel(ProviderModel model)
+        internal void FromModel(SetupBankModel model)
         {
+            BankAccId = model.BankAccId;
+            AccNameAr = model.AccNameAr;
             AccountId = model.AccountId;
-            BuildingNo = model.BuildingNo;
-            CompanyId = model.CompanyId;
+            TelNo = model.TelNo;
+            MobileNo = model.MobileNo;
             CountryId = model.CountryId;
             CityId = model.CityId;
             RegionId = model.RegionId;
-            Email = model.Email;
-            Fax = model.Fax;
-            MobileNo = model.MobileNo;
-            NameAr = model.NameAr;
-            NameEn = model.NameEn;
             Note = model.Note;
-            PostCode = model.PostCode;
-            ProviderId = model.ProviderId;
-            Sreet = model.Sreet;
+            ForAllBranches = model.ForAllBranches;
             Status = model.Status;
-            TaxNo = model.TaxNo;
-            TelNo = model.TelNo;
+            CompanyId = model.CompanyId;
+            AccNameEn = model.AccNameEn;
         }
         #endregion
-        public object _provider_id { get; set; }
-        public object ProviderId
+        public object _bank_acc_id { get; set; }
+        public object BankAccId
         {
             get
             {
-                return _provider_id;
+                return _bank_acc_id;
             }
             set
             {
-                _provider_id = value;
-                OnPropertyChanged("ProviderId");
+                _bank_acc_id = value;
+                OnPropertyChanged("BankAccId");
             }
         }
-
-        public object _name_ar { get; set; }
-        public object NameAr
+        public object _acc_name_ar { get; set; }
+        public object AccNameAr
         {
             get
             {
-                return _name_ar;
+                return _acc_name_ar;
             }
             set
             {
-                _name_ar = value;
+                _acc_name_ar = value;
                 OnPropertyChanged("NameAr");
             }
         }
-
-        public object _name_en { get; set; }
-        public object NameEn
+        public object _account_id { get; set; }
+        public object AccountId
         {
             get
             {
-                return _name_en;
+                return _account_id;
             }
             set
             {
-                _name_en = value;
+                _account_id = value;
+                OnPropertyChanged("AccountId");
+            }
+        }
+        public object _tel_no { get; set; }
+        public object TelNo
+        {
+            get
+            {
+                return _tel_no;
+            }
+            set
+            {
+                _tel_no = value;
                 OnPropertyChanged("NameEn");
             }
         }
-
         public object _mobile_no { get; set; }
         public object MobileNo
         {
@@ -151,77 +144,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("MobileNo");
             }
         }
-
-        public object _company_id { get; set; }
-        public object CompanyId
-        {
-            get
-            {
-                return _company_id;
-            }
-            set
-            {
-                _company_id = value;
-                OnPropertyChanged("CompanyId");
-            }
-        }
-
-        public object _tel_no { get; set; }
-        public object TelNo
-        {
-            get
-            {
-                return _tel_no;
-            }
-            set
-            {
-                _tel_no = value;
-                OnPropertyChanged("TelNo");
-            }
-        }
-
-        public object _fax { get; set; }
-        public object Fax
-        {
-            get
-            {
-                return _fax;
-            }
-            set
-            {
-                _fax = value;
-                OnPropertyChanged("Fax");
-            }
-        }
-
-        public string _email { get; set; }
-        public string Email
-        {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-                OnPropertyChanged("Email");
-            }
-        }
-
-        public object _tax_no { get; set; }
-        public object TaxNo
-        {
-            get
-            {
-                return _tax_no;
-            }
-            set
-            {
-                _tax_no = value;
-                OnPropertyChanged("TaxNo");
-            }
-        }
-
         public object _country_id { get; set; }
         public object CountryId
         {
@@ -235,7 +157,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CountryId");
             }
         }
-
         public object _city_id { get; set; }
         public object CityId
         {
@@ -249,7 +170,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CityId");
             }
         }
-
         public object _region_id { get; set; }
         public object RegionId
         {
@@ -263,49 +183,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("RegionId");
             }
         }
-
-        public object _building_no { get; set; }
-        public object BuildingNo
-        {
-            get
-            {
-                return _building_no;
-            }
-            set
-            {
-                _building_no = value;
-                OnPropertyChanged("BuildingNo");
-            }
-        }
-
-        public object _sreet { get; set; }
-        public object Sreet
-        {
-            get
-            {
-                return _sreet;
-            }
-            set
-            {
-                _sreet = value;
-                OnPropertyChanged("Sreet");
-            }
-        }
-
-        public object _post_code { get; set; }
-        public object PostCode
-        {
-            get
-            {
-                return _post_code;
-            }
-            set
-            {
-                _post_code = value;
-                OnPropertyChanged("PostCode");
-            }
-        }
-
         public object _note { get; set; }
         public object Note
         {
@@ -319,7 +196,21 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Note");
             }
         }
-
+        public object _for_all_branches { get; set; }
+        public object ForAllBranches
+        {
+            get
+            {
+                if (_for_all_branches == null)
+                    return 0;
+                return _for_all_branches;
+            }
+            set
+            {
+                _for_all_branches = value;
+                OnPropertyChanged("TelNo");
+            }
+        }
         public object _status { get; set; }
         public object Status
         {
@@ -335,18 +226,30 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Status");
             }
         }
-
-        public object _account_id { get; set; }
-        public object AccountId
+        public object _company_id { get; set; }
+        public object CompanyId
         {
             get
             {
-                return _account_id;
+                return _company_id;
             }
             set
             {
-                _account_id = value;
-                OnPropertyChanged("AccountId");
+                _company_id = value;
+                OnPropertyChanged("CompanyId");
+            }
+        }
+        public object _acc_name_en { get; set; }
+        public object AccNameEn
+        {
+            get
+            {
+                return _acc_name_en;
+            }
+            set
+            {
+                _acc_name_en = value;
+                OnPropertyChanged("BuildingNo");
             }
         }
     }

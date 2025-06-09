@@ -57,7 +57,8 @@ namespace Smart_POS
 
         private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            viewModel.LoadData();
+            myTab.SelectedIndex = 0;
         }
     }
 }

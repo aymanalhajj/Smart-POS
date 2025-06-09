@@ -44,20 +44,30 @@ namespace Smart_POS
         {
 
         }
-
-        private void CountryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TypeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             //viewModel.LoadCity();
         }
-
-        private void CityCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TaxGroupCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //viewModel.LoadRegion();
+            //viewModel.LoadCity();
         }
-
+        private void UnitCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //viewModel.LoadCity();
+        }
+        private void GroupCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //viewModel.LoadCity();
+        }
+        private void ProviderCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //viewModel.LoadCity();
+        }
         private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            viewModel.LoadData();
+            myTab.SelectedIndex = 0;
         }
     }
 }

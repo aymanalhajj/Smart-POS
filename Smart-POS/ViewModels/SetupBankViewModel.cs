@@ -17,8 +17,8 @@ namespace Smart_POS.ViewModels
     {
         public SetupBankViewModel()
         {
-            repo = new ProviderRepo();
-            Provider = new ProviderItemViewModel();
+            repo = new SetupBankRepo();
+            Bank = new SetupBankItemViewModel();
             InitLists();
         }
 
@@ -36,12 +36,12 @@ namespace Smart_POS.ViewModels
         #endregion
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private ProviderRepo repo { get; set; }
+        private SetupBankRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
-        private ProviderItemViewModel provider;
+        private SetupBankItemViewModel bank;
         private ObservableCollection<Item> _accountList;
-        private ObservableCollection<ProviderListItemModel> _ListItems;
+        private ObservableCollection<SetupBankListItemModel> _ListItems;
         private ObservableCollection<Item> _countryList;
         private ObservableCollection<Item> _cityList;
         private ObservableCollection<Item> _regionList;
@@ -60,17 +60,17 @@ namespace Smart_POS.ViewModels
         public void LoadCity()
         {
 
-            if (Provider.CountryId != null)
+            if (Bank.CountryId != null)
             {
-                CityList = repo.GetCityList(Provider.CountryId.ToString());
+                CityList = repo.GetCityList(Bank.CountryId.ToString());
             }
         }
 
         public void LoadRegion()
         {
-            if (Provider.CountryId != null && Provider.CityId != null)
+            if (Bank.CountryId != null && Bank.CityId != null)
             {
-                RegionList = repo.GetRegionList(Provider.CountryId.ToString(), Provider.CityId.ToString());
+                RegionList = repo.GetRegionList(Bank.CountryId.ToString(), Bank.CityId.ToString());
             }
         }
         public ObservableCollection<Item> CityList
@@ -109,7 +109,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountList");
             }
         }
-        public ObservableCollection<ProviderListItemModel> ListItems
+        public ObservableCollection<SetupBankListItemModel> ListItems
         {
             get
             {
@@ -121,19 +121,20 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-        public ProviderItemViewModel Provider
+        public SetupBankItemViewModel _bank;
+        public SetupBankItemViewModel Bank
         {
             get
             {
-                return provider;
+                return _bank;
             }
             set
             {
-                provider = value;
-                OnPropertyChanged("Provider");
+                _bank = value;
+                OnPropertyChanged("Bank");
             }
         }
-        private ProviderItemViewModel filters;
+        private SetupBankItemViewModel filters;
         public void InitLists()
         {
             AccountList = repo.GetAccountList();
@@ -145,18 +146,18 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                Provider.clear();
+                Bank.clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowData(ProviderModel? model)
+        public void ShowData(SetupBankModel? model)
         {
             if (model != null)
             {
-                Provider.FromModel(model);
+                Bank.FromModel(model);
             }
         }
         public void LoadData()
@@ -166,7 +167,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].BankAccId.ToString());
                     ShowData(res);
                 }
             }
@@ -190,7 +191,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(provider.ToModel());
+                var res = repo.Post(Bank.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);
@@ -223,9 +224,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Bank.BankAccId != null && !Bank.BankAccId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Bank.BankAccId.ToString());
                     ShowData(res);
                 }
             }
@@ -238,9 +239,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Bank.BankAccId != null && !Bank.BankAccId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Bank.BankAccId.ToString());
                     ShowData(res);
                 }
             }

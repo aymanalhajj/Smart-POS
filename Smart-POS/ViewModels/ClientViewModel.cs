@@ -121,15 +121,16 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
+        public ClientItemViewModel _client;
         public ClientItemViewModel Client
         {
             get
             {
-                return client;
+                return _client;
             }
             set
             {
-                client = value;
+                _client = value;
                 OnPropertyChanged("Client");
             }
         }

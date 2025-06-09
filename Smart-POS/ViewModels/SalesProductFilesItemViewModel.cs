@@ -23,330 +23,114 @@ namespace Smart_POS.ViewModels
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        internal ProviderModel ToModel()
+        internal SalesProductFilesModel ToModel()
         {
-            ProviderModel model = new()
+            SalesProductFilesModel model = new()
             {
-
-                AccountId = this.AccountId,
-                BuildingNo  = BuildingNo.ToString(),
-                CityId = this.CityId,
-                CompanyId = this.CompanyId,
-                CountryId = this.CountryId,
-                Email = this.Email,
-                Fax = this.Fax.ToString(),
-                MobileNo= this.MobileNo.ToString(),
-                NameAr = this.NameAr.ToString(),
-                NameEn = this.NameEn.ToString(),
-                Note = this.Note.ToString(),
-                PostCode = this.PostCode.ToString(),
-                ProviderId =this.ProviderId,
-                RegionId = this.RegionId,
-                Sreet = this.Sreet.ToString(),
-                Status = this.Status,
-                TaxNo = this.TaxNo.ToString(),
-                TelNo = this.TelNo.ToString()
-
+                FileId = this.FileId,
+                FilePath  = FilePath.ToString(),
+                FileMimeType = this.FileMimeType.ToString(),
+                FileSize = this.FileSize.ToString(),
+                IsThumbnail = this.IsThumbnail,
+                ProductId = this.ProductId
             };
             return model;
         }
-
         internal void clear()
         {
-            AccountId = null;
-            BuildingNo = null;
-            CityId = null;
-            CompanyId = null;
-            CountryId = null;
-            Email = null;
-            Fax = null;
-            MobileNo = null;
-            NameAr = null;
-            NameEn = null;
-            Note = null;
-            PostCode = null;
-            ProviderId = null;
-            RegionId = null;
-            Sreet = null;
-            Status = 0;
-            TaxNo = null;
-            TelNo = null;
+            FileId = null;
+            FilePath = null;
+            FileMimeType = null;
+            FileSize = null;
+            IsThumbnail = null;
+            ProductId = null;
         }
-
-        internal void FromModel(ProviderModel model)
+        internal void FromModel(SalesProductFilesModel model)
         {
-            AccountId = model.AccountId;
-            BuildingNo = model.BuildingNo;
-            CompanyId = model.CompanyId;
-            CountryId = model.CountryId;
-            CityId = model.CityId;
-            RegionId = model.RegionId;
-            Email = model.Email;
-            Fax = model.Fax;
-            MobileNo = model.MobileNo;
-            NameAr = model.NameAr;
-            NameEn = model.NameEn;
-            Note = model.Note;
-            PostCode = model.PostCode;
-            ProviderId = model.ProviderId;
-            Sreet = model.Sreet;
-            Status = model.Status;
-            TaxNo = model.TaxNo;
-            TelNo = model.TelNo;
+            FileId = model.FileId;
+            FilePath = model.FilePath;
+            FileMimeType = model.FileMimeType;
+            FileSize = model.FileSize;
+            IsThumbnail = model.IsThumbnail;
+            ProductId = model.ProductId;
         }
         #endregion
-        public object _provider_id { get; set; }
-        public object ProviderId
+        public object _file_id { get; set; }
+        public object FileId
         {
             get
             {
-                return _provider_id;
+                return _file_id;
             }
             set
             {
-                _provider_id = value;
-                OnPropertyChanged("ProviderId");
+                _file_id = value;
+                OnPropertyChanged("FileId");
             }
         }
-
-        public object _name_ar { get; set; }
-        public object NameAr
+        public object _file_path { get; set; }
+        public object FilePath
         {
             get
             {
-                return _name_ar;
+                return _file_path;
             }
             set
             {
-                _name_ar = value;
-                OnPropertyChanged("NameAr");
+                _file_path = value;
+                OnPropertyChanged("FilePath");
             }
         }
-
-        public object _name_en { get; set; }
-        public object NameEn
+        public object _file_mime_type { get; set; }
+        public object FileMimeType
         {
             get
             {
-                return _name_en;
+                return _file_mime_type;
             }
             set
             {
-                _name_en = value;
-                OnPropertyChanged("NameEn");
+                _file_mime_type = value;
+                OnPropertyChanged("FileMimeType");
             }
         }
-
-        public object _mobile_no { get; set; }
-        public object MobileNo
+        public object _file_size { get; set; }
+        public object FileSize
         {
             get
             {
-                return _mobile_no;
+                return _file_size;
             }
             set
             {
-                _mobile_no = value;
-                OnPropertyChanged("MobileNo");
+                _file_size = value;
+                OnPropertyChanged("FileSize");
             }
         }
-
-        public object _company_id { get; set; }
-        public object CompanyId
+        public object _is_thumbnail { get; set; }
+        public object IsThumbnail
         {
             get
             {
-                return _company_id;
+                return _is_thumbnail;
             }
             set
             {
-                _company_id = value;
-                OnPropertyChanged("CompanyId");
+                _is_thumbnail = value;
+                OnPropertyChanged("IsThumbnail");
             }
         }
-
-        public object _tel_no { get; set; }
-        public object TelNo
+        public object _product_id { get; set; }
+        public object ProductId
         {
             get
             {
-                return _tel_no;
+                return _product_id;
             }
             set
             {
-                _tel_no = value;
-                OnPropertyChanged("TelNo");
-            }
-        }
-
-        public object _fax { get; set; }
-        public object Fax
-        {
-            get
-            {
-                return _fax;
-            }
-            set
-            {
-                _fax = value;
-                OnPropertyChanged("Fax");
-            }
-        }
-
-        public string _email { get; set; }
-        public string Email
-        {
-            get
-            {
-                return _email;
-            }
-            set
-            {
-                _email = value;
-                OnPropertyChanged("Email");
-            }
-        }
-
-        public object _tax_no { get; set; }
-        public object TaxNo
-        {
-            get
-            {
-                return _tax_no;
-            }
-            set
-            {
-                _tax_no = value;
-                OnPropertyChanged("TaxNo");
-            }
-        }
-
-        public object _country_id { get; set; }
-        public object CountryId
-        {
-            get
-            {
-                return _country_id;
-            }
-            set
-            {
-                _country_id = value;
-                OnPropertyChanged("CountryId");
-            }
-        }
-
-        public object _city_id { get; set; }
-        public object CityId
-        {
-            get
-            {
-                return _city_id;
-            }
-            set
-            {
-                _city_id = value;
-                OnPropertyChanged("CityId");
-            }
-        }
-
-        public object _region_id { get; set; }
-        public object RegionId
-        {
-            get
-            {
-                return _region_id;
-            }
-            set
-            {
-                _region_id = value;
-                OnPropertyChanged("RegionId");
-            }
-        }
-
-        public object _building_no { get; set; }
-        public object BuildingNo
-        {
-            get
-            {
-                return _building_no;
-            }
-            set
-            {
-                _building_no = value;
-                OnPropertyChanged("BuildingNo");
-            }
-        }
-
-        public object _sreet { get; set; }
-        public object Sreet
-        {
-            get
-            {
-                return _sreet;
-            }
-            set
-            {
-                _sreet = value;
-                OnPropertyChanged("Sreet");
-            }
-        }
-
-        public object _post_code { get; set; }
-        public object PostCode
-        {
-            get
-            {
-                return _post_code;
-            }
-            set
-            {
-                _post_code = value;
-                OnPropertyChanged("PostCode");
-            }
-        }
-
-        public object _note { get; set; }
-        public object Note
-        {
-            get
-            {
-                return _note;
-            }
-            set
-            {
-                _note = value;
-                OnPropertyChanged("Note");
-            }
-        }
-
-        public object _status { get; set; }
-        public object Status
-        {
-            get
-            {
-                if (_status == null)
-                    return 0;
-                return _status;
-            }
-            set
-            {
-                _status = value;
-                OnPropertyChanged("Status");
-            }
-        }
-
-        public object _account_id { get; set; }
-        public object AccountId
-        {
-            get
-            {
-                return _account_id;
-            }
-            set
-            {
-                _account_id = value;
-                OnPropertyChanged("AccountId");
+                _product_id = value;
+                OnPropertyChanged("ProductId");
             }
         }
     }

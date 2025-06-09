@@ -10,6 +10,7 @@ using Smart_POS.Repository;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics.Metrics;
 
 namespace Smart_POS.ViewModels
 {
@@ -17,8 +18,8 @@ namespace Smart_POS.ViewModels
     {
         public SetupCountryViewModel()
         {
-            repo = new ProviderRepo();
-            Provider = new ProviderItemViewModel();
+            repo = new SetupCountryRepo();
+            Country = new SetupCountryItemViewModel();
             InitLists();
         }
 
@@ -36,12 +37,12 @@ namespace Smart_POS.ViewModels
         #endregion
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
-        private ProviderRepo repo { get; set; }
+        private SetupCountryRepo repo { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
-        private ProviderItemViewModel provider;
+        private SetupCountryItemViewModel country;
         private ObservableCollection<Item> _accountList;
-        private ObservableCollection<ProviderListItemModel> _ListItems;
+        private ObservableCollection<SetupCountryListItemModel> _ListItems;
         private ObservableCollection<Item> _countryList;
         private ObservableCollection<Item> _cityList;
         private ObservableCollection<Item> _regionList;
@@ -55,22 +56,6 @@ namespace Smart_POS.ViewModels
             {
                 _countryList = value;
                 OnPropertyChanged("CountryList");
-            }
-        }
-        public void LoadCity()
-        {
-
-            if (Provider.CountryId != null)
-            {
-                CityList = repo.GetCityList(Provider.CountryId.ToString());
-            }
-        }
-
-        public void LoadRegion()
-        {
-            if (Provider.CountryId != null && Provider.CityId != null)
-            {
-                RegionList = repo.GetRegionList(Provider.CountryId.ToString(), Provider.CityId.ToString());
             }
         }
         public ObservableCollection<Item> CityList
@@ -109,7 +94,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountList");
             }
         }
-        public ObservableCollection<ProviderListItemModel> ListItems
+        public ObservableCollection<SetupCountryListItemModel> ListItems
         {
             get
             {
@@ -121,19 +106,20 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-        public ProviderItemViewModel Provider
+        public SetupCountryItemViewModel _country;
+        public SetupCountryItemViewModel Country
         {
             get
             {
-                return provider;
+                return _country;
             }
             set
             {
-                provider = value;
-                OnPropertyChanged("Provider");
+                _country = value;
+                OnPropertyChanged("Country");
             }
         }
-        private ProviderItemViewModel filters;
+        private SetupCountryItemViewModel filters;
         public void InitLists()
         {
             AccountList = repo.GetAccountList();
@@ -145,18 +131,18 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                Provider.clear();
+                Country.clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowData(ProviderModel? model)
+        public void ShowData(SetupCountryModel? model)
         {
             if (model != null)
             {
-                Provider.FromModel(model);
+                Country.FromModel(model);
             }
         }
         public void LoadData()
@@ -166,7 +152,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", Id: ListItems[InvoiceToEditIndex].CountryId.ToString());
                     ShowData(res);
                 }
             }
@@ -190,7 +176,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(provider.ToModel());
+                var res = repo.Post(Country.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);
@@ -223,9 +209,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Country.CountryId != null && !Country.CountryId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Country.CountryId.ToString());
                     ShowData(res);
                 }
             }
@@ -238,9 +224,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Country.CountryId != null && !Country.CountryId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Country.CountryId.ToString());
                     ShowData(res);
                 }
             }

@@ -3,61 +3,62 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Smart_POS.Models
 {
     public class SetupBranchListItemModel
     {
-        [JsonProperty("branch_id")]
+        [JsonPropertyName("branch_id")]
         public object BranchId { get; set; }
 
-        [JsonProperty("name_ar")]
+        [JsonPropertyName("name_ar")]
         public string NameAr { get; set; }
 
-        [JsonProperty("name_en")]
+        [JsonPropertyName("name_en")]
         public string NameEn { get; set; }
 
-        [JsonProperty("tel_no")]
+        [JsonPropertyName("tel_no")]
         public string TelNo { get; set; }
 
-        [JsonProperty("mobile_no")]
+        [JsonPropertyName("mobile_no")]
         public object MobileNo { get; set; }
 
-        [JsonProperty("fax")]
+        [JsonPropertyName("fax")]
         public string Fax { get; set; }
 
-        [JsonProperty("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonProperty("comercial_rec_no")]
+        [JsonPropertyName("comercial_rec_no")]
         public string ComercialRecNo { get; set; }
 
-        [JsonProperty("tax_no")]
+        [JsonPropertyName("tax_no")]
         public string TaxNo { get; set; }
 
-        [JsonProperty("country_id")]
+        [JsonPropertyName("country_id")]
         public object CountryId { get; set; }
 
-        [JsonProperty("city_id")]
+        [JsonPropertyName("city_id")]
         public object CityId { get; set; }
 
-        [JsonProperty("region_id")]
+        [JsonPropertyName("region_id")]
         public object RegionId { get; set; }
 
-        [JsonProperty("building_no")]
+        [JsonPropertyName("building_no")]
         public string BuildingNo { get; set; }
 
-        [JsonProperty("sreet")]
+        [JsonPropertyName("sreet")]
         public string Sreet { get; set; }
 
-        [JsonProperty("post_code")]
+        [JsonPropertyName("post_code")]
         public string PostCode { get; set; }
 
-        [JsonProperty("note")]
+        [JsonPropertyName("note")]
         public string Note { get; set; }
 
-        [JsonProperty("company_id")]
+        [JsonPropertyName("company_id")]
         public object CompanyId { get; set; }
     }
 }
