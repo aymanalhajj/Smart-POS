@@ -137,14 +137,36 @@
                     <MenuItem Name="BranchMenu" Click="BranchMenu_Click" Header="بيانات الفروع"
                                   Template="{StaticResource Item_Template}">
 
-                            <MenuItem.Icon>
+                        <MenuItem.Icon>
 
-                                <Image Source="Assets/img_input.png" Stretch="None" />
+                            <Image Source="Assets/img_input.png" Stretch="None" />
 
-                            </MenuItem.Icon>
+                        </MenuItem.Icon>
 
                     </MenuItem>
 
+                    <MenuItem Name="ProductGroupMenu" Click="ProductGroupMenu_Click" Header="مجموعة المنتجات"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="TaxGroupMenu" Click="TaxGroupMenu_Click" Header="المجموعات الضريبية"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    
                     <MenuItem Name="ProductMenu" Click="ProductMenu_Click" Header="بيانات المنتجات"
                                   Template="{StaticResource Item_Template}">
 

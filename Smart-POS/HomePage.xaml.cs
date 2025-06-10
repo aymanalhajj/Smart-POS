@@ -187,5 +187,17 @@ namespace Smart_POS
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }
+        private void ProductGroupMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupProdGroupPage page = new SetupProdGroupPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void TaxGroupMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupTaxGroupPage page = new SetupTaxGroupPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
     }
 }

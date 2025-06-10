@@ -255,7 +255,7 @@
 
                     <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, 
                         UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="16" 
-                              ItemsSource="{Binding Path=DataList}" Name="DataList"
+                              ItemsSource="{Binding Path=ListItems}" Name="DataList"
                               HorizontalContentAlignment="Stretch" Margin="5,5,5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">

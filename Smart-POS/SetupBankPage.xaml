@@ -204,8 +204,8 @@
 
                     <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="2" Grid.Column="9" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10,0,0,10" VerticalAlignment="Bottom" Grid.Row="1" />
                     <ListView MouseDoubleClick="DataList_MouseDoubleClick" Grid.Row="3" Grid.ColumnSpan="10" HorizontalContentAlignment="Stretch" 
-                              SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Name="InvoicesList" Margin="5,5,5,5"
-                               ItemsSource="{Binding Path=InvoiceListItems}">
+                              SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Name="DataList" Margin="5,5,5,5"
+                               ItemsSource="{Binding Path=ListItems}">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
                                 <GridView.ColumnHeaderContextMenu>

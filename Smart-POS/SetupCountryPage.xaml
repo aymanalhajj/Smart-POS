@@ -128,7 +128,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
-                    <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=DataList}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
+                    <ListView MouseDoubleClick="DataList_MouseDoubleClick" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=ListItems}" Name="DataList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">
                                 <GridView.ColumnHeaderContextMenu>
