@@ -39,8 +39,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ProductUnitList");
             }
         }
-
-
         public string _product_Id { get; set; }
         public string? _product_barcode;
 

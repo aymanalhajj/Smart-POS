@@ -9,8 +9,7 @@ namespace Smart_POS.Repository
 {
     internal class StoreTransferRepo : ApiRepository
     {
-
-        public StoreTransferItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
+        public InvoiceItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
         {
             try
             {
@@ -27,7 +26,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<StoreTransferItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -37,9 +36,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-
-        public StoreTransferItemModel? GetProductPrice(string productId)
+        public InvoiceItemModel? GetProductPrice(string productId)
         {
             try
             {
@@ -54,7 +51,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<StoreTransferItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -64,8 +61,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public StoreTransferItemModel? GetProductPriceByBarcode(string barcode)
+        public InvoiceItemModel? GetProductPriceByBarcode(string barcode)
         {
             try
             {
@@ -80,7 +76,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<StoreTransferItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -90,13 +86,12 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public ActionStatusModel PostPurchaseInoice(StockModel model)
+        public ActionStatusModel Post(StoreTransferModel model)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_order", UriKind.Absolute);
+                    $"store/transfer", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -118,13 +113,12 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public StockModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
+        public StoreTransferModel? Get(string? first, string? last, string? next, string? prev, string? invoiceId)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_order" +
+                    $"store/transfer" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -132,7 +126,7 @@ namespace Smart_POS.Repository
                     $"&p_prev={HttpUtility.UrlEncode(prev)}" +
                     $"&p_invoice_id={HttpUtility.UrlEncode(invoiceId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<StockModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<StoreTransferModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -149,14 +143,13 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public ObservableCollection<StockListItemModel> GetAllPurchaseInoices()
+        public ObservableCollection<StockListItemModel> GetAll()
         {
             ObservableCollection<StockListItemModel> list = new ObservableCollection<StockListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_orders", UriKind.Absolute);
+                    $"store/transfers", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
                 var res = JsonConvert.DeserializeObject<StockListModel>(response.Content.ReadAsStringAsync().Result);
 

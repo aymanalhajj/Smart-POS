@@ -41,8 +41,5 @@ namespace Smart_POS.Models
 
         [JsonProperty("branch_id")]
         public object? BranchId;
-
-        [JsonProperty("items")]
-        public List<StoreTransferItemModel>? Items;
     }
 }

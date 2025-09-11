@@ -25,7 +25,7 @@ namespace Smart_POS.Models
         public object AccountParent { get; set; }
 
         [JsonProperty("sub_account")]
-        public object SubAccount { get; set; }
+        public string SubAccount { get; set; }
 
         [JsonProperty("account_level")]
         public object AccountLevel { get; set; }
@@ -37,6 +37,6 @@ namespace Smart_POS.Models
         public object CompanyId { get; set; }
 
         [JsonProperty("account_name_en")]
-        public object AccountNameEn { get; set; }
+        public string AccountNameEn { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using Newtonsoft.Json;
 using Smart_POS.Models;
 using Smart_POS.Validators;
@@ -34,11 +35,22 @@ namespace Smart_POS
             }
             return valid;
         }
-
-        private void InvoicesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+
         }
-
-
+        private void CountryCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.LoadCity();
+        }
+        private void CityCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            viewModel.LoadRegion();
+        }
+        private void DataList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            viewModel.LoadData();
+            myTab.SelectedIndex = 0;
+        }
     }
 }

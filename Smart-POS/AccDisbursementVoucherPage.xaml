@@ -1,4 +1,4 @@
-﻿<Window x:Class="Smart_POS.AccVoucherPage"
+﻿<Window x:Class="Smart_POS.AccDisbursementVoucherPage"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -82,7 +82,7 @@
                             IsChecked="{Binding Path=Invoice.PaymentMethod, Converter={StaticResource RadioButtonCheckedConverter}, ConverterParameter=4}"/>
 
                         <TextBox Name="VoucherType" Grid.Row="1" Visibility="Hidden" Grid.Column="7" Height="26" Text="{Binding Path=Invoice.VoucherType, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top"/>
-                        
+
                         <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">المبلغ</Label>
                         <TextBox Name="vouAmount" Grid.Row="2" Grid.Column="1" Height="26" Text="{Binding Path=Invoice.Amount, Mode=TwoWay}" Margin="2" Width="150" VerticalAlignment="Top" TextChanged="vouAmount_TextChanged"/>
 

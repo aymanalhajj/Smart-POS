@@ -187,5 +187,35 @@ namespace Smart_POS
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }
+        private void ProductGroupMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupProdGroupPage page = new SetupProdGroupPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void TaxGroupMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SetupTaxGroupPage page = new SetupTaxGroupPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void AccAccountsMenu_Click(object sender, RoutedEventArgs e)
+        {
+            AccAccountsPage page = new AccAccountsPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void AccVoucherMenu_Click(object sender, RoutedEventArgs e)
+        {
+            AccVoucherPage page = new AccVoucherPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void ExchangeVoucherMenu_Click(object sender, RoutedEventArgs e)
+        {
+            AccDisbursementVoucherPage page = new AccDisbursementVoucherPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
     }
 }

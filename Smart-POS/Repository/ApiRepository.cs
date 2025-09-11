@@ -40,25 +40,25 @@ namespace Smart_POS.Repository
             ObservableCollection<Item> _list = new ObservableCollection<Item>();
             try
             {
-
-            var response = _client.GetAsync(uri).Result;
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                Utils.ShowMessage("لايوجد بيانات.");
-            }
-            else
-            {
-                var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
-                if (res != null)
+                var response = _client.GetAsync(uri).Result;
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
-                    for (int i = 0; i < res.Items?.Count; i++)
+                    Utils.ShowMessage("لايوجد بيانات."+response.StatusCode);
+                }
+                else
+                {
+                    var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
+                    if (res != null)
                     {
-                        _list.Add(res.Items[i]);
+                        for (int i = 0; i < res.Items?.Count; i++)
+                        {
+                            _list.Add(res.Items[i]);
+                        }
                     }
                 }
             }
-            }
-            catch (Exception ex) { 
+            catch (Exception ex) 
+            { 
             }
             return _list;
         }

@@ -25,7 +25,7 @@ namespace Smart_POS.Models
         public int Count { get; set; }
 
         [JsonProperty("links")]
-        public List<Link> Links { get; set; }
+        public List<SetupBranchModelLink> Links { get; set; }
     }
 
     public class SetupBranchModelLink

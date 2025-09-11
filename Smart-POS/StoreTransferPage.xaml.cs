@@ -16,13 +16,13 @@ namespace Smart_POS
     /// </summary>
     public partial class StoreTransferPage : Window
     {
-        StockInOrderViewModel viewModel;
+        StoreTransferViewModel viewModel;
         public StoreTransferPage()
         {
             InitializeComponent();
-            viewModel = (StockInOrderViewModel)LayoutRoot.DataContext;
-            viewModel.ValidateCallback += new StockInOrderViewModel.ValidateCallbackEventHandler(ValidateForm);
-            ProductComboBox.ItemsSource = viewModel.ProductList;
+            viewModel = (StoreTransferViewModel)LayoutRoot.DataContext;
+            viewModel.ValidateCallback += new StoreTransferViewModel.ValidateCallbackEventHandler(ValidateForm);
+            //ProductComboBox.ItemsSource = viewModel.ProductList;
         }
         public bool ValidateForm()
         {

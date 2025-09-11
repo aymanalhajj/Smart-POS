@@ -10,7 +10,7 @@ namespace Smart_POS.Models
     public class AccVoucherListModel
     {
         [JsonProperty("items")]
-        public List<StoreTransferListItemModel> items { get; set; }
+        public List<AccVoucherListItemModel> items { get; set; }
 
         [JsonProperty("hasMore")]
         public bool HasMore { get; set; }
@@ -25,7 +25,7 @@ namespace Smart_POS.Models
         public int Count { get; set; }
 
         [JsonProperty("links")]
-        public List<Link> Links { get; set; }
+        public List<LinkAccVoucherModel> Links { get; set; }
     }
 
     public class LinkAccVoucherModel

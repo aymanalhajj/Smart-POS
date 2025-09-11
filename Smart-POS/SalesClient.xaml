@@ -138,7 +138,7 @@
                                   ItemsSource="{Binding AccountList}" Margin="2,2,3,0" DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Client.AccountId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Client.AccountId" Mode="TwoWay" ValidatesOnExceptions="True" 
                                      ValidatesOnDataErrors="True" NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
                                         <vl:SelectListValidator/>

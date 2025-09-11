@@ -12,7 +12,8 @@
         Title="تحويل مخزني" Height="650" Width="1500" 
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-        
+        <vm:StoreTransferViewModel x:Key="ViewModel" />
+        <vm:StoreTransferViewModel x:Key="searchViewModel" />
         <Style TargetType="ListViewItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         </Style>
@@ -22,7 +23,7 @@
             <TabItem Header="بيانات التحويل المخزني" Width="150">
 
                 <AdornerDecorator>
-                    <Grid x:Name="LayoutRoot">
+                    <Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource ViewModel}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10" />
                             <RowDefinition Height="45" />
@@ -45,14 +46,14 @@
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم التحويل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
                         <TextBox Grid.Row="1" Grid.Column="1" Height="26"
-                            Text="{Binding Path=Invoice.OrderNo, Mode=TwoWay}"
+                            Text="{Binding Path=Invoice.TransferNo, Mode=TwoWay}"
                             Margin="2" Width="150" VerticalAlignment="Top" />
                         <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">من مخزن</Label>
                         <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" 
                                   ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                      ValidatesOnDataErrors="True"
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     
@@ -64,7 +65,7 @@
                               ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" 
                               Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     ValidatesOnDataErrors="True"
                                     NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                    
@@ -75,14 +76,14 @@
                         <DatePicker Grid.Row="2" Grid.Column="1" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="150" 
                                     Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.TransferDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     
                                 </Binding>
                             </DatePicker.SelectedDate>
                         </DatePicker>
 
-                        <Label  Grid.Row="2" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مستم التحويل</Label>
+                        <Label  Grid.Row="2" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مستلم التحويل</Label>
                         <ComboBox Grid.Row="2" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                                   Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
@@ -111,14 +112,14 @@
                         <DatePicker Grid.Row="3" Grid.Column="1" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="150" 
                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <DatePicker.SelectedDate>
-                                <Binding Path="Invoice.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.ReceiveDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                    
                                 </Binding>
                             </DatePicker.SelectedDate>
                         </DatePicker>
 
-                        <Label  Grid.Row="3" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مستم الاستلام</Label>
+                        <Label  Grid.Row="3" Grid.Column="2" FontSize="12" VerticalAlignment="Top" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">مستلم الاستلام</Label>
                         <ComboBox Grid.Row="3" Grid.Column="3" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
@@ -134,7 +135,7 @@
                         <ComboBox Grid.Row="3" Grid.Column="5" VerticalAlignment="Top" Height="26" ItemsSource="{Binding StoreList}"  Margin="2" Width="150"  DisplayMemberPath="name" SelectedValuePath="id"  
                             Validation.ErrorTemplate="{StaticResource validationErrorTemplate}" >
                             <ComboBox.SelectedValue>
-                                <Binding Path="Invoice.StoreId"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                                <Binding Path="Invoice.BranchId"  Mode="TwoWay" ValidatesOnExceptions="True" 
                                     NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                                     
                                 </Binding>
@@ -183,9 +184,7 @@
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
                                 <DataGridTextColumn EditingElementStyle="{StaticResource errorStyle}" Header="الكمية" Width="80" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTemplateColumn 
-                        Header="الوحدة" 
-                        Width="150" >
+                                <DataGridTemplateColumn Header="الوحدة" Width="150" >
                                     <DataGridTemplateColumn.CellTemplate>
                                         <HierarchicalDataTemplate>
                                             <ComboBox 
@@ -262,8 +261,8 @@
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم الفاتورة" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
-                    <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.OrderNo}"
+                    <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Content="رقم التحويل" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" />
+                    <TextBox Grid.Row="1" Grid.Column="1" Height="26" Text="{Binding Path=Filters.TransferNo}"
                  Margin="2" Width="150" VerticalAlignment="Top" />
                     <Label Grid.Row="1" Grid.Column="2" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">الفرع</Label>
                     <ComboBox Grid.Row="1" Grid.Column="3" Height="26" VerticalAlignment="Top" ItemsSource="{Binding BranchList}" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" >
@@ -273,19 +272,19 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+                    <Label Grid.Row="1" Grid.Column="4" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ التحويل</Label>
                     <DatePicker Grid.Row="1" Grid.Column="5" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
                         <DatePicker.SelectedDate>
-                            <Binding Path="Filters.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                            <Binding Path="Filters.TransferDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </DatePicker.SelectedDate>
                     </DatePicker>
 
-                    <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ الفاتورة</Label>
+                    <Label Grid.Row="1" Grid.Column="6" VerticalAlignment="Top" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="110" HorizontalContentAlignment="Right">تاريخ التحويل</Label>
                     <DatePicker Grid.Row="1" Grid.Column="7" VerticalAlignment="Top" VerticalContentAlignment="Center"  Margin="2" Width="110" >
                         <DatePicker.SelectedDate>
-                            <Binding Path="Filters.OrderDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
+                            <Binding Path="Filters.TransferDate"  Mode="TwoWay" ValidatesOnExceptions="True" 
                              NotifyOnValidationError="True" UpdateSourceTrigger="PropertyChanged">
                             </Binding>
                         </DatePicker.SelectedDate>
@@ -302,7 +301,7 @@
                             </Binding>
                         </ComboBox.SelectedValue>
                     </ComboBox>
-                    <Button  Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
+                    <Button Command="{Binding SearchCommand}" Name="SearchBtn"  Grid.RowSpan="3" Grid.Column="8" HorizontalAlignment="Left" Width="150" Content="بحث" FontSize="18" FontWeight="Bold" Height="45" Margin="10" VerticalAlignment="Bottom" />
                     <ListView MouseDoubleClick="InvoicesList_MouseDoubleClick" SelectionChanged="InvoicesList_SelectionChanged" SelectedIndex="{Binding Path=InvoiceToEditIndex, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.ColumnSpan="9" ItemsSource="{Binding Path=InvoiceListItems}" Name="InvoicesList" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5,5">
                         <ListView.View>
                             <GridView AllowsColumnReorder="true">

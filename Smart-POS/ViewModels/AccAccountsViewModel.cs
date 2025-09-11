@@ -10,6 +10,9 @@ using Smart_POS.Repository;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Newtonsoft.Json.Linq;
+using System.Windows.Documents;
+using System.Windows.Data;
+using System.ComponentModel.Design;
 
 namespace Smart_POS.ViewModels
 {
@@ -41,7 +44,6 @@ namespace Smart_POS.ViewModels
         public int InvoiceToEditIndex { get; set; }
         private AccAccountsItemViewModel account;
         private ObservableCollection<Item> _accountList;
-        private ObservableCollection<AccAccountsListItemModel> _ListItems;
         public ObservableCollection<Item> AccountList
         {
             get
@@ -54,6 +56,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountList");
             }
         }
+        private ObservableCollection<AccAccountsListItemModel> _ListItems;
         public ObservableCollection<AccAccountsListItemModel> ListItems
         {
             get
@@ -66,15 +69,52 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
+        public ObservableCollection<TreeAccountsListItemModel> _TreeListItems;
+        public ObservableCollection<TreeAccountsListItemModel> TreeListItems
+        {
+            get
+            {
+                return _TreeListItems;
+            }
+            set
+            {
+                _TreeListItems = value;
+                OnPropertyChanged("TreeListItems");
+            }
+        }
+        public void SearchRootAccount()
+        {
+            try
+            {
+                TreeListItems = repo.GetAllAccounts();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public ICommand _SearchRootCommand;
+        public ICommand SearchRootCommand
+        {
+            get
+            {
+                if (_SearchRootCommand == null)
+                {
+                    _SearchRootCommand = new RelayCommand(o => SearchRootAccount());
+                }
+                return _SearchRootCommand;
+            }
+        }
+        public AccAccountsItemViewModel _account;
         public AccAccountsItemViewModel Account
         {
             get
             {
-                return account;
+                return _account;
             }
             set
             {
-                account = value;
+                _account = value;
                 OnPropertyChanged("Account");
             }
         }
@@ -82,6 +122,8 @@ namespace Smart_POS.ViewModels
         public void InitLists()
         {
             AccountList = repo.GetAccountList();
+            ListItems = repo.GetAll();
+            TreeListItems = repo.GetAllAccounts();
         }
         private void ClearForm()
         {

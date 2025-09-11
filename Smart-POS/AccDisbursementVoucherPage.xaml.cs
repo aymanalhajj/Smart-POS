@@ -11,12 +11,12 @@ using MessageBox = System.Windows.MessageBox;
 namespace Smart_POS
 {
     /// <summary>
-    /// Interaction logic for AccVoucherPage.xaml
+    /// Interaction logic for AccDisbursementVoucherPage.xaml
     /// </summary>
-    public partial class AccVoucherPage : Window
+    public partial class AccDisbursementVoucherPage : Window
     {
         AccVoucherViewModel viewModel;
-        public AccVoucherPage()
+        public AccDisbursementVoucherPage()
         {
             InitializeComponent();
             viewModel = (AccVoucherViewModel)LayoutRoot.DataContext;
@@ -85,7 +85,7 @@ namespace Smart_POS
         private void vouAmount_TextChanged(object sender, TextChangedEventArgs e)
         {
             totalDebtor.Text = vouAmount.Text;
-            if(totalDebtor.Text == "" || totalDebtor.Text == null)
+            if (totalDebtor.Text == "" || totalDebtor.Text == null)
             {
                 vouAmount.Text = "0";
                 totalDebtor.Text = "0";
@@ -93,11 +93,11 @@ namespace Smart_POS
         }
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            totalDebtor.Text = "0";   
+            totalDebtor.Text = "0";
             totalCreditor.Text = "0";
             totalVat.Text = "0";
             vouAmount.Text = "0";
-            VoucherType.Text = "2";
+            VoucherType.Text = "3";
         }
     }
 }

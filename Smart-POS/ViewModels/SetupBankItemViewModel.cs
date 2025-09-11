@@ -208,7 +208,7 @@ namespace Smart_POS.ViewModels
             set
             {
                 _for_all_branches = value;
-                OnPropertyChanged("TelNo");
+                OnPropertyChanged("ForAllBranches");
             }
         }
         public object _status { get; set; }

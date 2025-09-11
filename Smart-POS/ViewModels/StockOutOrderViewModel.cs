@@ -9,7 +9,6 @@ namespace Smart_POS.ViewModels
 {
     class StockOutOrderViewModel : INotifyPropertyChanged
     {
-
         public StockOutOrderViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<StockItemViewModel> { };
@@ -37,7 +36,6 @@ namespace Smart_POS.ViewModels
 
             InitLists();
         }
-
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
         private StockOutOrderRepo repo { get; set; }
@@ -536,6 +534,5 @@ namespace Smart_POS.ViewModels
                 return _SearchCommand;
             }
         }
-
     }
 }

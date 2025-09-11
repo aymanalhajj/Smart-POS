@@ -9,7 +9,6 @@ namespace Smart_POS.Repository
 {
     internal class StockInOrderRepo : ApiRepository
     {
-
         public InvoiceItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
         {
             try
@@ -37,8 +36,6 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-
         public InvoiceItemModel? GetProductPrice(string productId)
         {
             try
@@ -64,7 +61,6 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
         public InvoiceItemModel? GetProductPriceByBarcode(string barcode)
         {
             try
@@ -90,7 +86,6 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
         public ActionStatusModel PostPurchaseInoice(StockModel model)
         {
             try
@@ -118,7 +113,6 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
         public StockModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
         {
             try
@@ -149,7 +143,6 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
         public ObservableCollection<StockListItemModel> GetAllPurchaseInoices()
         {
             ObservableCollection<StockListItemModel> list = new ObservableCollection<StockListItemModel>();
@@ -181,7 +174,6 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-
         internal ObservableCollection<Item> GetAccountList()
         {
             throw new NotImplementedException();

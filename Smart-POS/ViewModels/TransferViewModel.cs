@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using POS_Desktop.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
+using System.Web;
 using Smart_POS.Models;
+using System.Windows;
+using Smart_POS.Repository;
+using System.ComponentModel.Design;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Smart_POS.ViewModels
 {
-    public class StockViewModel : INotifyPropertyChanged
+    public class TransferViewModel : INotifyPropertyChanged
     {
         public delegate void ResetPaidCallbackEventHandler();
         public event ResetPaidCallbackEventHandler ResetPaidCallback;
@@ -21,9 +22,11 @@ namespace Smart_POS.ViewModels
         public delegate void DiscountCallbackEventHandler(float DiscountPercent);
 
         public event DiscountCallbackEventHandler DiscountCallback;
-        public StockViewModel()
+
+        public TransferViewModel()
         {
-            OrderDate = DateTime.Now;
+            TransferDate = DateTime.Now;
+            ReceiveDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
             items = new List<InvoiceItemViewModel> { new InvoiceItemViewModel() };
@@ -31,30 +34,30 @@ namespace Smart_POS.ViewModels
             Accountable = 0;
             CompanyId = 1;
         }
-        public int _order_id { get; set; }
-        public int OrderId
+        public int _transfer_id { get; set; }
+        public int TransferId
         {
             get
             {
-                return _order_id;
+                return _transfer_id;
             }
             set
             {
-                _order_id = value;
-                OnPropertyChanged("OrderId");
+                _transfer_id = value;
+                OnPropertyChanged("TransferId");
             }
         }
-        public int _order_no { get; set; }
-        public int OrderNo
+        public int _transfer_no { get; set; }
+        public int TransferNo
         {
             get
             {
-                return _order_no;
+                return _transfer_no;
             }
             set
             {
-                _order_no = value;
-                OnPropertyChanged("OrderNo");
+                _transfer_no = value;
+                OnPropertyChanged("TransferNo");
             }
         }
         public object provider_inv_id;
@@ -83,17 +86,30 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Notes");
             }
         }
-        public object _order_date { get; set; }
-        public object OrderDate
+        public object _transfer_date { get; set; }
+        public object TransferDate
         {
             get
             {
-                return _order_date;
+                return _transfer_date;
             }
             set
             {
-                _order_date = value;
-                OnPropertyChanged("OrderDate");
+                _transfer_date = value;
+                OnPropertyChanged("TransferDate");
+            }
+        }
+        public object _receive_date { get; set; }
+        public object ReceiveDate
+        {
+            get
+            {
+                return _receive_date;
+            }
+            set
+            {
+                _receive_date = value;
+                OnPropertyChanged("ReceiveDate");
             }
         }
         public object _provider_inv_date { get; set; }
@@ -161,7 +177,19 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Accountable");
             }
         }
-
+        public int _has_received { get; set; }
+        public int HasReceived
+        {
+            get
+            {
+                return _has_received;
+            }
+            set
+            {
+                _has_received = value;
+                OnPropertyChanged("HasReceived");
+            }
+        }
         public object _account_id { get; set; }
         public object AccountId
         {
@@ -468,6 +496,58 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("BankAccId");
             }
         }
+        public object _from_store_id { get; set; }
+        public object FromStoreId
+        {
+            get
+            {
+                return _from_store_id;
+            }
+            set
+            {
+                _from_store_id = value;
+                OnPropertyChanged("FromStoreId");
+            }
+        }
+        public object _to_store_id { get; set; }
+        public object ToStoreId
+        {
+            get
+            {
+                return _to_store_id;
+            }
+            set
+            {
+                _to_store_id = value;
+                OnPropertyChanged("ToStoreId");
+            }
+        }
+        public object _transfer_by { get; set; }
+        public object TransferBy
+        {
+            get
+            {
+                return _transfer_by;
+            }
+            set
+            {
+                _transfer_by = value;
+                OnPropertyChanged("TransferBy");
+            }
+        }
+        public object _received_by { get; set; }
+        public object ReceivedBy
+        {
+            get
+            {
+                return _received_by;
+            }
+            set
+            {
+                _received_by = value;
+                OnPropertyChanged("ReceivedBy");
+            }
+        }
         public double _paid_amount { get; set; }
         public double PaidAmount
         {
@@ -511,53 +591,56 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PaidAmount");
             }
         }
-        public void FromInvoiceModel(StockModel model)
+        public void FromInvoiceModel(StoreTransferModel model)
         {
             if (model != null)
             {
-                BranchId = model.BranchId;
+                TransferId = model.TransferId;
+                FromStoreId = model.FromStoreId;
+                ToStoreId = model.ToStoreId;
+                TransferDate = model.TransferDate;
+                TransferBy = model.TransferBy;
+                HasReceived = model.HasReceived;
+                ReceiveDate = model.ReceiveDate;
+                ReceivedBy = model.ReceivedBy;
                 CompanyId = model.CompanyId;
-                AccountId = model.AccountId;
-                RefId = model.RefId;
-                CostCenterId = model.CostCtrId;
-                Accountable = model.Accountable;
-                OrderNo = model.OrderNo;
-                OrderId = model.OrderId;
-                OrderDate = model.OrderDate;
-                Notes = model.Notes;
-                StoreId = model.StoreId;
-                InvoiceTotalAmount = model.TotalAmount;
-                UserId = model.UserId;
-
+                TransferNo = model.TransferNo;
+                BranchId = model.BranchId;
             }
             else
             {
                 this.clear();
             }
         }
-        public StockModel ToInvoiceModel()
+        public StoreTransferModel ToInvoiceModel()
         {
-            StockModel model = new()
+            StoreTransferModel model = new()
             {
-                OrderId = this.OrderId,
-                OrderNo = this.OrderNo,
-                OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
-                BranchId = this.BranchId,
-                RefId = this.RefId,
-                TotalAmount = this.InvoiceTotalAmount,
-                Notes = this.Notes,
-                StoreId = this.StoreId,
-                CostCtrId = this.CostCenterId,
-                Accountable = this.Accountable,
-                AccountId = this.AccountId,
+                TransferId = this.TransferId,
+                FromStoreId = this.FromStoreId,
+                ToStoreId = this.ToStoreId,
+                TransferDate = String.Format("{0:dd-MM-yyyy}", this.TransferDate),
+                TransferBy = this.TransferBy,
+                HasReceived = this.HasReceived,
+                ReceiveDate = String.Format("{0:dd-MM-yyyy}", this.ReceiveDate),
+                ReceivedBy = this.ReceivedBy,
                 CompanyId = this.CompanyId,
-                UserId = this.UserId,
+                TransferNo = this.TransferNo,
+                BranchId = this.BranchId,
                 Items = new List<StockItemModel>()
             };
             return model;
         }
         public void clear()
         {
+            TransferId = 0;
+            TransferNo = 0;
+            FromStoreId = null;
+            ToStoreId = null;
+            TransferDate = DateTime.Now;
+            TransferBy = null;
+            ReceiveDate = DateTime.Now;
+            ReceivedBy = null;
             BankAccId = null;
             AccountId = null;
             RefId = null;
@@ -567,9 +650,6 @@ namespace Smart_POS.ViewModels
             CompanyId = 1;
             CostCenterId = null;
             DeferredAmount = 0;
-            OrderNo = 0;
-            OrderId = 0;
-            OrderDate = DateTime.Now;
             InvoiceTotalAmount = 0;
             InvoiceType = 1;
             Notes = null;
@@ -592,7 +672,7 @@ namespace Smart_POS.ViewModels
             TotalVat = 0;
             UserId = 0;
         }
-
+        
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #region INotifyPropertyChanged Members

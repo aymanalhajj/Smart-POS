@@ -37,7 +37,6 @@ namespace Smart_POS.ViewModels
         public delegate bool ValidateCallbackEventHandler();
         public event ValidateCallbackEventHandler ValidateCallback;
         private SetupBranchRepo repo { get; set; }
-        private SetupBranchItemViewModel Branch { get; set; }
         public int CurrentRow { get; set; }
         public int InvoiceToEditIndex { get; set; }
         private SetupBranchItemViewModel branch;
@@ -61,7 +60,7 @@ namespace Smart_POS.ViewModels
         public void LoadCity()
         {
 
-            if (Provider.CountryId != null)
+            if (Branch.CountryId != null)
             {
                 CityList = repo.GetCityList(Branch.CountryId.ToString());
             }
@@ -69,7 +68,7 @@ namespace Smart_POS.ViewModels
 
         public void LoadRegion()
         {
-            if (Provider.CountryId != null && Provider.CityId != null)
+            if (Branch.CountryId != null && Branch.CityId != null)
             {
                 RegionList = repo.GetRegionList(Branch.CountryId.ToString(), Branch.CityId.ToString());
             }
@@ -122,20 +121,20 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ListItems");
             }
         }
-        public SetupBranchItemViewModel _provider;
-        public SetupBranchItemViewModel Provider
+        public SetupBranchItemViewModel _branch;
+        public SetupBranchItemViewModel Branch
         {
             get
             {
-                return _provider;
+                return _branch;
             }
             set
             {
-                _provider = value;
-                OnPropertyChanged("Provider");
+                _branch = value;
+                OnPropertyChanged("Branch");
             }
         }
-        private ProviderItemViewModel filters;
+        private SetupBranchItemViewModel filters;
         public void InitLists()
         {
             AccountList = repo.GetAccountList();
@@ -147,18 +146,18 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                Provider.clear();
+                Branch.clear();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowData(ProviderModel? model)
+        public void ShowData(SetupBranchModel? model)
         {
             if (model != null)
             {
-                Provider.FromModel(model);
+                Branch.FromModel(model);
             }
         }
         public void LoadData()
@@ -192,7 +191,7 @@ namespace Smart_POS.ViewModels
                 return;
             try
             {
-                var res = repo.Post(_provider.ToModel());
+                var res = repo.Post(Branch.ToModel());
                 if (res != null && res.Status == 1)
                 {
                     MessageBox.Show(res.Message);
@@ -225,9 +224,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Branch.BranchId != null && !Branch.BranchId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", Id: Branch.BranchId.ToString());
                     ShowData(res);
                 }
             }
@@ -240,9 +239,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Provider.ProviderId != null && !Provider.ProviderId.Equals("0"))
+                if (Branch.BranchId != null && !Branch.BranchId.Equals("0"))
                 {
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Provider.ProviderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", Id: Branch.BranchId.ToString());
                     ShowData(res);
                 }
             }

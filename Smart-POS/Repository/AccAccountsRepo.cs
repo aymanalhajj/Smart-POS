@@ -22,7 +22,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/providers" +
+                    $"setup/acc_accounts" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
                 var res = JsonConvert.DeserializeObject<AccAccountsListModel>(response.Content.ReadAsStringAsync().Result);
@@ -48,12 +48,44 @@ namespace Smart_POS.Repository
             }
             return list;
         }
+        public ObservableCollection<TreeAccountsListItemModel> GetAllAccounts()
+        {
+            ObservableCollection<TreeAccountsListItemModel> list = new ObservableCollection<TreeAccountsListItemModel>();
+            try
+            {
+                var requestUri = new Uri($"{baseUrl}" +
+                    $"setup/parent_accounts11" +
+                    $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
+                var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
+                var res = JsonConvert.DeserializeObject<TreeAccountsListModel>(response.Content.ReadAsStringAsync().Result);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    Utils.ShowMessage("مشكلة في الوصول");
+                }
+                else
+                {
+                    if (res != null)
+                    {
+                        foreach (var item in res.items)
+                        {
+                            list.Add(item);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Utils.ShowMessage(ex.Message);
+            }
+            return list;
+        }
         public AccAccountsModel Get(string? first, string? last, string? next, string? prev, string? Id)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
+                    $"setup/acc_account" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -82,7 +114,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider", UriKind.Absolute);
+                    $"setup/acc_account", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -107,7 +139,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
+                    $"setup/acc_account" +
                     $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)

@@ -1,637 +1,481 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
+using System.Windows;
 using Smart_POS.Models;
+using Smart_POS.Repository;
 
 namespace Smart_POS.ViewModels
 {
     public class StoreTransferViewModel : INotifyPropertyChanged
     {
-        public delegate void ResetPaidCallbackEventHandler();
-        public event ResetPaidCallbackEventHandler ResetPaidCallback;
-
-        public delegate void ResetPaidCashCallbackEventHandler();
-        public event ResetPaidCashCallbackEventHandler ResetPaidCashCallback;
-
-        public delegate void DiscountCallbackEventHandler(float DiscountPercent);
-
-        public event DiscountCallbackEventHandler DiscountCallback;
         public StoreTransferViewModel()
         {
-            OrderDate = DateTime.Now;
-            InvoiceDate = DateTime.Now;
-            ProviderInvDate = DateTime.Now;
-            StoreDate = DateTime.Now;
-            //items = new List<StoreTransferItemViewModel> { new StoreTransferItemViewModel() };
-            PaymentType = 1;
-            InvoiceType = 1;
-            CompanyId = 1;
-        }
-        public int _invoice_id { get; set; }
-        public int InvoiceId
-        {
-            get
-            {
-                return _invoice_id;
-            }
-            set
-            {
-                _invoice_id = value;
-                OnPropertyChanged("InvoiceId");
-            }
-        }
-        public int _invoice_no { get; set; }
-        public int InvoiceNo
-        {
-            get
-            {
-                return _invoice_no;
-            }
-            set
-            {
-                _invoice_no = value;
-                OnPropertyChanged("InvoiceNo");
-            }
-        }
-        public object provider_inv_id;
-        public object ProviderInvId
-        {
-            get
-            {
-                return provider_inv_id;
-            }
-            set
-            {
-                provider_inv_id = value;
-                OnPropertyChanged("ProviderInvId");
-            }
-        }
-        public object _notes { get; set; }
-        public object Notes
-        {
-            get
-            {
-                return _notes;
-            }
-            set
-            {
-                _notes = value;
-                OnPropertyChanged("Notes");
-            }
-        }
+            _InvoiceDetailItems = new ObservableCollection<StockItemViewModel> { };
+            _InvoiceListItems = new ObservableCollection<StockListItemModel> { };
+            ProductList = new ObservableCollection<Item> { };
+            BranchList = new ObservableCollection<Item> { };
+            StoreList = new ObservableCollection<Item> { };
+            AccountList = new ObservableCollection<Item> { };
 
-        public object _order_date { get; set; }
-        public object OrderDate
-        {
-            get
-            {
-                return _order_date;
-            }
-            set
-            {
-                _order_date = value;
-                OnPropertyChanged("OrderDate");
-            }
-        }
-        public object _invoice_date { get; set; }
-        public object InvoiceDate
-        {
-            get
-            {
-                return _invoice_date;
-            }
-            set
-            {
-                _invoice_date = value;
-                OnPropertyChanged("InvoiceDate");
-            }
-        }
-        public object _provider_inv_date { get; set; }
-        public object ProviderInvDate
-        {
-            get
-            {
-                return _provider_inv_date;
-            }
-            set
-            {
-                _provider_inv_date = value;
-                OnPropertyChanged("ProviderInvDate");
-            }
-        }
-        public object _store_date { get; set; }
-        public object StoreDate
-        {
-            get
-            {
-                return _store_date;
-            }
-            set
-            {
-                _store_date = value;
-                OnPropertyChanged("StoreDate");
-            }
-        }
+            invoice = new TransferViewModel();
+            filters = new TransferViewModel();
 
-        public object _branch_id { get; set; }
-        public object BranchId
-        {
-            get
-            {
-                return _branch_id;
-            }
-            set
-            {
-                _branch_id = value;
-                OnPropertyChanged("BranchId");
-            }
-        }
-        public object _provider_id { get; set; }
-        public object ProviderId
-        {
-            get
-            {
-                return _provider_id;
-            }
-            set
-            {
-                _provider_id = value;
-                OnPropertyChanged("ProviderId");
-            }
-        }
+            invoice.ResetPaidCallback += new TransferViewModel.ResetPaidCallbackEventHandler(ResetPaid);
+            invoice.DiscountCallback += new TransferViewModel.DiscountCallbackEventHandler(DistributeDiscount);
+            invoice.ResetPaidCashCallback += new TransferViewModel.ResetPaidCashCallbackEventHandler(ResetCashBankPaid);
 
-        public object _client_id { get; set; }
-        public object ClientId
-        {
-            get
-            {
-                return _client_id;
-            }
-            set
-            {
-                _client_id = value;
-                OnPropertyChanged("ClientId");
-            }
+            repo = new StoreTransferRepo();
+            InitLists();
         }
-        public object _cost_ctr_id { get; set; }
-        public object CostCenterId
-        {
-            get
-            {
-                return _cost_ctr_id;
-            }
-            set
-            {
-                _cost_ctr_id = value;
-                OnPropertyChanged("CostCenterId");
-            }
-        }
+        public delegate bool ValidateCallbackEventHandler();
+        public event ValidateCallbackEventHandler ValidateCallback;
+        private StoreTransferRepo repo { get; set; }
+        public int CurrentRow { get; set; }
+        public int InvoiceToEditIndex { get; set; }
+        private TransferViewModel invoice;
+        private TransferViewModel filters;
+        private ObservableCollection<StockItemViewModel> _InvoiceDetailItems;
+        private ObservableCollection<StockListItemModel> _InvoiceListItems;
 
+        private ObservableCollection<Item> _productList;
+        private ObservableCollection<Item> _branchList;
+        private ObservableCollection<Item> _storeList;
+        private ObservableCollection<Item> _accountList;
 
-        public int _invoice_type { get; set; }
-        public int InvoiceType
+        public void InitLists()
         {
-            get
-            {
-                return _invoice_type;
-            }
+            BranchList = repo.GetBranchList();
+            StoreList = repo.GetStoreList();
+            AccountList = repo.GetAccountList();
+            //ProviderList = repo.GetProviderList();
+            //BankList = repo.GetBankList();
+            ProductList = repo.GetProductList();
+        }
+        public ObservableCollection<Item> ProductList
+        {
+            get { return _productList; }
             set
             {
-                _invoice_type = value;
-                if (ResetPaidCallback != null)
-                {
-                    ResetPaidCallback();
-                }
-                OnPropertyChanged("InvoiceType");
+                _productList = value;
+                OnPropertyChanged("ProductList");
             }
         }
-        public object _store_id { get; set; }
-        public object StoreId
+        public ObservableCollection<Item> BranchList
         {
-            get
-            {
-                return _store_id;
-            }
+            get { return _branchList; }
             set
             {
-                _store_id = value;
-                OnPropertyChanged("StoreId");
+                _branchList = value;
+                OnPropertyChanged("BranchList");
             }
         }
-        public object safe_id { get; set; }
-        public object SafeId
+        public ObservableCollection<Item> StoreList
         {
-            get
-            {
-                return safe_id;
-            }
+            get { return _storeList; }
             set
             {
-                safe_id = value;
-                OnPropertyChanged("SafeId");
+                _storeList = value;
+                OnPropertyChanged("StoreList");
             }
         }
-        public List<InvoiceItemViewModel> items { get; set; }
-
-        public int _payment_type { get; set; }
-        public int PaymentType
+        public ObservableCollection<Item> AccountList
         {
-            get
-            {
-                return _payment_type;
-            }
+            get { return _accountList; }
             set
             {
-                _payment_type = value;
-                if (ResetPaidCashCallback != null)
-                {
-                    ResetPaidCashCallback();
-                }
-                OnPropertyChanged("PaymentType");
+                _accountList = value;
+                OnPropertyChanged("AccountList");
             }
         }
-        public double _pre_discount_total_amount { get; set; }
-        public double PreDiscountTotalAmount
+        public ObservableCollection<StockItemViewModel> InvoiceDetailItems
         {
-            get
-            {
-                return _pre_discount_total_amount;
-            }
+            get { return _InvoiceDetailItems; }
             set
             {
-                _pre_discount_total_amount = value;
-                OnPropertyChanged("PreDiscountTotalAmount");
+                _InvoiceDetailItems = value;
+                OnPropertyChanged("DetailItems");
             }
         }
-        public double _pre_discount_total_vat { get; set; }
-        public double PreDiscountTotalVat
+        public ObservableCollection<StockListItemModel> InvoiceListItems
         {
-            get
-            {
-                return _pre_discount_total_vat;
-            }
+            get { return _InvoiceListItems; }
             set
             {
-                _pre_discount_total_vat = value;
-                OnPropertyChanged("PreDiscountTotalVat");
+                _InvoiceListItems = value;
+                OnPropertyChanged("ListItems");
             }
         }
-        public float _client_discount { get; set; }
-        public float ClientDiscount
+        public StoreTransferModel ToInvoiceModel()
         {
-            get
+            StoreTransferModel model = invoice.ToInvoiceModel();
+            foreach (var item in InvoiceDetailItems)
             {
-                return _client_discount;
+                model.Items.Add(item.ToInvoiceItemModel());
             }
-            set
-            {
-                _client_discount = value;
-                if (DiscountCallback != null)
-                {
-                    DiscountCallback((float)(_client_discount / (PreDiscountTotalVat + PreDiscountTotalAmount) * 100));
-                }
-                OnPropertyChanged("ClientDiscount");
-            }
-        }
-        public double _total_discount { get; set; }
-        public double TotalDiscount
-        {
-            get
-            {
-                return _total_discount;
-            }
-            set
-            {
-                _total_discount = value;
-                OnPropertyChanged("TotalDiscount");
-            }
-        }
-        public double _post_discount_total_amount { get; set; }
-        public double PostDiscountTotalAmount
-        {
-            get
-            {
-                return _post_discount_total_amount;
-            }
-            set
-            {
-                _post_discount_total_amount = value;
-                OnPropertyChanged("PostDiscountTotalAmount");
-            }
-        }
-        public double _total_vat { get; set; }
-        public double TotalVat
-        {
-            get
-            {
-                return _total_vat;
-            }
-            set
-            {
-                _total_vat = value;
-                OnPropertyChanged("TotalVat");
-            }
-        }
-        public int _total_quantity { get; set; }
-        public int TotalQuantity
-        {
-            get
-            {
-                return _total_quantity;
-            }
-            set
-            {
-                _total_quantity = value;
-                OnPropertyChanged("TotalQuantity");
-            }
-        }
-        public double _invoice_total_amount { get; set; }
-        public double InvoiceTotalAmount
-        {
-            get
-            {
-                return _invoice_total_amount;
-            }
-            set
-            {
-                _invoice_total_amount = value;
-                OnPropertyChanged("InvoiceTotalAmount");
-            }
-        }
-        public double _paid_cash_amount { get; set; }
-        public double PaidCashAmount
-        {
-            get
-            {
-                return _paid_cash_amount;
-            }
-            set
-            {
-                if (PaidAmount - value < 0)
-                {
-                    _paid_cash_amount = PaidAmount;
-                }
-                else
-                {
-                    _paid_cash_amount = value;
-                }
-                OnPropertyChanged("PaidCashAmount");
-                PaidBankAmount = PaidAmount - _paid_cash_amount;
-            }
-        }
-        public double _paid_bank_amount { get; set; }
-        public double PaidBankAmount
-        {
-            get
-            {
-                return _paid_bank_amount;
-            }
-            set
-            {
-                if (PaidAmount - value < 0)
-                {
-                    _paid_cash_amount = PaidAmount;
-                }
-                else
-                {
-                    _paid_bank_amount = value;
-                }
-                OnPropertyChanged("PaidBankAmount");
-                _paid_cash_amount = PaidAmount - _paid_bank_amount;
-                OnPropertyChanged("PaidCashAmount");
-            }
-        }
-        public int _company_id { get; set; }
-        public int CompanyId
-        {
-            get
-            {
-                return _company_id;
-            }
-            set
-            {
-                _company_id = value;
-                OnPropertyChanged("CompanyId");
-            }
-        }
-        public int _user_id { get; set; }
-        public int UserId
-        {
-            get
-            {
-                if (_user_id == 0)
-                    return 1;
-                return _user_id;
-            }
-            set
-            {
-                _user_id = value;
-                OnPropertyChanged("UserId");
-            }
-        }
-        public object _bank_acc_id { get; set; }
-        public object BankAccId
-        {
-            get
-            {
-                return _bank_acc_id;
-            }
-            set
-            {
-                _bank_acc_id = value;
-                OnPropertyChanged("BankAccId");
-            }
-        }
-        public int _order_id { get; set; }
-        public int OrderId
-        {
-            get
-            {
-                return _order_id;
-            }
-            set
-            {
-                _order_id = value;
-                OnPropertyChanged("OrderId");
-            }
-        }
-        public object _order_no { get; set; }
-        public object OrderNo
-        {
-            get
-            {
-                return _order_no;
-            }
-            set
-            {
-                _order_no = value;
-                OnPropertyChanged("OrderNo");
-            }
-        }
-        public double _paid_amount { get; set; }
-        public double PaidAmount
-        {
-            get
-            {
-                return _paid_amount;
-            }
-            set
-            {
-                if (InvoiceTotalAmount - value < 0)
-                {
-                    _paid_amount = InvoiceTotalAmount;
-                }
-                else
-                {
-                    _paid_amount = value;
-                }
-                OnPropertyChanged("PaidAmount");
-                DeferredAmount = InvoiceTotalAmount - _paid_amount;
-            }
-        }
-        public double _deferred_amount { get; set; }
-        public double DeferredAmount
-        {
-            get
-            {
-                return _deferred_amount;
-            }
-            set
-            {
-                if (InvoiceTotalAmount - value < 0)
-                {
-                    _deferred_amount = InvoiceTotalAmount;
-                }
-                else
-                {
-                    _deferred_amount = value;
-                }
-                OnPropertyChanged("DeferredAmount");
-                _paid_amount = InvoiceTotalAmount - _deferred_amount;
-                OnPropertyChanged("PaidAmount");
-            }
-        }
-        public void FromInvoiceModel(InvoiceModel model)
-        {
-            if (model != null)
-            {
-                OrderId = model.OrderId;
-                OrderNo = model.OrderNo;
-                BankAccId = model.BankAccId;
-                BranchId = model.BranchId;
-                ClientDiscount = model.ClientDiscount;
-                CompanyId = model.CompanyId;
-                CostCenterId = model.CostCenterId;
-                DeferredAmount = model.DeferredAmount;
-                InvoiceNo = model.InvoiceNo;
-                InvoiceId = model.InvoiceId;
-                InvoiceDate = model.InvoiceDate;
-                InvoiceTotalAmount = model.InvoiceTotalAmount;
-                InvoiceType = model.InvoiceType;
-                Notes = model.Notes;
-                PaidAmount = model.PaidAmount;
-                PaidBankAmount = model.PaidBankAmount;
-                PaidCashAmount = model.PaidCashAmount;
-                PaymentType = model.PaymentType;
-                PostDiscountTotalAmount = model.PostDiscountTotalAmount;
-                PreDiscountTotalAmount = model.PreDiscountTotalAmount;
-                PreDiscountTotalVat = model.PreDiscountTotalVat;
-                ProviderId = model.ProviderId;
-                ClientId = model.ClientId;
-                ProviderInvDate = model.ProviderInvDate;
-                ProviderInvId = model.ProviderInvId;
-                SafeId = model.SafeId;
-                StoreDate = model.StoreDate;
-                StoreId = model.StoreId;
-                TotalDiscount = model.TotalDiscount;
-                TotalQuantity = model.TotalQuantity;
-                TotalVat = model.TotalVat;
-                UserId = model.UserId;
-
-            }
-            else
-            {
-                this.clear();
-            }
-
-        }
-
-        public InvoiceModel ToInvoiceModel()
-        {
-            InvoiceModel model = new()
-            {
-                OrderId = this.OrderId,
-                OrderNo = this.OrderNo,
-                BankAccId = this.BankAccId,
-                BranchId = this.BranchId,
-                ClientDiscount = this.ClientDiscount,
-                CompanyId = this.CompanyId,
-                CostCenterId = this.CostCenterId,
-                DeferredAmount = this.DeferredAmount,
-                InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
-                OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
-                InvoiceId = this.InvoiceId,
-                InvoiceNo = this.InvoiceNo,
-                InvoiceTotalAmount = this.InvoiceTotalAmount,
-                InvoiceType = this.InvoiceType,
-                Notes = this.Notes,
-                PaidAmount = this.PaidAmount,
-                PaidBankAmount = this.PaidBankAmount,
-                PaymentType = this.PaymentType,
-                PostDiscountTotalAmount = this.PostDiscountTotalAmount,
-                PreDiscountTotalAmount = this.PreDiscountTotalAmount,
-                PreDiscountTotalVat = this.PreDiscountTotalVat,
-                ProviderId = this.ProviderId,
-                ClientId = this.ClientId,
-                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
-                ProviderInvId = this.ProviderInvId,
-                SafeId = this.SafeId,
-                StoreDate = String.Format("{0:dd-MM-yyyy}", this.StoreDate),
-                PaidCashAmount = this.PaidCashAmount,
-                StoreId = this.StoreId,
-                TotalDiscount = this.TotalDiscount,
-                TotalQuantity = this.TotalQuantity,
-                TotalVat = this.TotalVat,
-                UserId = this.UserId,
-                Items = new List<InvoiceItemModel>()
-            };
             return model;
         }
-        public void clear()
+        public TransferViewModel Invoice
         {
-            OrderId = 0;
-            OrderNo = null;
-            BankAccId = null;
-            BranchId = null;
-            ClientDiscount = 0;
-            CompanyId = 1;
-            CostCenterId = null;
-            DeferredAmount = 0;
-            InvoiceNo = 0;
-            InvoiceId = 0;
-            InvoiceDate = DateTime.Now;
-            InvoiceTotalAmount = 0;
-            InvoiceType = 1;
-            Notes = null;
-            PaidAmount = 0;
-            PaidBankAmount = 0;
-            PaidCashAmount = 0;
-            PaymentType = 1;
-            PostDiscountTotalAmount = 0;
-            PreDiscountTotalAmount = 0;
-            PreDiscountTotalVat = 0;
-            ProviderId = null;
-            ClientId = null;
-            ProviderInvDate = DateTime.Now;
-            ProviderInvId = null;
-            SafeId = null;
-            StoreDate = DateTime.Now;
-            StoreId = null;
-            TotalDiscount = 0;
-            TotalQuantity = 0;
-            TotalVat = 0;
-            UserId = 0;
-
+            get { return invoice; }
+            set { invoice = value; }
         }
+        public TransferViewModel Filters
+        {
+            get { return filters; }
+            set { filters = value; }
+        }
+        public ICommand _SaveCommand;
+        public ICommand _SearchCommand;
+        public ICommand _NewCommand;
+        public ICommand _FirstCommand;
+        public ICommand _NextCommand;
+        public ICommand _PrevCommand;
+        public ICommand _LastCommand;
 
+        private void SaveBtnClick()
+        {
+            if (!ValidateCallback())
+                return;
+            try
+            {
+                var res = repo.Post(ToInvoiceModel());
+                if (res != null && res.Status == 1)
+                {
+                    ClearForm();
+                }
+                MessageBox.Show(res.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void FirstBtnClick()
+        {
+            try
+            {
+                var res = repo.Get(first: "1", last: "0", next: "0", prev: "0", invoiceId: "");
+                ShowInvoice(res);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void NextBtnClick()
+        {
+            try
+            {
+                if (Invoice.TransferId != 0)
+                {
+                    var res = repo.Get(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.TransferId.ToString());
+                    ShowInvoice(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void PrevBtnClick()
+        {
+            try
+            {
+                if (Invoice.TransferId != 0)
+                {
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.TransferId.ToString());
+                    ShowInvoice(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void LastBtnClick()
+        {
+            try
+            {
+                var res = repo.Get(first: "0", last: "1", next: "0", prev: "0", invoiceId: "");
+                ShowInvoice(res);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void SearchBtnClick()
+        {
+            try
+            {
+                InvoiceListItems = repo.GetAll();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public ICommand SaveCommand
+        {
+            get
+            {
+                if (_SaveCommand == null)
+                {
+                    _SaveCommand = new RelayCommand(o => SaveBtnClick());
+                }
+                return _SaveCommand;
+            }
+        }
+        public ICommand NewCommand
+        {
+            get
+            {
+                if (_NewCommand == null)
+                {
+                    _NewCommand = new RelayCommand(o => ClearForm());
+                }
+                return _NewCommand;
+            }
+        }
+        public ICommand FirstCommand
+        {
+            get
+            {
+                if (_FirstCommand == null)
+                {
+                    _FirstCommand = new RelayCommand(o => FirstBtnClick());
+                }
+                return _FirstCommand;
+            }
+        }
+        public ICommand NextCommand
+        {
+            get
+            {
+                if (_NextCommand == null)
+                {
+                    _NextCommand = new RelayCommand(o => NextBtnClick());
+                }
+                return _NextCommand;
+            }
+        }
+        public ICommand PrevCommand
+        {
+            get
+            {
+                if (_PrevCommand == null)
+                {
+                    _PrevCommand = new RelayCommand(o => PrevBtnClick());
+                }
+                return _PrevCommand;
+            }
+        }
+        public ICommand LastCommand
+        {
+            get
+            {
+                if (_LastCommand == null)
+                {
+                    _LastCommand = new RelayCommand(o => LastBtnClick());
+                }
+                return _LastCommand;
+            }
+        }
+        public ICommand SearchCommand
+        {
+            get
+            {
+                if (_SearchCommand == null)
+                {
+                    _SearchCommand = new RelayCommand(o => SearchBtnClick());
+                }
+                return _SearchCommand;
+            }
+        }
+        private void ClearForm()
+        {
+            try
+            {
+                invoice.clear();
+                InvoiceDetailItems.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void ShowInvoice(StoreTransferModel? model)
+        {
+            if (model != null && model.Items != null)
+            {
+                invoice.FromInvoiceModel(model);
+                InvoiceDetailItems.Clear();
+
+                foreach (var item in model.Items)
+                {
+                    var itemViewModel = StockItemViewModel.FromStockItemModel(item);
+                    itemViewModel.CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    itemViewModel.GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+
+                    InvoiceDetailItems.Add(itemViewModel);
+                }
+            }
+        }
+        public void LoadInvoiceData()
+        {
+            try
+            {
+                if (InvoiceToEditIndex != -1)
+                {
+                    CurrentRow = -1;
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].OrderId.ToString());
+                    ShowInvoice(res);
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void GetProductPrice()
+        {
+            try
+            {
+
+                InvoiceDetailItems[CurrentRow].Load_ProductUnits();
+                InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+
+                InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+
+                var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
+                if (res != null)
+                {
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
+                    InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
+                    InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
+                    CalcSummary();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void GetProductPriceByBarcode(string productBarcode)
+        {
+            try
+            {
+                var res = repo.GetProductPriceByBarcode(productBarcode);
+                if (res != null)
+                {
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
+
+                    InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
+                    InvoiceDetailItems[CurrentRow].Load_ProductUnits();
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+
+                    InvoiceDetailItems[CurrentRow].CalcSummaryCallback += new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
+                    InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback += new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
+                    CalcSummary();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void GetProductUnitPrice()
+        {
+            try
+            {
+                if (CurrentRow != -1)
+                {
+                    var res = repo.GetProductUnitPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString(), InvoiceDetailItems[CurrentRow].Quantity.ToString(), InvoiceDetailItems[CurrentRow].ProductUnitId.ToString());
+                    if (res != null)
+                    {
+                        InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
+                        CalcSummary();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void DistributeDiscount(float DiscountPercent)
+        {
+            for (int i = 0; i < InvoiceDetailItems.Count; i++)
+            {
+                InvoiceDetailItems[i].DiscountPercentage = DiscountPercent.ToString();
+                InvoiceDetailItems[i].RecalcPrice();
+            }
+            CalcSummary();
+        }
+        public void RecalcPrice()
+        {
+            try
+            {
+                if (InvoiceDetailItems[CurrentRow].ProductId != null && InvoiceDetailItems[CurrentRow].ProductId != "")
+                {
+                    InvoiceDetailItems[CurrentRow].RecalcPrice();
+                    CalcSummary();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        public void CalcSummary()
+        {
+            invoice.PreDiscountTotalAmount = 0;
+            invoice.TotalDiscount = 0;
+            invoice.PostDiscountTotalAmount = 0;
+            invoice.TotalVat = 0;
+            invoice.PreDiscountTotalVat = 0;
+            invoice.TotalQuantity = 0;
+            invoice.InvoiceTotalAmount = 0;
+            foreach (var item in InvoiceDetailItems)
+            {
+                invoice.PreDiscountTotalAmount += double.Parse(item.TotalPrice);
+                invoice.TotalDiscount += double.Parse(item.DiscountValue);
+                invoice.PostDiscountTotalAmount += double.Parse(item.PostDiscountPrice);
+                invoice.TotalVat += double.Parse(item.VatValue);
+                invoice.PreDiscountTotalVat += double.Parse(item.PreDiscountVatValue);
+                invoice.TotalQuantity += int.Parse(item.Quantity);
+                invoice.InvoiceTotalAmount += double.Parse(item.TotalAmount);
+
+            }
+            invoice.PreDiscountTotalAmount = Math.Round(invoice.PreDiscountTotalAmount, 6);
+            invoice.TotalDiscount = Math.Round(invoice.TotalDiscount, 6);
+            invoice.PostDiscountTotalAmount = Math.Round(invoice.PostDiscountTotalAmount, 6);
+            invoice.TotalVat = Math.Round(invoice.TotalVat, 6);
+            invoice.PreDiscountTotalVat = Math.Round(invoice.PreDiscountTotalVat, 6);
+            invoice.InvoiceTotalAmount = Math.Round(invoice.InvoiceTotalAmount, 6);
+            ResetPaid();
+        }
+        public void ResetPaid()
+        {
+            invoice.PaidAmount = invoice.InvoiceTotalAmount;
+            invoice.DeferredAmount = 0;
+
+            ResetCashBankPaid();
+        }
+        public void ResetCashBankPaid()
+        {
+            invoice.PaidCashAmount = invoice.PaidAmount;
+            invoice.PaidBankAmount = 0;
+        }
+        
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #region INotifyPropertyChanged Members

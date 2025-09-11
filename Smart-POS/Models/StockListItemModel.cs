@@ -9,7 +9,6 @@ namespace Smart_POS.Models
 {
     public class StockListItemModel
     {
-
         [JsonProperty("order_id")]
         public int OrderId { get; set; }
 

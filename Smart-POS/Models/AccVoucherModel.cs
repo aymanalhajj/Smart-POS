@@ -9,51 +9,50 @@ namespace Smart_POS.Models
 {
     public class AccVoucherModel
     {
-
         [JsonProperty("acc_voucher_id")]
         public int AccVoucherId;
 
         [JsonProperty("amount")]
-        public object Amount;
+        public int Amount;
 
         [JsonProperty("account_id")]
-        public int AccountId;
+        public object AccountId;
 
         [JsonProperty("ref_id")]
-        public int RefId;
+        public object? RefId;
 
         [JsonProperty("payment_method")]
-        public object? PaymentMethod;
+        public int PaymentMethod;
 
         [JsonProperty("paid_to")]
         public object? PaidTo;
 
-        [JsonProperty("VoucherDate")]
-        public object? VoucherDate;
+        [JsonProperty("voucher_date")]
+        public object VoucherDate;
 
         [JsonProperty("posted")]
-        public object? Posted;
+        public int Posted;
 
         [JsonProperty("voucher_type")]
-        public object? VoucherType;
+        public int VoucherType;
 
         [JsonProperty("note")]
         public object? Note;
 
         [JsonProperty("check_no")]
-        public object? CheckNo;
+        public int CheckNo;
 
         [JsonProperty("check_date")]
-        public object? CheckDate;
+        public object CheckDate;
 
         [JsonProperty("cost_cntr_id")]
         public object? CostCntrId;
 
         [JsonProperty("company_id")]
-        public object? CompanyId;
+        public int CompanyId;
 
         [JsonProperty("total_vat")]
-        public object? TotalVat;
+        public double TotalVat;
 
         [JsonProperty("items")]
         public List<AccVoucherItemModel>? Items;

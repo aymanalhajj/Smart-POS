@@ -1,0 +1,49 @@
+﻿<Window x:Class="Smart_POS.AddEditAccountsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Smart_POS"
+      xmlns:con="clr-namespace:Smart_POS.Converters"
+      xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+      xmlns:vl="clr-namespace:Smart_POS.Validators"
+      mc:Ignorable="d" 
+      FlowDirection="RightToLeft"
+      Title="الدليل المحاسبي" Height="650" Width="1500" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        <con:RadioButtonCheckedConverter x:Key="RadioButtonCheckedConverter"/>
+        <vm:AccAccountsViewModel x:Key="viewModel"/>
+        <vm:AccAccountsViewModel x:Key="searchViewModel"/>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" MinHeight="150" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Command="{Binding SearchRootCommand}" Name="SearchBtn" Grid.RowSpan="3" Grid.Column="8" Content="بحث" Width="150" Height="45" FontSize="18" FontWeight="Bold"/>
+
+        <TreeView Name="GroupView" ItemsSource="{Binding}" Grid.Row="3" Grid.Column="0">
+
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding Items}">
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </HierarchicalDataTemplate>
+
+                <DataTemplate DataType="{x:Type local:Entry}">
+                    <TextBlock Text="{Binding Path=Name}"/>
+                </DataTemplate>
+            </TreeView.Resources>
+
+        </TreeView>
+
+    </Grid>
+</Window>

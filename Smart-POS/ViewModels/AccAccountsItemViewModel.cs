@@ -11,7 +11,6 @@ namespace Smart_POS.ViewModels
 {
     public class AccAccountsItemViewModel : INotifyPropertyChanged
     {
-
         public event PropertyChangedEventHandler? PropertyChanged;
 
         #region INotifyPropertyChanged Members
@@ -35,7 +34,7 @@ namespace Smart_POS.ViewModels
                 AccountType = this.AccountType,
                 AccountNature = this.AccountNature,
                 CompanyId = this.CompanyId,
-                SubAccount = this.SubAccount,
+                SubAccount = this.SubAccount.ToString(),
                 AccountLevel = this.AccountLevel,
                 AccDate= this.AccDate,
                 
@@ -66,7 +65,7 @@ namespace Smart_POS.ViewModels
             AccountType = model.AccountType;
             AccountNature = model.AccountNature;
             CompanyId = model.CompanyId;
-            SubAccount = model.SubAccount.ToString();
+            SubAccount = model.SubAccount;
             AccountLevel = model.AccountLevel;
             AccDate= model.AccDate;
         }
@@ -84,7 +83,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountId");
             }
         }
-
         public object _account_parent { get; set; }
         public object AccountParent
         {
@@ -98,7 +96,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountParent");
             }
         }
-
         public object _account_name_ar { get; set; }
         public object AccountNameAr
         {
@@ -112,7 +109,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountNameAr");
             }
         }
-
         public object _account_name_en { get; set; }
         public object AccountNameEn
         {
@@ -126,7 +122,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountNameEn");
             }
         }
-
         public object _account_type { get; set; }
         public object AccountType
         {
@@ -140,12 +135,13 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountType");
             }
         }
-
         public object _account_nature { get; set; }
         public object AccountNature
         {
             get
             {
+                if (_account_nature == null)
+                    return 1;
                 return _account_nature;
             }
             set
@@ -154,7 +150,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountNature");
             }
         }
-
         public object _company_id { get; set; }
         public object CompanyId
         {
@@ -168,7 +163,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("CompanyId");
             }
         }
-
         public string _sub_account { get; set; }
         public string SubAccount
         {
@@ -182,7 +176,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("SubAccount");
             }
         }
-
         public object _account_level { get; set; }
         public object AccountLevel
         {
@@ -196,7 +189,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("AccountLevel");
             }
         }
-
         public object _acc_date { get; set; }
         public object AccDate
         {

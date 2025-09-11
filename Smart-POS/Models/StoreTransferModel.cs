@@ -17,33 +17,33 @@ namespace Smart_POS.Models
         public object FromStoreId;
 
         [JsonProperty("to_store_id")]
-        public int ToStoreId;
+        public object ToStoreId;
 
         [JsonProperty("transfer_date")]
-        public int TransferDate;
+        public object TransferDate;
 
         [JsonProperty("transfer_by")]
         public object? TransferBy;
 
         [JsonProperty("has_received")]
-        public object? HasReceived;
+        public int HasReceived;
 
         [JsonProperty("receive_date")]
-        public object? ReceiveDate;
+        public object ReceiveDate;
 
         [JsonProperty("received_by")]
         public object? ReceivedBy;
 
         [JsonProperty("company_id")]
-        public object? CompanyId;
+        public int CompanyId;
 
         [JsonProperty("transfer_no")]
-        public object? TransferNo;
+        public int TransferNo;
 
         [JsonProperty("branch_id")]
-        public object? BranchId;
+        public object BranchId;
 
         [JsonProperty("items")]
-        public List<StoreTransferItemModel>? Items;
+        public List<StockItemModel>? Items;
     }
 }

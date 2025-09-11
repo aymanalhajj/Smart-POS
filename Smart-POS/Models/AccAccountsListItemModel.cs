@@ -39,4 +39,21 @@ namespace Smart_POS.Models
         [JsonProperty("account_name_en")]
         public object AccountNameEn { get; set; }
     }
+    public class TreeAccountsListItemModel
+    {
+        [JsonProperty("status")]
+        public object Status { get; set; }
+
+        [JsonProperty("level")]
+        public object Level { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("value")]
+        public object Value { get; set; }
+
+        [JsonProperty("parent_id")]
+        public object ParentId { get; set; }
+    }
 }

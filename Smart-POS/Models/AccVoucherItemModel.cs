@@ -12,23 +12,23 @@ namespace Smart_POS.Models
         [JsonProperty("acc_voucher_dtl_id")]
         public string? AccVoucherDtlId { get; set; }
 
-        [JsonProperty("acc_voucher_id")]
-        public string? AccVoucherId { get; set; }
+        //[JsonProperty("acc_voucher_id")]
+        //public string? AccVoucherId { get; set; }
 
         [JsonProperty("account_id")]
         public string? AccountId { get; set; }
 
         [JsonProperty("ref_id")]
-        public int RefId { get; set; }
+        public string RefId { get; set; }
 
         [JsonProperty("amount")]
-        public string Amount { get; set; }
+        public float Amount { get; set; }
 
         [JsonProperty("note")]
-        public float? Note { get; set; }
+        public string? Note { get; set; }
 
         [JsonProperty("cost_cntr_id")]
-        public float? CostCntrId { get; set; }
+        public string? CostCntrId { get; set; }
 
         [JsonProperty("tax_rate")]
         public float? TaxRate { get; set; }
@@ -37,6 +37,6 @@ namespace Smart_POS.Models
         public float? TaxAmount { get; set; }
 
         [JsonProperty("total_amount")]
-        public float? TotalAmount { get; set; }
+        public string? TotalAmount { get; set; }
     }
 }

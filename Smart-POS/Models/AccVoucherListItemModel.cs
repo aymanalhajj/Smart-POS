@@ -9,7 +9,6 @@ namespace Smart_POS.Models
 {
     public class AccVoucherListItemModel
     {
-
         [JsonProperty("acc_voucher_id")]
         public int AccVoucherId;
 
@@ -54,8 +53,5 @@ namespace Smart_POS.Models
 
         [JsonProperty("total_vat")]
         public object? TotalVat;
-
-        [JsonProperty("items")]
-        public List<AccVoucherItemModel>? Items;
     }
 }

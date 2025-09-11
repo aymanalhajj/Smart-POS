@@ -202,46 +202,33 @@
                                 </Style>
                             </DataGrid.Resources>
                             <DataGrid.Columns>
-                                <DataGridTextColumn 
-                        Header="الباركود" 
-                        Width="80" 
-                        Binding="{Binding ProductBarcode}"  />
-                                <DataGridComboBoxColumn
-                        ItemsSource="{Binding ProductList}"
-                        SelectedValueBinding="{Binding ProductId}"
-                        x:Name="ProductComboBox"
-                        Header="المنتج" Width="150"
-                        DisplayMemberPath="name" 
-                        SelectedValuePath="id" >
+                                <DataGridTextColumn Header="الباركود" Width="80" Binding="{Binding ProductBarcode}"/>
+                                <DataGridComboBoxColumn ItemsSource="{Binding ProductList}" SelectedValueBinding="{Binding ProductId}"
+                                    x:Name="ProductComboBox" Header="المنتج" Width="150" DisplayMemberPath="name" SelectedValuePath="id">
                                     <DataGridComboBoxColumn.EditingElementStyle>
                                         <Style TargetType="{x:Type ComboBox}">
                                             <EventSetter Event="SelectionChanged" Handler="ProductSelectionChanged" />
                                         </Style>
                                     </DataGridComboBoxColumn.EditingElementStyle>
                                 </DataGridComboBoxColumn>
-                                <DataGridTextColumn EditingElementStyle="{StaticResource errorStyle}" Header="الكمية" Width="80" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTemplateColumn 
-                        Header="الوحدة" 
-                        Width="150" >
+                                <DataGridTextColumn EditingElementStyle="{StaticResource errorStyle}" Header="الكمية" Width="80" Binding="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTemplateColumn Header="الوحدة" Width="150">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <HierarchicalDataTemplate>
-                                            <ComboBox 
-                                    ItemsSource="{Binding ProductUnitList}"
-                                    SelectedValue="{Binding ProductUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    DisplayMemberPath="name" 
-                                    SelectedValuePath="id" />
+                                            <ComboBox SelectedValue="{Binding ProductUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                DisplayMemberPath="name" ItemsSource="{Binding ProductUnitList}" SelectedValuePath="id"/>
                                         </HierarchicalDataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="السعر" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True" />
-                                <DataGridTextColumn Header="نسبة الخصم" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"   />
-                                <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"  />
+                                <DataGridTextColumn Header="السعر" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="الاجمالي" Width="80" Binding="{Binding TotalPrice}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="نسبة الخصم" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding DiscountPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <DataGridTextColumn Header="قيمة الخصم" Width="80" Binding="{Binding DiscountValue}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="السعر بعد الخصم" Width="100" Binding="{Binding PostDiscountPrice}"  IsReadOnly="True"/>
                                 <DataGridTextColumn Header="نسبة ضريبة القيمة المضافة" EditingElementStyle="{StaticResource errorStyle}" Width="150" Binding="{Binding VatPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
-                                <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"   />
-                                <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"   />
-                                <DataGridTextColumn Header="تغيير الصافي" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay,TargetNullValue=''}"  />
+                                <DataGridTextColumn Header="قيمة ضريبة القيمة المضافة"  Width="150" Binding="{Binding VatValue}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="المبلغ الصافي" Width="80" Binding="{Binding TotalAmount}"  IsReadOnly="True"/>
+                                <DataGridTextColumn Header="تغيير الصافي" EditingElementStyle="{StaticResource errorStyle}" Width="80" Binding="{Binding ChangeTotalAmount, Mode=TwoWay,TargetNullValue=''}"/>
                                 <DataGridTemplateColumn Header="حذف">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -263,7 +250,7 @@
                             <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
 
                                 <StackPanel Orientation="Horizontal" Margin="2">
-                                    <Label Width="100" FontSize="16" FontWeight="SemiBold" Margin="2"  HorizontalContentAlignment="Right">نوع الدفع</Label>
+                                    <Label Width="100" FontSize="16" FontWeight="SemiBold" Margin="2" HorizontalContentAlignment="Right">نوع الدفع</Label>
                                     <RadioButton 
                             VerticalContentAlignment="Center"
                             FontSize="16"
@@ -296,17 +283,17 @@
                                     <StackPanel Orientation="Vertical" Margin="2">
                                         <StackPanel Orientation="Horizontal" Margin="2">
                                             <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">البنك</Label>
-                                            <ComboBox ItemsSource="{Binding BankList}"  IsEnabled="False" Name="BankList" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=Invoice.BankAccId}" />
+                                            <ComboBox ItemsSource="{Binding BankList}"  IsEnabled="False" Name="BankList" Margin="2" Width="150" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding Path=Invoice.BankAccId}"/>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal" Margin="2">
                                             <Label FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right">المبلغ المدفوع</Label>
-                                            <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=Invoice.PaidAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                                            <TextBox IsReadOnly="True" Name="PaidAmountTxt" Text="{Binding Path=Invoice.PaidAmount}" Margin="2" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                         </StackPanel>
 
 
                                         <StackPanel Orientation="Horizontal" Margin="2">
                                             <Label Content="المدفوع نقدا" FontSize="12" FontWeight="SemiBold" Height="26" Margin="2" Width="100" HorizontalContentAlignment="Right" />
-                                            <TextBox IsReadOnly="True" Name="PaidCashTxt" Height="25" Text="{Binding Path=Invoice.PaidCashAmount}" Margin="2" Width="150"  HorizontalContentAlignment="Center"   VerticalContentAlignment="Center"/>
+                                            <TextBox IsReadOnly="True" Name="PaidCashTxt" Height="25" Text="{Binding Path=Invoice.PaidCashAmount}" Margin="2" Width="150" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                                         </StackPanel>
 
                                     </StackPanel>

@@ -9,8 +9,7 @@ namespace Smart_POS.Repository
 {
     internal class AccVoucherRepo : ApiRepository
     {
-
-        public AccVoucherItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
+        public InvoiceItemModel? GetProductUnitPrice(string productId, string quantity, string productUnitId)
         {
             try
             {
@@ -27,7 +26,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<AccVoucherItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -37,9 +36,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-
-        public AccVoucherItemModel? GetProductPrice(string productId)
+        public InvoiceItemModel? GetProductPrice(string productId)
         {
             try
             {
@@ -54,7 +51,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<AccVoucherItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -64,8 +61,7 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public AccVoucherItemModel? GetProductPriceByBarcode(string barcode)
+        public InvoiceItemModel? GetProductPriceByBarcode(string barcode)
         {
             try
             {
@@ -80,7 +76,7 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<AccVoucherItemModel>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<InvoiceItemModel>(response.Content.ReadAsStringAsync().Result);
                     return res;
                 }
             }
@@ -90,18 +86,16 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public ActionStatusModel PostPurchaseInoice(StockModel model)
+        public ActionStatusModel PostPurchaseInoice(AccVoucherModel model)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_order", UriKind.Absolute);
-
+                    $"store/receipt_voucher", UriKind.Absolute);
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var response = ApiRepository.getInstance().MyClient().PostAsync(requestUri, data).Result;
-                //var res = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<LoginResponseModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -118,13 +112,12 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public StockModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
+        public AccVoucherModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
         {
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_order" +
+                    $"store/receipt_voucher" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -132,7 +125,7 @@ namespace Smart_POS.Repository
                     $"&p_prev={HttpUtility.UrlEncode(prev)}" +
                     $"&p_invoice_id={HttpUtility.UrlEncode(invoiceId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<StockModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<AccVoucherModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -149,16 +142,15 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-
-        public ObservableCollection<StockListItemModel> GetAllPurchaseInoices()
+        public ObservableCollection<AccVoucherListItemModel> GetAllPurchaseInoices()
         {
-            ObservableCollection<StockListItemModel> list = new ObservableCollection<StockListItemModel>();
+            ObservableCollection<AccVoucherListItemModel> list = new ObservableCollection<AccVoucherListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"store/stockout_orders", UriKind.Absolute);
+                    $"store/receipt_vouchers", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<StockListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<AccVoucherListModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {

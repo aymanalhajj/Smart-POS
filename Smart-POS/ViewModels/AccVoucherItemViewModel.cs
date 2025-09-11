@@ -6,6 +6,7 @@ using System.Web;
 using Smart_POS.Models;
 using System.Windows;
 using Smart_POS.Repository;
+using System.Diagnostics;
 
 namespace Smart_POS.ViewModels
 {
@@ -15,291 +16,147 @@ namespace Smart_POS.ViewModels
         public event CalcSummaryCallbackEventHandler CalcSummaryCallback;
         public delegate void GetProductUnitPriceCallbackEventHandler();
         public event GetProductUnitPriceCallbackEventHandler GetProductUnitPriceCallback;
-
         public void Load_ProductUnits()
         {
-            ProductUnitList = ApiRepository.getInstance().GetProductUnitList(ProductId.ToString());
+            //ProductUnitList = ApiRepository.getInstance().GetProductUnitList(ProductId.ToString());
         }
         public AccVoucherItemViewModel()
         {
             ProductUnitList = new ObservableCollection<Item> { };
         }
-
         private ObservableCollection<Item> _productUnitList;
-
-
         public ObservableCollection<Item> ProductUnitList
         {
             get { return _productUnitList; }
             set
             {
-
                 _productUnitList = value;
-
                 OnPropertyChanged("ProductUnitList");
             }
         }
-
-
-        public string _product_Id { get; set; }
-        public string? _product_barcode;
-
-        public string _product_unit_id;
-        public string? _price;
-        public string? _total_price;
-        public string? _discount_percentage;
-        public string? _discount_value;
-        public string? _post_discount_price;
-
-
-        public string? _vat_percentage;
-        public string? _vat_value;
+        public string? AccVoucherDtlId { get; set; }
+        public string? _account_id { get; set; }
+        public string? _ref_id;
+        public string? _amount;
+        public string? _note;
+        public string? _cost_cntr_id { get; set; }
+        public string? _tax_rate;
+        public string? _tax_amount;
         public string? _total_amount;
         public float? _change_total_amount;
 
-        public string _quantity;
-        public string? Dtl_Id { get; set; }
-        public string ProductId
+        public string? AccountId
         {
             get
             {
-                return _product_Id;
+                return _account_id;
             }
             set
             {
-                _product_Id = value;
-                OnPropertyChanged("ProductId");
+                _account_id = value;
+                OnPropertyChanged("AccountId");
             }
         }
-        public string? ProductBarcode
+        public string RefId
         {
             get
             {
-                if (_product_barcode == null)
-                {
-                    _product_barcode = "";
-                }
-                return _product_barcode;
+                return _ref_id;
             }
             set
             {
-                _product_barcode = value;
-                OnPropertyChanged("ProductBarcode");
+                _ref_id = value;
+                OnPropertyChanged("RefId");
             }
         }
-        public string Quantity
+        public string Amount
         {
             get
             {
-                return _quantity;
-            }
-            set
-            {
-                int q;
-                if (value == null || value.Equals("") || value.Equals("0") || int.TryParse(value, out q) == false)
+                if (_amount == null)
                 {
-                    _quantity = "1";
+                    _amount = "0";
                 }
-                else
-                {
-                    _quantity = value;
-                }
-                OnPropertyChanged("Quantity");
-            }
-        }
-        public string ProductUnitId
-        {
-            get
-            {
-                return _product_unit_id;
-            }
-            set
-            {
-                if (_product_unit_id != value && _product_unit_id != null)
-                {
-                    _product_unit_id = value;
-                    if (GetProductUnitPriceCallback != null && _product_unit_id != null)
-                    {
-                        GetProductUnitPriceCallback();
-                    }
-                }
-                else
-                {
-                    _product_unit_id = value;
-                }
-
-                OnPropertyChanged("ProductUnitId");
-            }
-        }
-        public string? Price
-        {
-            get
-            {
-                return _price;
+                return _amount;
             }
             set
             {
                 float q;
                 if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
                 {
-                    _price = (float.Parse(OriginalPrice.ToString()) * 100 / (100 + float.Parse(VatPercentage) / int.Parse(Quantity))).ToString();
+                    _amount = "0";
                 }
                 else
                 {
-                    _price = value;
+                    _amount = value;
                 }
-                OnPropertyChanged("Price");
+                OnPropertyChanged("Amount");
             }
         }
-        public string? TotalPrice
+        public string? Note
         {
             get
             {
-                if (_total_price == null)
-                {
-                    _total_price = "0";
-                }
-                return _total_price;
+                return _note;
             }
             set
             {
-                _total_price = value;
-                OnPropertyChanged("TotalPrice");
+                _note = value;
+                OnPropertyChanged("Note");
             }
         }
-        public string? DiscountPercentage
+        public string CostCntrId
         {
             get
             {
-                if (_discount_percentage == null)
+                return _cost_cntr_id;
+            }
+            set
+            {
+                _cost_cntr_id = value;
+                OnPropertyChanged("CostCntrId");
+            }
+        }
+        public string TaxRate
+        {
+            get
+            {
+                if (_tax_rate == null)
                 {
-                    _discount_percentage = "0";
+                    _tax_rate = "0";
                 }
-                return _discount_percentage;
+                return _tax_rate;
             }
             set
             {
                 float q;
                 if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
                 {
-                    _discount_percentage = "0";
+                    _tax_rate = "0";
                 }
                 else
                 {
-                    _discount_percentage = value;
+                    _tax_rate = value;
                 }
-                OnPropertyChanged("DiscountPercentage");
+                OnPropertyChanged("TaxRate");
             }
         }
-        public string? DiscountValue
+        public string TaxAmount
         {
             get
             {
-                if (_discount_value == null)
+                if (_tax_rate == null)
                 {
-                    _discount_value = "0";
+                    _tax_amount = "0";
                 }
-                return _discount_value;
+                return _tax_amount;
             }
             set
             {
-                _discount_value = value;
-                OnPropertyChanged("DiscountValue");
+                _tax_amount = value;
+                OnPropertyChanged("TaxAmount");
             }
         }
-        public string? PostDiscountPrice
-        {
-            get
-            {
-                if (_post_discount_price == null)
-                {
-                    _post_discount_price = "0";
-                }
-                return _post_discount_price;
-            }
-            set
-            {
-                _post_discount_price = value;
-                OnPropertyChanged("PostDiscountPrice");
-            }
-        }
-        public string? VatPercentage
-        {
-            get
-            {
-                if (_vat_percentage == null)
-                {
-                    _vat_percentage = "0";
-                }
-                return _vat_percentage;
-            }
-            set
-            {
-                float q;
-                if (value == null || value.Equals("") || value.Equals("0") || float.TryParse(value, out q) == false)
-                {
-                    _vat_percentage = "0";
-                }
-                else
-                {
-                    _vat_percentage = value;
-                }
-                OnPropertyChanged("VatPercentage");
-            }
-        }
-        public string? _pre_discount_vat_value;
-        public string? PreDiscountVatValue
-        {
-            get
-            {
-                if (_pre_discount_vat_value == null)
-                {
-                    _pre_discount_vat_value = "0";
-                }
-                return _pre_discount_vat_value;
-            }
-            set
-            {
-                _pre_discount_vat_value = value;
-                OnPropertyChanged("PreDiscountVatValue");
-            }
-        }
-
-        public string? VatValue
-        {
-            get
-            {
-                if (_vat_value == null)
-                {
-                    _vat_value = "0";
-                }
-                return _vat_value;
-            }
-            set
-            {
-                _vat_value = value;
-                OnPropertyChanged("VatValue");
-            }
-        }
-
-        public string? _original_price { get; set; }
-        public string? OriginalPrice
-        {
-            get
-            {
-                if (_original_price == null)
-                {
-                    _original_price = "0";
-                }
-                return _original_price;
-            }
-            set
-            {
-                _original_price = value;
-                OnPropertyChanged("OriginalPrice");
-            }
-        }
-
         public string? TotalAmount
         {
             get
@@ -334,8 +191,7 @@ namespace Smart_POS.ViewModels
                 }
                 if (value != null && value != 0 && !value.Equals(""))
                 {
-                    DiscountPercentage = "0";
-                    Price = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage)) / int.Parse(Quantity)).ToString();
+                    //Amount = (float.Parse(value.ToString()) * 100 / (100 + float.Parse(VatPercentage)) / int.Parse(Quantity)).ToString();
                     RecalcPrice();
                     if (CalcSummaryCallback != null)
                     {
@@ -345,21 +201,19 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ChangeTotalAmount");
             }
         }
-
-        public void ResetProductPrice(InvoiceItemModel model)
+        public void ResetProductPrice(AccVoucherItemModel model)
         {
             try
             {
-                Price = model.Price.ToString();
-                TotalPrice = model.TotalPrice;
-                DiscountPercentage = model.DiscountPercentage.ToString();
-                DiscountValue = model.DiscountValue;
-                PostDiscountPrice = model.PostDiscountPrice;
-                VatPercentage = model.VatPercentage.ToString();
-                VatValue = model.VatValue;
-                PreDiscountVatValue = model.PreDiscountVatValue;
-                TotalAmount = model.TotalAmount;
-                OriginalPrice = model.OriginalPrice;
+                AccVoucherDtlId = model.AccVoucherDtlId;
+                AccountId = model.AccountId;
+                RefId = model.RefId;
+                Amount = model.Amount.ToString();
+                Note = model.Note;
+                CostCntrId = model.CostCntrId;
+                TaxRate = model.TaxRate.ToString();
+                TaxAmount = model.TaxAmount.ToString();
+                TotalAmount = model.TotalAmount.ToString();
             }
             catch (Exception ex)
             {
@@ -370,15 +224,10 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (ProductId != null && ProductId != "")
+                if (Amount != null && Amount != "")
                 {
-                    TotalPrice = (float.Parse(Price) * int.Parse(Quantity)).ToString();
-                    PreDiscountVatValue = (float.Parse(TotalPrice) * float.Parse(VatPercentage) / 100).ToString();
-                    DiscountValue = (float.Parse(TotalPrice) * float.Parse(DiscountPercentage) / 100).ToString();
-                    PostDiscountPrice = (float.Parse(TotalPrice) - float.Parse(DiscountValue)).ToString(); ;
-                    VatValue = (float.Parse(PostDiscountPrice) * float.Parse(VatPercentage) / 100).ToString();
-                    TotalAmount = Math.Round((float.Parse(PostDiscountPrice) + float.Parse(VatValue)), 2).ToString();
-
+                    TaxAmount = ((float.Parse(TaxRate) * float.Parse(Amount)) / 100).ToString();
+                    TotalAmount = Math.Round((float.Parse(TaxAmount) + float.Parse(Amount)), 2).ToString();
                 }
             }
             catch (Exception ex)
@@ -399,46 +248,36 @@ namespace Smart_POS.ViewModels
         }
         #endregion
 
-        public InvoiceItemModel ToInvoiceItemModel()
+        public AccVoucherItemModel ToInvoiceItemModel()
         {
-            InvoiceItemModel model = new()
+            AccVoucherItemModel model = new()
             {
-                Dtl_Id = this.Dtl_Id,
-                ProductBarcode = this.ProductBarcode,
-                Price = float.Parse(this.Price),
-                DiscountPercentage = float.Parse(this.DiscountPercentage),
-                DiscountValue = this.DiscountValue,
-                PostDiscountPrice = this.PostDiscountPrice,
-                ProductId = this.ProductId,
-                Quantity = int.Parse(this.Quantity),
-                TotalAmount = this.TotalAmount,
-                TotalPrice = this.TotalPrice,
-                ProductUnitId = this.ProductUnitId,
-                VatPercentage = float.Parse(this.VatPercentage),
-                VatValue = this.VatValue
+                AccVoucherDtlId = this.AccVoucherDtlId,
+                AccountId = this.AccountId,
+                RefId = this.RefId,
+                Amount = float.Parse(this.Amount),
+                Note = this.Note,
+                CostCntrId = this.CostCntrId,
+                TaxRate = float.Parse(this.TaxRate),
+                TaxAmount = float.Parse(this.TaxAmount),
+                TotalAmount = this.TotalAmount
             };
             return model;
         }
-
-        static public InvoiceItemViewModel FromInvoiceItemModel(InvoiceItemModel model)
+        static public AccVoucherItemViewModel FromInvoiceItemModel(AccVoucherItemModel model)
         {
-            InvoiceItemViewModel viewModel = new()
+            AccVoucherItemViewModel viewModel = new()
             {
-                Dtl_Id = model.Dtl_Id,
-                ProductBarcode = model.ProductBarcode,
-                Price = model.Price.ToString(),
-                DiscountPercentage = model.DiscountPercentage.ToString(),
-                DiscountValue = model.DiscountValue,
-                PostDiscountPrice = model.PostDiscountPrice,
-                ProductId = model.ProductId,
-                Quantity = model.Quantity.ToString(),
-                TotalAmount = model.TotalAmount,
-                TotalPrice = model.TotalPrice,
-                VatPercentage = model.VatPercentage.ToString(),
-                VatValue = model.VatValue
+                AccVoucherDtlId = model.AccVoucherDtlId,
+                AccountId = model.AccountId,
+                RefId = model.RefId,
+                Amount = model.Amount.ToString(),
+                Note = model.Note,
+                CostCntrId = model.CostCntrId,
+                TaxRate = model.TaxRate.ToString(),
+                TaxAmount = model.TaxAmount.ToString(),
+                TotalAmount = model.TotalAmount.ToString()
             };
-            viewModel.Load_ProductUnits();
-            viewModel.ProductUnitId = model.ProductUnitId;
             return viewModel;
         }
     }
