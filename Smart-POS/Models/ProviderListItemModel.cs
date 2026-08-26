@@ -1,4 +1,3 @@
-﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,34 +9,48 @@ namespace Smart_POS.Models
     public class ProviderListItemModel
     {
 
-        [JsonProperty("provider_id")]
         public int ProviderId { get; set; }
 
-        [JsonProperty("name_ar")]
         public string NameAr { get; set; }
 
-        [JsonProperty("name_en")]
         public string NameEn { get; set; }
 
-        [JsonProperty("mobile_no")]
         public string MobileNo { get; set; }
 
-        [JsonProperty("tel_no")]
         public string TelNo { get; set; }
 
-        [JsonProperty("fax")]
         public string Fax { get; set; }
 
-        [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("tax_no")]
         public string TaxNo { get; set; }
 
-        [JsonProperty("note")]
         public string Note { get; set; }
 
-        [JsonProperty("account_id")]
         public string AccountId { get; set; }
+
+        public object CountryId { get; set; }
+
+        public object CityId { get; set; }
+
+        public object RegionId { get; set; }
+
+        public string BuildingNo { get; set; }
+
+        public string Sreet { get; set; }
+
+        public string PostCode { get; set; }
+
+        public object Status { get; set; }
+
+        public object CompanyId { get; set; }
+
+        public string CountryName { get; set; }
+
+        public string CityName { get; set; }
+
+        public string RegionName { get; set; }
+
+        public string CompanyName { get; set; }
     }
 }
