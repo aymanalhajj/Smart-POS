@@ -445,6 +445,183 @@
 
                 </MenuItem>
 
+                <MenuItem Header="التقارير"
+                          Template="{StaticResource Menu_SubMenu_Template}">
+
+                    <MenuItem.Icon>
+
+                        <Image Source="Assets/img_history.png"
+                               Stretch="None" />
+
+                    </MenuItem.Icon>
+
+                    <MenuItem Name="SafeBalancesReportMenu" Click="SafeBalancesReportMenu_Click" Header="تقرير أرصدة الصناديق"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="BankBalancesReportMenu" Click="BankBalancesReportMenu_Click" Header="تقرير أرصدة البنوك"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="IncomeStatementReportMenu" Click="IncomeStatementReportMenu_Click" Header="تقرير قائمة الدخل"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="TrialBalanceReportMenu" Click="TrialBalanceReportMenu_Click" Header="تقرير ميزان المراجعة"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="AccountStatementReportMenu" Click="AccountStatementReportMenu_Click" Header="كشف حساب"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="BalanceSheetReportMenu" Click="BalanceSheetReportMenu_Click" Header="الميزانية العمومية"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="InvoiceByClientReportMenu" Click="InvoiceByClientReportMenu_Click" Header="تقرير اجمالي الفواتير حسب العميل"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="InvoiceByTypeReportMenu" Click="InvoiceByTypeReportMenu_Click" Header="تقرير اجمالي الفواتير حسب النوع"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="PurchasesPeriodReportMenu" Click="PurchasesPeriodReportMenu_Click" Header="تقرير المشتريات خلال فترة"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="EmployeeSalesReportMenu" Click="EmployeeSalesReportMenu_Click" Header="تقرير مبيعات الموظفين"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="ProductSalesPurchasesReportMenu" Click="ProductSalesPurchasesReportMenu_Click" Header="تقرير مبيعات ومشتريات المنتجات"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="ClientSalesReturnsReportMenu" Click="ClientSalesReturnsReportMenu_Click" Header="تقرير مبيعات ومرتجعات العميل"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="ProductTransactionsReportMenu" Click="ProductTransactionsReportMenu_Click" Header="تقرير حركة المنتج"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="StoresStatisticsReportMenu" Click="StoresStatisticsReportMenu_Click" Header="احصائيات المخازن"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                    <MenuItem Name="StoresStatisticsToDateReportMenu" Click="StoresStatisticsToDateReportMenu_Click" Header="احصائيات المخازن كما في تاريخ"
+                              Template="{StaticResource Item_Template}">
+
+                        <MenuItem.Icon>
+
+                            <Image Source="Assets/img_hotkey.png" Stretch="None" />
+
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+
+                </MenuItem>
+
                 <MenuItem Header="خروج"
                           Template="{StaticResource Menu_Template}">
 

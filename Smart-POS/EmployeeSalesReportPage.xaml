@@ -1,0 +1,92 @@
+<Window x:Class="Smart_POS.EmployeeSalesReportPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        Title="تقرير مبيعات الموظفين" Height="650" Width="1400"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:EmployeeSalesReportViewModel x:Key="viewModel"/>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource viewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="من تاريخ" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <DatePicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="2" SelectedDate="{Binding FromDate, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="2" Content="الى تاريخ" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <DatePicker Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="2" SelectedDate="{Binding ToDate, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="4" Content="معرف المستخدم" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <TextBox Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="2" Height="26" Text="{Binding UserId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Button Grid.Row="1" Grid.Column="7" Content="بحث" Command="{Binding SearchCommand}" Margin="2" Height="30"/>
+        <Button Grid.Row="1" Grid.Column="8" Content="طباعة" Command="{Binding PrintCommand}" Margin="2" Height="30"/>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="9" ItemsSource="{Binding Results}" Margin="5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="رقم الفاتورة" Width="110">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding InvoiceNo}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="التاريخ" Width="100">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding InvoiceDate}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="نوع الحركة" Width="100">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding TransType}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الموظف" Width="130">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding UserName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="المنتج" Width="160">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding ProductName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الكمية" Width="90">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Quantity}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="السعر" Width="90">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Price}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الاجمالي" Width="110">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding TotalAmount}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="اجمالي المبيعات" Width="130">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding SalesTotal}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+            <Button Content="السابق" Command="{Binding PrevPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Text="{Binding Page}" VerticalAlignment="Center" Margin="10,0"/>
+            <Button Content="التالي" Command="{Binding NextPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Margin="20,0,0,0" VerticalAlignment="Center">
+                <Run Text="الإجمالي: "/><Run Text="{Binding Total, Mode=OneWay}"/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

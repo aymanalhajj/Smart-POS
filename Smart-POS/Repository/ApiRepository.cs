@@ -14,7 +14,7 @@ namespace Smart_POS.Repository
     {
         static ApiRepository _instance;
         public string companyId = "1";
-        string langId = "2";
+        public string langId = "2";
         static protected string baseUrl = "https://localhost:7081/api/";
         readonly HttpClient _client;
         public HttpClient MyClient()
@@ -106,6 +106,14 @@ namespace Smart_POS.Repository
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/save_list" +
+                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
+            return GetSelectList(requestUri);
+        }
+        public ObservableCollection<Item> GetSafeList()
+        {
+            var requestUri = new Uri($"{baseUrl}" +
+                $"lists/safe_list" +
                 $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);

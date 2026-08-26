@@ -1,0 +1,81 @@
+<Window x:Class="Smart_POS.IncomeStatementReportPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        Title="تقرير قائمة الدخل" Height="650" Width="1300"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:IncomeStatementReportViewModel x:Key="viewModel"/>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource viewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="حتى تاريخ" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <DatePicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="2" SelectedDate="{Binding ToDate, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="2" Content="مركز التكلفة" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <ComboBox Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="2" ItemsSource="{Binding CostCenterList}" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding CostCtrId, Mode=TwoWay}"/>
+
+        <CheckBox Grid.Row="1" Grid.Column="4" Content="تضمين الحسابات الرئيسية" VerticalAlignment="Center" Margin="2" IsChecked="{Binding WithMainAccs, Mode=TwoWay}"/>
+
+        <Button Grid.Row="1" Grid.Column="6" Content="بحث" Command="{Binding SearchCommand}" Margin="2" Height="30"/>
+        <Button Grid.Row="1" Grid.Column="7" Content="طباعة" Command="{Binding PrintCommand}" Margin="2" Height="30"/>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="8" ItemsSource="{Binding Results}" Margin="5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="رقم الحساب" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding AccountId}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الحساب الرئيسي" Width="150">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding AccountParent}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="اسم الحساب" Width="200">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding AccountName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="مدين" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding DebitBal}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="دائن" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CreditBal}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="مركز التكلفة" Width="150">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CostCtrName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+            <Button Content="السابق" Command="{Binding PrevPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Text="{Binding Page}" VerticalAlignment="Center" Margin="10,0"/>
+            <Button Content="التالي" Command="{Binding NextPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Margin="20,0,0,0" VerticalAlignment="Center">
+                <Run Text="الإجمالي: "/><Run Text="{Binding Total, Mode=OneWay}"/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>

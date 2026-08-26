@@ -216,5 +216,95 @@ namespace Smart_POS
             page.Owner = Application.Current.MainWindow;
             page.Show();
         }
+        private void SafeBalancesReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            SafeBalancesReportPage page = new SafeBalancesReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void BankBalancesReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            BankBalancesReportPage page = new BankBalancesReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void IncomeStatementReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            IncomeStatementReportPage page = new IncomeStatementReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void TrialBalanceReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            TrialBalanceReportPage page = new TrialBalanceReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void AccountStatementReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            AccountStatementReportPage page = new AccountStatementReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void BalanceSheetReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            BalanceSheetReportPage page = new BalanceSheetReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void InvoiceByClientReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            InvoiceByClientReportPage page = new InvoiceByClientReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void InvoiceByTypeReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            InvoiceByTypeReportPage page = new InvoiceByTypeReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void PurchasesPeriodReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            PurchasesPeriodReportPage page = new PurchasesPeriodReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void EmployeeSalesReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            EmployeeSalesReportPage page = new EmployeeSalesReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void ProductSalesPurchasesReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ProductSalesPurchasesReportPage page = new ProductSalesPurchasesReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void ClientSalesReturnsReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ClientSalesReturnsReportPage page = new ClientSalesReturnsReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void ProductTransactionsReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ProductTransactionsReportPage page = new ProductTransactionsReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void StoresStatisticsReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            StoresStatisticsReportPage page = new StoresStatisticsReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
+        private void StoresStatisticsToDateReportMenu_Click(object sender, RoutedEventArgs e)
+        {
+            StoresStatisticsToDateReportPage page = new StoresStatisticsToDateReportPage();
+            page.Owner = Application.Current.MainWindow;
+            page.Show();
+        }
     }
 }

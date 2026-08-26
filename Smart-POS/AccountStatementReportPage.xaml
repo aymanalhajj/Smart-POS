@@ -1,0 +1,50 @@
+<Window x:Class="Smart_POS.AccountStatementReportPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        Title="كشف حساب" Height="250" Width="1300"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:AccountStatementReportViewModel x:Key="viewModel"/>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource viewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="130"/>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="90"/>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="110"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="من تاريخ" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <DatePicker Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="2" SelectedDate="{Binding FromDate, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="2" Content="الى تاريخ" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <DatePicker Grid.Row="1" Grid.Column="3" VerticalAlignment="Center" Margin="2" SelectedDate="{Binding ToDate, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="4" Content="الحساب" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <ComboBox Grid.Row="1" Grid.Column="5" VerticalAlignment="Center" Margin="2" ItemsSource="{Binding AccountList}" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding AccountId, Mode=TwoWay}"/>
+
+        <Label Grid.Row="1" Grid.Column="6" Content="مركز التكلفة" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <ComboBox Grid.Row="1" Grid.Column="7" VerticalAlignment="Center" Margin="2" ItemsSource="{Binding CostCenterList}" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding CostCtrId, Mode=TwoWay}"/>
+
+        <Button Grid.Row="1" Grid.Column="9" Content="طباعة" Command="{Binding PrintCommand}" Margin="2" Height="30"/>
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="10" Text="هذا التقرير متاح كملف PDF فقط" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="SemiBold" Foreground="Gray"/>
+    </Grid>
+</Window>

@@ -1,0 +1,79 @@
+<Window x:Class="Smart_POS.StoresStatisticsReportPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Smart_POS.ViewModels"
+        mc:Ignorable="d"
+        FlowDirection="RightToLeft"
+        Title="احصائيات المخازن" Height="650" Width="1300"
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <vm:StoresStatisticsReportViewModel x:Key="viewModel"/>
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </Window.Resources>
+    <Grid DataContext="{Binding Source={StaticResource viewModel}}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10" />
+            <RowDefinition Height="55" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="5" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="110"/>
+            <ColumnDefinition Width="110"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0" Content="المخزن" FontWeight="SemiBold" VerticalAlignment="Center" HorizontalContentAlignment="Right"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="2" ItemsSource="{Binding StoreList}" DisplayMemberPath="name" SelectedValuePath="id" SelectedValue="{Binding StoreId, Mode=TwoWay}"/>
+
+        <Button Grid.Row="1" Grid.Column="3" Content="بحث" Command="{Binding SearchCommand}" Margin="2" Height="30"/>
+        <Button Grid.Row="1" Grid.Column="4" Content="طباعة" Command="{Binding PrintCommand}" Margin="2" Height="30"/>
+
+        <ListView Grid.Row="2" Grid.ColumnSpan="5" ItemsSource="{Binding Results}" Margin="5">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="التسلسل" Width="80">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Seq}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="رقم الصنف" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding ProductNo}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الباركود" Width="130">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding ProductBarcode}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="اسم المنتج" Width="180">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding ProductName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="المخزن" Width="150">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding StoreName}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="الرصيد" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding Bal}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="متوسط التكلفة" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CostAvg}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="اجمالي التكلفة" Width="120">
+                        <GridViewColumn.CellTemplate><DataTemplate><TextBlock Text="{Binding CostTotal}" TextAlignment="Center"/></DataTemplate></GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
+            <Button Content="السابق" Command="{Binding PrevPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Text="{Binding Page}" VerticalAlignment="Center" Margin="10,0"/>
+            <Button Content="التالي" Command="{Binding NextPageCommand}" Width="80" Margin="2" Height="30"/>
+            <TextBlock Margin="20,0,0,0" VerticalAlignment="Center">
+                <Run Text="الإجمالي: "/><Run Text="{Binding Total, Mode=OneWay}"/>
+            </TextBlock>
+        </StackPanel>
+    </Grid>
+</Window>
