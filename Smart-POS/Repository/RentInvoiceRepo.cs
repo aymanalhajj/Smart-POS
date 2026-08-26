@@ -186,10 +186,5 @@ namespace Smart_POS.Repository
             }
             return list;
         }
-
-        internal ObservableCollection<Item> GetClientList()
-        {
-            throw new NotImplementedException();
-        }
     }
 }
