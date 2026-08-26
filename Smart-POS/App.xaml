@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
 
                 <ResourceDictionary Source="Templates.xaml" />
+                <ResourceDictionary Source="Styles.xaml" />
 
             </ResourceDictionary.MergedDictionaries>
 
