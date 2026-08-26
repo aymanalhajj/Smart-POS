@@ -311,60 +311,45 @@
                                         <MenuItem Header="Descending" />
                                     </ContextMenu>
                                 </GridView.ColumnHeaderContextMenu>
-                                <GridViewColumn Header="رقم الفاتورة" Width="150">
+                                <GridViewColumn Header="رقم التحويل" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding OrderNo}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TransferNo}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="تاريخ الفاتورة" Width="150">
+                                <GridViewColumn Header="تاريخ التحويل" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding OrderDate}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding TransferDate}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="اجمالي الفاتورة" Width="200">
+                                <GridViewColumn Header="من مخزن" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding TotalAmount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding FromStoreId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="الملاحظات" Width="200">
+                                <GridViewColumn Header="الى مخزن" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Notes}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ToStoreId}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="المخزن" Width="150">
+                                <GridViewColumn Header="تم الاستلام" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding StoreName}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding HasReceived}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="مركز التكلفة" Width="150">
+                                <GridViewColumn Header="تاريخ الاستلام" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding CostCenterName}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-
-                                <GridViewColumn Header="انشاء قيد محاسبي" Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding Accountable}" TextAlignment="Center" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="الحساب" Width="150">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding AccountName}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ReceiveDate}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

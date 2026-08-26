@@ -91,7 +91,7 @@ namespace Smart_POS.Repository
             return null;
         }
 
-        public ActionStatusModel PostPurchaseInoice(InvoiceModel model)
+        public ActionStatusModel PostPurchaseInoice(FirstPeriodStockModel model)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace Smart_POS.Repository
             return null;
         }
 
-        public InvoiceModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
+        public FirstPeriodStockModel? GetPurchaseInvoice(string? first, string? last, string? next, string? prev, string? invoiceId)
         {
             try
             {
@@ -132,7 +132,7 @@ namespace Smart_POS.Repository
                     $"&p_prev={HttpUtility.UrlEncode(prev)}" +
                     $"&p_id={HttpUtility.UrlEncode(invoiceId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<FirstPeriodStockModel>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -150,15 +150,15 @@ namespace Smart_POS.Repository
             return null;
         }
 
-        public ObservableCollection<InvoiceListItemModel> GetAllPurchaseInoices()
+        public ObservableCollection<FirstPeriodStockListItemModel> GetAllPurchaseInoices()
         {
-            ObservableCollection<InvoiceListItemModel> list = new ObservableCollection<InvoiceListItemModel>();
+            ObservableCollection<FirstPeriodStockListItemModel> list = new ObservableCollection<FirstPeriodStockListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
                     $"setup/first_period_stocks", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<List<InvoiceListItemModel>>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<FirstPeriodStockListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {

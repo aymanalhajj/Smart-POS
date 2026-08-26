@@ -348,15 +348,15 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                Price = model.Price.ToString();
-                TotalPrice = model.TotalPrice;
+                Price = model.BasePrice.ToString();
+                TotalPrice = model.TotalPrice.ToString();
                 DiscountPercentage = model.DiscountPercentage.ToString();
-                DiscountValue = model.DiscountValue;
-                PostDiscountPrice = model.PostDiscountPrice;
+                DiscountValue = model.DiscountValue.ToString();
+                PostDiscountPrice = model.PostDiscountTotalPrice.ToString();
                 VatPercentage = model.VatPercentage.ToString();
-                VatValue = model.VatValue;
-                PreDiscountVatValue = model.PreDiscountVatValue;
-                TotalAmount = model.TotalAmount;
+                VatValue = model.VatValue.ToString();
+                PreDiscountVatValue = model.PreDiscountVatValue.ToString();
+                TotalAmount = model.TotalAmount.ToString();
                 OriginalPrice = model.OriginalPrice;
             }
             catch (Exception ex)

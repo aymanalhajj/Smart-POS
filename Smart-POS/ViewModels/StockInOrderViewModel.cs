@@ -220,8 +220,8 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
+                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.Barcode;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     CalcSummary();
@@ -239,12 +239,12 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPriceByBarcode(productBarcode);
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId?.ToString();
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
 
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 

@@ -13,7 +13,7 @@ namespace Smart_POS.ViewModels
         public FirstPeriodStockViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<InvoiceItemViewModel> { };
-            _InvoiceListItems = new ObservableCollection<InvoiceListItemModel> { };
+            _InvoiceListItems = new ObservableCollection<FirstPeriodStockListItemModel> { };
             ProductList = new ObservableCollection<Item> { };
 
             BranchList = new ObservableCollection<Item> { };
@@ -45,7 +45,7 @@ namespace Smart_POS.ViewModels
         private InvoiceViewModel invoice;
         private InvoiceViewModel filters;
         private ObservableCollection<InvoiceItemViewModel> _InvoiceDetailItems;
-        private ObservableCollection<InvoiceListItemModel> _InvoiceListItems;
+        private ObservableCollection<FirstPeriodStockListItemModel> _InvoiceListItems;
 
 
 
@@ -170,16 +170,41 @@ namespace Smart_POS.ViewModels
                 MessageBox.Show(ex.Message);
             }
         }
-        public void ShowInvoice(InvoiceModel? model)
+        public void ShowInvoice(FirstPeriodStockModel? model)
         {
             if (model != null && model.Items != null)
             {
-                invoice.FromInvoiceModel(model);
+                invoice.InvoiceId = model.InvoiceId;
+                invoice.InvoiceNo = model.InvoiceNo ?? 0;
+                invoice.InvoiceDate = model.InvoiceDate;
+                invoice.StoreDate = model.StoreDate;
+                invoice.ProviderInvDate = model.ProviderInvDate;
+                invoice.StoreId = model.StoreId;
+                invoice.InvoiceType = model.InvoiceType ?? 1;
+                invoice.SafeId = model.SafeId;
+                invoice.CostCenterId = model.CostCtrId;
+                invoice.ProviderId = model.ProviderId;
+                invoice.ProviderInvId = model.ProviderInvId;
+                invoice.TotalQuantity = (int)(model.TotalQuantity ?? 0);
+                invoice.InvoiceTotalAmount = (double)(model.InvoiceTotalAmount ?? 0);
+                invoice.Notes = model.Notes;
+                invoice.CompanyId = model.CompanyId ?? 1;
+                invoice.UserId = model.UserId ?? 0;
+                invoice.BranchId = model.BranchId;
+
                 InvoiceDetailItems.Clear();
 
                 foreach (var item in model.Items)
                 {
-                    var itemViewModel = InvoiceItemViewModel.FromInvoiceItemModel(item);
+                    var itemViewModel = new InvoiceItemViewModel
+                    {
+                        DtlId = item.DtlId,
+                        ProductId = item.ProductId?.ToString(),
+                        ProductUnitId = item.ProductUnitId?.ToString(),
+                        Quantity = item.Quantity?.ToString(),
+                        Price = item.Price?.ToString(),
+                        TotalAmount = item.TotalAmount?.ToString()
+                    };
                     itemViewModel.CalcSummaryCallback += new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     itemViewModel.GetProductUnitPriceCallback += new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
@@ -219,8 +244,8 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
+                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.Barcode;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     CalcSummary();
@@ -238,12 +263,12 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPriceByBarcode(productBarcode);
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId?.ToString();
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
 
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 
@@ -354,46 +379,55 @@ namespace Smart_POS.ViewModels
         }
 
         #endregion
-        public InvoiceModel ToInvoiceModel()
+        public FirstPeriodStockModel ToInvoiceModel()
         {
-            InvoiceModel model = new()
+            FirstPeriodStockModel model = new()
             {
-                BankAccId = invoice.BankAccId,
-                BranchId = invoice.BranchId,
-                ClientDiscount = invoice.ClientDiscount,
-                CompanyId = invoice.CompanyId,
-                CostCenterId = invoice.CostCenterId,
-                DeferredAmount = invoice.DeferredAmount,
-                InvoiceDate = String.Format("{0:dd-MM-yyyy}", invoice.InvoiceDate),
                 InvoiceId = invoice.InvoiceId,
                 InvoiceNo = invoice.InvoiceNo,
-                InvoiceTotalAmount = invoice.InvoiceTotalAmount,
+                InvoiceDate = ParseDate(invoice.InvoiceDate),
+                StoreDate = ParseDate(invoice.StoreDate),
+                ProviderInvDate = ParseDate(invoice.ProviderInvDate),
+                StoreId = ToNullableInt(invoice.StoreId),
                 InvoiceType = invoice.InvoiceType,
-                Notes = invoice.Notes,
-                PaidAmount = invoice.PaidAmount,
-                PaidBankAmount = invoice.PaidBankAmount,
-                PaymentType = invoice.PaymentType,
-                PostDiscountTotalAmount = invoice.PostDiscountTotalAmount,
-                PreDiscountTotalAmount = invoice.PreDiscountTotalAmount,
-                PreDiscountTotalVat = invoice.PreDiscountTotalVat,
-                ProviderId = invoice.ProviderId,
-                ProviderInvDate = String.Format("{0:dd-MM-yyyy}", invoice.ProviderInvDate),
-                ProviderInvId = invoice.ProviderInvId,
-                SafeId = invoice.SafeId,
-                StoreDate = String.Format("{0:dd-MM-yyyy}", invoice.StoreDate),
-                PaidCashAmount = invoice.PaidCashAmount,
-                StoreId = invoice.StoreId,
-                TotalDiscount = invoice.TotalDiscount,
+                SafeId = ToNullableInt(invoice.SafeId),
+                CostCtrId = ToNullableInt(invoice.CostCenterId),
+                ProviderId = ToNullableInt(invoice.ProviderId),
+                ProviderInvId = invoice.ProviderInvId?.ToString(),
                 TotalQuantity = invoice.TotalQuantity,
-                TotalVat = invoice.TotalVat,
+                InvoiceTotalAmount = (decimal)invoice.InvoiceTotalAmount,
+                Notes = invoice.Notes?.ToString(),
+                CompanyId = invoice.CompanyId,
                 UserId = invoice.UserId,
-                Items = new List<InvoiceItemModel>()
+                BranchId = ToNullableInt(invoice.BranchId),
+                Items = new List<FirstPeriodStockItemModel>()
             };
             foreach (var item in InvoiceDetailItems)
             {
-                model.Items.Add(item.ToInvoiceItemModel());
+                model.Items.Add(new FirstPeriodStockItemModel
+                {
+                    DtlId = item.DtlId ?? 0,
+                    ProductId = int.TryParse(item.ProductId, out var productId) ? productId : (int?)null,
+                    ProductUnitId = int.TryParse(item.ProductUnitId, out var productUnitId) ? productUnitId : (int?)null,
+                    Quantity = decimal.TryParse(item.Quantity, out var quantity) ? quantity : (decimal?)null,
+                    Price = decimal.TryParse(item.Price, out var price) ? price : (decimal?)null,
+                    TotalAmount = decimal.TryParse(item.TotalAmount, out var totalAmount) ? totalAmount : (decimal?)null
+                });
             }
             return model;
+        }
+
+        private static DateTime? ParseDate(object value)
+        {
+            if (value == null) return null;
+            if (value is DateTime dt) return dt;
+            return DateTime.TryParse(value.ToString(), out var parsed) ? parsed : (DateTime?)null;
+        }
+
+        private static int? ToNullableInt(object value)
+        {
+            if (value == null) return null;
+            return int.TryParse(value.ToString(), out var parsed) ? parsed : (int?)null;
         }
 
         public ObservableCollection<Item> ProductList
@@ -481,7 +515,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("InvoiceDetailItems");
             }
         }
-        public ObservableCollection<InvoiceListItemModel> InvoiceListItems
+        public ObservableCollection<FirstPeriodStockListItemModel> InvoiceListItems
         {
             get { return _InvoiceListItems; }
             set

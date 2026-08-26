@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,34 +9,25 @@ namespace Smart_POS.Models
 {
     public class AccVoucherItemModel
     {
-        [JsonProperty("acc_voucher_dtl_id")]
         public string? AccVoucherDtlId { get; set; }
 
         //[JsonProperty("acc_voucher_id")]
         //public string? AccVoucherId { get; set; }
 
-        [JsonProperty("account_id")]
         public string? AccountId { get; set; }
 
-        [JsonProperty("ref_id")]
         public string RefId { get; set; }
 
-        [JsonProperty("amount")]
         public float Amount { get; set; }
 
-        [JsonProperty("note")]
         public string? Note { get; set; }
 
-        [JsonProperty("cost_cntr_id")]
         public string? CostCntrId { get; set; }
 
-        [JsonProperty("tax_rate")]
         public float? TaxRate { get; set; }
 
-        [JsonProperty("tax_amount")]
         public float? TaxAmount { get; set; }
 
-        [JsonProperty("total_amount")]
         public string? TotalAmount { get; set; }
     }
 }

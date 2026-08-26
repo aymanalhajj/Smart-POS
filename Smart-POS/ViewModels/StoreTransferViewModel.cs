@@ -12,7 +12,7 @@ namespace Smart_POS.ViewModels
         public StoreTransferViewModel()
         {
             _InvoiceDetailItems = new ObservableCollection<StockItemViewModel> { };
-            _InvoiceListItems = new ObservableCollection<StockListItemModel> { };
+            _InvoiceListItems = new ObservableCollection<StoreTransferListItemModel> { };
             ProductList = new ObservableCollection<Item> { };
             BranchList = new ObservableCollection<Item> { };
             StoreList = new ObservableCollection<Item> { };
@@ -36,7 +36,7 @@ namespace Smart_POS.ViewModels
         private TransferViewModel invoice;
         private TransferViewModel filters;
         private ObservableCollection<StockItemViewModel> _InvoiceDetailItems;
-        private ObservableCollection<StockListItemModel> _InvoiceListItems;
+        private ObservableCollection<StoreTransferListItemModel> _InvoiceListItems;
 
         private ObservableCollection<Item> _productList;
         private ObservableCollection<Item> _branchList;
@@ -97,7 +97,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("DetailItems");
             }
         }
-        public ObservableCollection<StockListItemModel> InvoiceListItems
+        public ObservableCollection<StoreTransferListItemModel> InvoiceListItems
         {
             get { return _InvoiceListItems; }
             set
@@ -329,7 +329,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].OrderId.ToString());
+                    var res = repo.Get(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].TransferId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -354,8 +354,8 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
+                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.Barcode;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     CalcSummary();
@@ -373,12 +373,12 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPriceByBarcode(productBarcode);
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId?.ToString();
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
 
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new StockItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new StockItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 

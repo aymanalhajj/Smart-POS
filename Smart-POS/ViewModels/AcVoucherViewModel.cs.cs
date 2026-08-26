@@ -261,20 +261,20 @@ namespace Smart_POS.ViewModels
             if (model != null)
             {
                 AccVoucherId = model.AccVoucherId;
-                Amount = model.Amount;
+                Amount = (int)(model.Amount ?? 0);
                 AccountId = model.AccountId;
                 RefId = model.RefId;
-                PaymentMethod = model.PaymentMethod;
+                PaymentMethod = model.PaymentMethod ?? 1;
                 PaidTo = model.PaidTo;
                 VoucherDate = model.VoucherDate;
                 Posted = model.Posted;
                 VoucherType = model.VoucherType;
                 Note = model.Note;
-                CheckNo = model.CheckNo;
+                CheckNo = model.CheckNo ?? 0;
                 CheckDate = model.CheckDate;
                 CostCntrId = model.CostCntrId;
                 CompanyId = model.CompanyId;
-                TotalVat = model.TotalVat;
+                TotalVat = (double)(model.TotalVat ?? 0);
             }
             else
             {
@@ -299,7 +299,7 @@ namespace Smart_POS.ViewModels
                 CheckDate = this.CheckDate,
                 CostCntrId = this.CostCntrId,
                 CompanyId = this.CompanyId,
-                TotalVat = this.TotalVat,
+                TotalVat = (decimal)this.TotalVat,
                 Items = new List<AccVoucherItemModel>()
             };
             return model;

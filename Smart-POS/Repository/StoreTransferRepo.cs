@@ -143,15 +143,15 @@ namespace Smart_POS.Repository
             }
             return null;
         }
-        public ObservableCollection<StockListItemModel> GetAll()
+        public ObservableCollection<StoreTransferListItemModel> GetAll()
         {
-            ObservableCollection<StockListItemModel> list = new ObservableCollection<StockListItemModel>();
+            ObservableCollection<StoreTransferListItemModel> list = new ObservableCollection<StoreTransferListItemModel>();
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
                     $"store/transfers", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<List<StockListItemModel>>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<StoreTransferListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {

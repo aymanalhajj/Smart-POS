@@ -519,13 +519,13 @@ namespace Smart_POS.ViewModels
                 AccountId = model.AccountId;
                 RefId = model.RefId;
                 CostCenterId = model.CostCtrId;
-                Accountable = model.Accountable;
+                Accountable = model.Accountable ?? 0;
                 OrderNo = model.OrderNo;
                 OrderId = model.OrderId;
                 OrderDate = model.OrderDate;
                 Notes = model.Notes;
                 StoreId = model.StoreId;
-                InvoiceTotalAmount = model.TotalAmount;
+                InvoiceTotalAmount = (double)(model.TotalAmount ?? 0);
                 UserId = model.UserId;
 
             }
@@ -543,7 +543,7 @@ namespace Smart_POS.ViewModels
                 OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
                 BranchId = this.BranchId,
                 RefId = this.RefId,
-                TotalAmount = this.InvoiceTotalAmount,
+                TotalAmount = (decimal)this.InvoiceTotalAmount,
                 Notes = this.Notes,
                 StoreId = this.StoreId,
                 CostCtrId = this.CostCenterId,
