@@ -56,7 +56,7 @@ namespace Smart_POS.ViewModels
         public float? _change_total_amount;
 
         public string _quantity;
-        public string? Dtl_Id { get; set; }
+        public int? DtlId { get; set; }
         public string ProductId
         {
             get
@@ -348,15 +348,15 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                Price = model.Price.ToString();
-                TotalPrice = model.TotalPrice;
+                Price = model.BasePrice.ToString();
+                TotalPrice = model.TotalPrice.ToString();
                 DiscountPercentage = model.DiscountPercentage.ToString();
-                DiscountValue = model.DiscountValue;
-                PostDiscountPrice = model.PostDiscountPrice;
+                DiscountValue = model.DiscountValue.ToString();
+                PostDiscountPrice = model.PostDiscountTotalPrice.ToString();
                 VatPercentage = model.VatPercentage.ToString();
-                VatValue = model.VatValue;
-                PreDiscountVatValue = model.PreDiscountVatValue;
-                TotalAmount = model.TotalAmount;
+                VatValue = model.VatValue.ToString();
+                PreDiscountVatValue = model.PreDiscountVatValue.ToString();
+                TotalAmount = model.TotalAmount.ToString();
                 OriginalPrice = model.OriginalPrice;
             }
             catch (Exception ex)
@@ -401,19 +401,19 @@ namespace Smart_POS.ViewModels
         {
             InvoiceItemModel model = new()
             {
-                Dtl_Id = this.Dtl_Id,
-                ProductBarcode = this.ProductBarcode,
-                Price = float.Parse(this.Price),
-                DiscountPercentage = float.Parse(this.DiscountPercentage),
-                DiscountValue = this.DiscountValue,
-                PostDiscountPrice = this.PostDiscountPrice,
-                ProductId = this.ProductId,
+                DtlId = this.DtlId ?? 0,
+                Barcode = this.ProductBarcode,
+                BasePrice = decimal.Parse(this.Price),
+                DiscountPercentage = decimal.Parse(this.DiscountPercentage),
+                DiscountValue = decimal.Parse(this.DiscountValue),
+                PostDiscountTotalPrice = decimal.Parse(this.PostDiscountPrice),
+                ProductId = string.IsNullOrEmpty(this.ProductId) ? (int?)null : int.Parse(this.ProductId),
                 Quantity = int.Parse(this.Quantity),
-                TotalAmount = this.TotalAmount,
-                TotalPrice = this.TotalPrice,
-                ProductUnitId = this.ProductUnitId,
-                VatPercentage = float.Parse(this.VatPercentage),
-                VatValue = this.VatValue
+                TotalAmount = decimal.Parse(this.TotalAmount),
+                TotalPrice = decimal.Parse(this.TotalPrice),
+                UnitId = string.IsNullOrEmpty(this.ProductUnitId) ? (int?)null : int.Parse(this.ProductUnitId),
+                VatPercentage = decimal.Parse(this.VatPercentage),
+                VatValue = decimal.Parse(this.VatValue)
             };
             return model;
         }
@@ -422,21 +422,21 @@ namespace Smart_POS.ViewModels
         {
             InvoiceItemViewModel viewModel = new()
             {
-                Dtl_Id = model.Dtl_Id,
-                ProductBarcode = model.ProductBarcode,
-                Price = model.Price.ToString(),
+                DtlId = model.DtlId,
+                ProductBarcode = model.Barcode,
+                Price = model.BasePrice.ToString(),
                 DiscountPercentage = model.DiscountPercentage.ToString(),
-                DiscountValue = model.DiscountValue,
-                PostDiscountPrice = model.PostDiscountPrice,
-                ProductId = model.ProductId,
+                DiscountValue = model.DiscountValue.ToString(),
+                PostDiscountPrice = model.PostDiscountTotalPrice.ToString(),
+                ProductId = model.ProductId?.ToString(),
                 Quantity = model.Quantity.ToString(),
-                TotalAmount = model.TotalAmount,
-                TotalPrice = model.TotalPrice,
+                TotalAmount = model.TotalAmount.ToString(),
+                TotalPrice = model.TotalPrice.ToString(),
                 VatPercentage = model.VatPercentage.ToString(),
-                VatValue = model.VatValue
+                VatValue = model.VatValue.ToString()
             };
             viewModel.Load_ProductUnits();
-            viewModel.ProductUnitId = model.ProductUnitId;
+            viewModel.ProductUnitId = model.UnitId?.ToString();
             return viewModel;
         }
     }

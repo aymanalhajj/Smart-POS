@@ -103,9 +103,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.OrderId != 0)
+                if (Invoice.InvoiceId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.OrderId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "1", prev: "0", invoiceId: Invoice.InvoiceId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -118,9 +118,9 @@ namespace Smart_POS.ViewModels
         {
             try
             {
-                if (Invoice.OrderId != 0)
+                if (Invoice.InvoiceId != 0)
                 {
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.OrderId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "1", invoiceId: Invoice.InvoiceId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -198,7 +198,7 @@ namespace Smart_POS.ViewModels
                 if (InvoiceToEditIndex != -1)
                 {
                     CurrentRow = -1;
-                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].OrderId.ToString());
+                    var res = repo.GetPurchaseInvoice(first: "0", last: "0", next: "0", prev: "0", invoiceId: InvoiceListItems[InvoiceToEditIndex].InvoiceId.ToString());
                     ShowInvoice(res);
                 }
             }
@@ -223,8 +223,8 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPrice(InvoiceDetailItems[CurrentRow].ProductId.ToString());
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
-                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.ProductBarcode;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
+                    InvoiceDetailItems[CurrentRow].ProductBarcode = res.Barcode;
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     CalcSummary();
@@ -242,12 +242,12 @@ namespace Smart_POS.ViewModels
                 var res = repo.GetProductPriceByBarcode(productBarcode);
                 if (res != null)
                 {
-                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId;
+                    InvoiceDetailItems[CurrentRow].ProductId = res.ProductId?.ToString();
                     InvoiceDetailItems[CurrentRow].Quantity = res.Quantity.ToString();
 
                     InvoiceDetailItems[CurrentRow].ResetProductPrice(res);
                     InvoiceDetailItems[CurrentRow].Load_ProductUnits();
-                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.ProductUnitId;
+                    InvoiceDetailItems[CurrentRow].ProductUnitId = res.UnitId?.ToString();
                     InvoiceDetailItems[CurrentRow].CalcSummaryCallback -= new InvoiceItemViewModel.CalcSummaryCallbackEventHandler(CalcSummary);
                     InvoiceDetailItems[CurrentRow].GetProductUnitPriceCallback -= new InvoiceItemViewModel.GetProductUnitPriceCallbackEventHandler(GetProductUnitPrice);
 

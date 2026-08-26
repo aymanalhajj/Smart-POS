@@ -481,7 +481,7 @@
                                 <GridViewColumn Header="الإجمالي قبل الضريبة" Width="130">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding PreDiscountTotalAmount}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding PreTaxTotalAmount}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
@@ -537,7 +537,7 @@
                                 <GridViewColumn Header="المورد" Width="150">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding ProviderId}" TextAlignment="Center" />
+                                            <TextBlock Text="{Binding ProviderNameAr}" TextAlignment="Center" />
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>

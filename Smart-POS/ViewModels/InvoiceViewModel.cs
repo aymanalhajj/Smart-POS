@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels
@@ -16,7 +16,6 @@ namespace Smart_POS.ViewModels
         public event DiscountCallbackEventHandler DiscountCallback;
         public InvoiceViewModel()
         {
-            OrderDate = DateTime.Now;
             InvoiceDate = DateTime.Now;
             ProviderInvDate = DateTime.Now;
             StoreDate = DateTime.Now;
@@ -77,20 +76,7 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("Notes");
             }
         }
-        
-        public object _order_date { get; set; }
-        public object OrderDate
-        {
-            get
-            {
-                return _order_date;
-            }
-            set
-            {
-                _order_date = value;
-                OnPropertyChanged("OrderDate");
-            }
-        }
+
         public object _invoice_date { get; set; }
         public object InvoiceDate
         {
@@ -171,6 +157,9 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("ClientId");
             }
         }
+        // Wraps the new DTO's CostCtrId field. Kept named CostCenterId here since
+        // XAML bindings (Invoice.CostCenterId / Filters.CostCenterId) already use
+        // this name across all six invoice pages.
         public object _cost_ctr_id { get; set; }
         public object CostCenterId
         {
@@ -440,32 +429,6 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("BankAccId");
             }
         }
-        public int _order_id { get; set; }
-        public int OrderId
-        {
-            get
-            {
-                return _order_id;
-            }
-            set
-            {
-                _order_id = value;
-                OnPropertyChanged("OrderId");
-            }
-        }
-        public object _order_no { get; set; }
-        public object OrderNo
-        {
-            get
-            {
-                return _order_no;
-            }
-            set
-            {
-                _order_no = value;
-                OnPropertyChanged("OrderNo");
-            }
-        }
         public double _paid_amount { get; set; }
         public double PaidAmount
         {
@@ -509,31 +472,44 @@ namespace Smart_POS.ViewModels
                 OnPropertyChanged("PaidAmount");
             }
         }
+
+        // Converts the object-typed ComboBox SelectedValue-backed properties above
+        // (ProviderId, ClientId, BranchId, StoreId, CostCenterId, SafeId, BankAccId)
+        // into the nullable ints the new InvoiceDto declares.
+        private static int? ToNullableInt(object value)
+        {
+            if (value == null)
+                return null;
+            if (value is int i)
+                return i;
+            if (int.TryParse(value.ToString(), out var parsed))
+                return parsed;
+            return null;
+        }
+
         public void FromInvoiceModel(InvoiceModel model)
         {
             if (model != null)
             {
-                OrderId = model.OrderId;
-                OrderNo = model.OrderNo;
                 BankAccId = model.BankAccId;
                 BranchId = model.BranchId;
-                ClientDiscount = model.ClientDiscount;
-                CompanyId = model.CompanyId;
-                CostCenterId = model.CostCenterId;
-                DeferredAmount = model.DeferredAmount;
-                InvoiceNo = model.InvoiceNo;
+                ClientDiscount = (float)(model.ClientDiscount ?? 0);
+                CompanyId = model.CompanyId ?? 0;
+                CostCenterId = model.CostCtrId;
+                DeferredAmount = (double)(model.DeferredAmount ?? 0);
+                InvoiceNo = model.InvoiceNo ?? 0;
                 InvoiceId = model.InvoiceId;
                 InvoiceDate = model.InvoiceDate;
-                InvoiceTotalAmount = model.InvoiceTotalAmount;
-                InvoiceType = model.InvoiceType;
+                InvoiceTotalAmount = (double)(model.InvoiceTotalAmount ?? 0);
+                InvoiceType = model.InvoiceType ?? 0;
                 Notes = model.Notes;
-                PaidAmount = model.PaidAmount;
-                PaidBankAmount = model.PaidBankAmount;
-                PaidCashAmount = model.PaidCashAmount;
-                PaymentType = model.PaymentType;
-                PostDiscountTotalAmount = model.PostDiscountTotalAmount;
-                PreDiscountTotalAmount = model.PreDiscountTotalAmount;
-                PreDiscountTotalVat = model.PreDiscountTotalVat;
+                PaidAmount = (double)(model.PaidAmount ?? 0);
+                PaidBankAmount = (double)(model.PaidBankAmount ?? 0);
+                PaidCashAmount = (double)(model.PaidCashAmount ?? 0);
+                PaymentType = model.PaymentType ?? 0;
+                PostDiscountTotalAmount = (double)(model.PostDiscountTotalAmount ?? 0);
+                PreDiscountTotalAmount = (double)(model.PreTaxTotalAmount ?? 0);
+                PreDiscountTotalVat = (double)(model.PreDiscountTotalVat ?? 0);
                 ProviderId = model.ProviderId;
                 ClientId = model.ClientId;
                 ProviderInvDate = model.ProviderInvDate;
@@ -541,10 +517,10 @@ namespace Smart_POS.ViewModels
                 SafeId = model.SafeId;
                 StoreDate = model.StoreDate;
                 StoreId = model.StoreId;
-                TotalDiscount = model.TotalDiscount;
-                TotalQuantity = model.TotalQuantity;
-                TotalVat = model.TotalVat;
-                UserId = model.UserId;
+                TotalDiscount = (double)(model.TotalDiscount ?? 0);
+                TotalQuantity = (int)(model.TotalQuantity ?? 0);
+                TotalVat = (double)(model.TotalVat ?? 0);
+                UserId = model.UserId ?? 0;
 
             }
             else
@@ -558,38 +534,35 @@ namespace Smart_POS.ViewModels
         {
             InvoiceModel model = new()
             {
-                OrderId = this.OrderId,
-                OrderNo = this.OrderNo,
-                BankAccId = this.BankAccId,
-                BranchId = this.BranchId,
-                ClientDiscount = this.ClientDiscount,
+                BankAccId = ToNullableInt(this.BankAccId),
+                BranchId = ToNullableInt(this.BranchId),
+                ClientDiscount = (decimal)this.ClientDiscount,
                 CompanyId = this.CompanyId,
-                CostCenterId = this.CostCenterId,
-                DeferredAmount = this.DeferredAmount,
+                CostCtrId = ToNullableInt(this.CostCenterId),
+                DeferredAmount = (decimal)this.DeferredAmount,
                 InvoiceDate = String.Format("{0:dd-MM-yyyy}", this.InvoiceDate),
-                OrderDate = String.Format("{0:dd-MM-yyyy}", this.OrderDate),
                 InvoiceId = this.InvoiceId,
                 InvoiceNo = this.InvoiceNo,
-                InvoiceTotalAmount = this.InvoiceTotalAmount,
+                InvoiceTotalAmount = (decimal)this.InvoiceTotalAmount,
                 InvoiceType = this.InvoiceType,
-                Notes = this.Notes,
-                PaidAmount = this.PaidAmount,
-                PaidBankAmount = this.PaidBankAmount,
+                Notes = this.Notes?.ToString(),
+                PaidAmount = (decimal)this.PaidAmount,
+                PaidBankAmount = (decimal)this.PaidBankAmount,
                 PaymentType = this.PaymentType,
-                PostDiscountTotalAmount = this.PostDiscountTotalAmount,
-                PreDiscountTotalAmount = this.PreDiscountTotalAmount,
-                PreDiscountTotalVat = this.PreDiscountTotalVat,
-                ProviderId = this.ProviderId,
-                ClientId = this.ClientId,
+                PostDiscountTotalAmount = (decimal)this.PostDiscountTotalAmount,
+                PreTaxTotalAmount = (decimal)this.PreDiscountTotalAmount,
+                PreDiscountTotalVat = (decimal)this.PreDiscountTotalVat,
+                ProviderId = ToNullableInt(this.ProviderId),
+                ClientId = ToNullableInt(this.ClientId),
                 ProviderInvDate = String.Format("{0:dd-MM-yyyy}", this.ProviderInvDate),
-                ProviderInvId = this.ProviderInvId,
-                SafeId = this.SafeId,
+                ProviderInvId = this.ProviderInvId?.ToString(),
+                SafeId = ToNullableInt(this.SafeId),
                 StoreDate = String.Format("{0:dd-MM-yyyy}", this.StoreDate),
-                PaidCashAmount = this.PaidCashAmount,
-                StoreId = this.StoreId,
-                TotalDiscount = this.TotalDiscount,
+                PaidCashAmount = (decimal)this.PaidCashAmount,
+                StoreId = ToNullableInt(this.StoreId),
+                TotalDiscount = (decimal)this.TotalDiscount,
                 TotalQuantity = this.TotalQuantity,
-                TotalVat = this.TotalVat,
+                TotalVat = (decimal)this.TotalVat,
                 UserId = this.UserId,
                 Items = new List<InvoiceItemModel>()
             };
@@ -597,8 +570,6 @@ namespace Smart_POS.ViewModels
         }
         public void clear()
         {
-            OrderId = 0;
-            OrderNo = null;
             BankAccId = null;
             BranchId = null;
             ClientDiscount = 0;

@@ -1,82 +1,58 @@
-﻿using Newtonsoft.Json;
-
 namespace Smart_POS.Models
 {
     public class InvoiceModel
     {
+        public int InvoiceId { get; set; }
+        public int? InvoiceNo { get; set; }
+        public int? InvoiceType { get; set; }
+        public int? ProviderId { get; set; }
+        public string? ProviderInvId { get; set; }
+        public string? ProviderInvDate { get; set; }
+        public int? ClientId { get; set; }
+        public string? ProviderNameAr { get; set; }
+        public string? ProviderNameEn { get; set; }
+        public string? ClientNameAr { get; set; }
+        public string? ClientNameEn { get; set; }
+        public string? StoreNameAr { get; set; }
+        public string? StoreNameEn { get; set; }
+        public string? BranchNameAr { get; set; }
+        public string? BranchNameEn { get; set; }
+        public string? CostCtrNameAr { get; set; }
+        public string? CostCtrNameEn { get; set; }
+        public string? BankNameAr { get; set; }
+        public string? BankNameEn { get; set; }
+        public string? SafeNameAr { get; set; }
+        public string? SafeNameEn { get; set; }
+        public string? InvoiceDate { get; set; }
+        public string? StoreDate { get; set; }
+        public decimal? PreTaxTotalAmount { get; set; }
+        public decimal? ClientDiscount { get; set; }
+        public decimal? TotalDiscount { get; set; }
+        public decimal? PostDiscountTotalAmount { get; set; }
+        public decimal? TotalVat { get; set; }
+        public decimal? InvoiceTotalAmount { get; set; }
+        public int? PaymentType { get; set; }
+        public int? PaymentMethod { get; set; }
+        public decimal? PaidCashAmount { get; set; }
+        public decimal? PaidBankAmount { get; set; }
+        public decimal? PaidAmount { get; set; }
+        public decimal? DeferredAmount { get; set; }
+        public int? BankAccId { get; set; }
+        public int? SafeId { get; set; }
+        public decimal? TotalQuantity { get; set; }
+        public int? UserId { get; set; }
+        public int? CompanyId { get; set; }
+        public int? BranchId { get; set; }
+        public int? StoreId { get; set; }
+        public int? CostCtrId { get; set; }
+        public string? Notes { get; set; }
+        public List<InvoiceItemModel> Items { get; set; } = new();
 
-        [JsonProperty("order_id")]
-        public int OrderId;
-
-        [JsonProperty("order_no")]
-        public object OrderNo;
-
-        [JsonProperty("invoice_id")]
-        public int InvoiceId;
-        [JsonProperty("invoice_no")]
-        public int InvoiceNo;
-        [JsonProperty("provider_inv_id")]
-        public object? ProviderInvId;
-        [JsonProperty("notes")]
-        public object? Notes; 
-        [JsonProperty("order_date")]
-        public object? OrderDate;
-        [JsonProperty("invoice_date")]
-        public object? InvoiceDate;
-        [JsonProperty("provider_inv_date")]
-        public object? ProviderInvDate;
-        [JsonProperty("store_date")]
-        public object? StoreDate;
-        [JsonProperty("branch_id")]
-        public object? BranchId; 
-        [JsonProperty("provider_id")]
-        public object? ProviderId;
-        [JsonProperty("client_id")]
-        public object? ClientId;
-        [JsonProperty("cost_ctr_id")]
-        public object? CostCenterId;
-        [JsonProperty("invoice_type")]
-        public int InvoiceType;
-        [JsonProperty("store_id")]
-        public object? StoreId;
-        [JsonProperty("safe_id")]
-        public object SafeId;
-        [JsonProperty("payment_type")]
-        public int PaymentType;
-        [JsonProperty("pre_discount_total_amount")]
-        public double PreDiscountTotalAmount;
-        [JsonProperty("pre_discount_total_vat")]
-        public double PreDiscountTotalVat;
-        [JsonProperty("client_discount")]
-        public float ClientDiscount;
-        [JsonProperty("total_discount")]
-        public double TotalDiscount;
-        [JsonProperty("post_discount_total_amount")]
-        public double PostDiscountTotalAmount;
-        [JsonProperty("total_vat")]
-        public double TotalVat;
-        [JsonProperty("total_quantity")]
-        public int TotalQuantity;
-        [JsonProperty("invoice_total_amount")]
-        public double InvoiceTotalAmount;
-        [JsonProperty("paid_cash_amount")]
-        public double PaidCashAmount;
-        [JsonProperty("paid_bank_amount")]
-        public double PaidBankAmount;
-        [JsonProperty("company_id")]
-        public int CompanyId;
-        [JsonProperty("user_id")]
-        public int UserId;
-        [JsonProperty("bank_acc_id")]
-        public object? BankAccId;
-        [JsonProperty("paid_amount")]
-        public double PaidAmount;
-
-        [JsonProperty("deferred_amount")]
-        public double DeferredAmount;
-
-        [JsonProperty("items")]
-        public List<InvoiceItemModel>? Items;
+        // Not present on the new InvoiceDto (no header-level equivalent — the closest
+        // thing, PreDiscountVatValue, lives per line-item on InvoiceItemDto). Kept here
+        // only so it keeps flowing through InvoiceViewModel's local ClientDiscount-%
+        // calculation (summed client-side from item PreDiscountVatValue in CalcSummary);
+        // it is not populated from GET responses and is extra/ignored JSON on POST.
+        public decimal? PreDiscountTotalVat { get; set; }
     }
-
 }
