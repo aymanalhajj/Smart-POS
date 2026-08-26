@@ -101,7 +101,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice", UriKind.Absolute);
+                    $"Invoice/purchase", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -129,7 +129,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchase_invoice" +
+                    $"Invoice/purchase" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -161,9 +161,9 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"invoices/purchases_invoices", UriKind.Absolute);
+                    $"Invoice/purchase/list", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<InvoiceListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<InvoiceListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -173,7 +173,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }

@@ -22,10 +22,10 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/acc_accounts" +
+                    $"accounts/accounts" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<AccAccountsListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<AccAccountsListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -35,7 +35,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }
@@ -57,7 +57,7 @@ namespace Smart_POS.Repository
                     $"setup/parent_accounts11" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<TreeAccountsListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<TreeAccountsListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -67,7 +67,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }
@@ -85,7 +85,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/acc_account" +
+                    $"accounts/account" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -114,7 +114,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/acc_account", UriKind.Absolute);
+                    $"accounts/account", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -139,9 +139,8 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/acc_account" +
-                    $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
-                var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
+                    $"accounts/account/{HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
+                var response = ApiRepository.getInstance().MyClient().DeleteAsync(requestUri).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     return new ActionStatusModel("لم يتم الحذف", status: 0);

@@ -158,7 +158,7 @@ namespace Smart_POS.Repository
                 var requestUri = new Uri($"{baseUrl}" +
                     $"store/stockout_orders", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<StockListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<StockListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -168,7 +168,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }

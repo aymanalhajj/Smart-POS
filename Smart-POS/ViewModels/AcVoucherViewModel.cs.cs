@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json.Linq;
-using POS_Desktop.Models;
 using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels

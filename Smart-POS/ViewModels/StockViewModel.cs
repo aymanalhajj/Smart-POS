@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using POS_Desktop.Models;
 using Smart_POS.Models;
 
 namespace Smart_POS.ViewModels

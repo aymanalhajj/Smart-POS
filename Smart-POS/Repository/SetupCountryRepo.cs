@@ -25,7 +25,7 @@ namespace Smart_POS.Repository
                     $"setup/countrys" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<SetupCountryListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<SetupCountryListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -35,7 +35,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }
@@ -107,9 +107,8 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/country" +
-                    $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
-                var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
+                    $"setup/country/{HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
+                var response = ApiRepository.getInstance().MyClient().DeleteAsync(requestUri).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     return new ActionStatusModel("لم يتم الحذف", status: 0);

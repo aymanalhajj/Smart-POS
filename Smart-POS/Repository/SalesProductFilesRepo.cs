@@ -22,10 +22,10 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/providers" +
+                    $"setup/product_files" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}", UriKind.Absolute);
                 var response = ApiRepository.getInstance().MyClient().GetAsync(requestUri).Result;
-                var res = JsonConvert.DeserializeObject<SalesProductFilesListModel>(response.Content.ReadAsStringAsync().Result);
+                var res = JsonConvert.DeserializeObject<List<SalesProductFilesListItemModel>>(response.Content.ReadAsStringAsync().Result);
 
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
@@ -35,7 +35,7 @@ namespace Smart_POS.Repository
                 {
                     if (res != null)
                     {
-                        foreach (var item in res.items)
+                        foreach (var item in res)
                         {
                             list.Add(item);
                         }
@@ -53,7 +53,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
+                    $"setup/product_file" +
                     $"?p_company_id={HttpUtility.UrlEncode(ApiRepository.getInstance().companyId)}" +
                     $"&p_first={HttpUtility.UrlEncode(first)}" +
                     $"&p_last={HttpUtility.UrlEncode(last)}" +
@@ -82,7 +82,7 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider", UriKind.Absolute);
+                    $"setup/product_file", UriKind.Absolute);
 
                 var json = JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -107,9 +107,8 @@ namespace Smart_POS.Repository
             try
             {
                 var requestUri = new Uri($"{baseUrl}" +
-                    $"setup/provider" +
-                    $"?p_id={HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
-                var response = ApiRepository.getInstance().MyClient().PutAsync(requestUri, null).Result;
+                    $"setup/product_file/{HttpUtility.UrlEncode(Id)}", UriKind.Absolute);
+                var response = ApiRepository.getInstance().MyClient().DeleteAsync(requestUri).Result;
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 {
                     return new ActionStatusModel("لم يتم الحذف", status: 0);

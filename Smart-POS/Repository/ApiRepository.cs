@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
 using System.Text;
@@ -14,8 +15,7 @@ namespace Smart_POS.Repository
         static ApiRepository _instance;
         public string companyId = "1";
         string langId = "2";
-        static protected string baseUrl = "http://localhost:8088/ords/accounting/";
-        //static private string baseUrl = "https://apex.oracle.com/pls/apex/smart_pos/";
+        static protected string baseUrl = "https://localhost:7081/api/";
         readonly HttpClient _client;
         public HttpClient MyClient()
         {
@@ -31,9 +31,17 @@ namespace Smart_POS.Repository
         }
         public ApiRepository()
         {
-            _client = new HttpClient();
+            var handler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (msg, cert, chain, errors) => true
+            };
+            _client = new HttpClient(handler);
             _client.DefaultRequestHeaders.Add("Accept", "application/json");
-            _client.DefaultRequestHeaders.Add("token", "tokenaaaaa111222");
+            _client.DefaultRequestHeaders.Add("Accept-Language", "ar");
+        }
+        public void SetAuthToken(string token)
+        {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
         public ObservableCollection<Item> GetSelectList(Uri uri)
         {
@@ -47,18 +55,18 @@ namespace Smart_POS.Repository
                 }
                 else
                 {
-                    var res = JsonConvert.DeserializeObject<LOV>(response.Content.ReadAsStringAsync().Result);
+                    var res = JsonConvert.DeserializeObject<List<Item>>(response.Content.ReadAsStringAsync().Result);
                     if (res != null)
                     {
-                        for (int i = 0; i < res.Items?.Count; i++)
+                        for (int i = 0; i < res.Count; i++)
                         {
-                            _list.Add(res.Items[i]);
+                            _list.Add(res[i]);
                         }
                     }
                 }
             }
-            catch (Exception ex) 
-            { 
+            catch (Exception ex)
+            {
             }
             return _list;
         }
@@ -170,7 +178,7 @@ namespace Smart_POS.Repository
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/country_list" +
-                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"?p_company_id=0" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
         }
@@ -178,7 +186,7 @@ namespace Smart_POS.Repository
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/city_list" +
-                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"?p_company_id=0" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
                 $"&p_country_id={HttpUtility.UrlEncode(countryId)}", UriKind.Absolute);
             return GetSelectList(requestUri);
@@ -187,7 +195,7 @@ namespace Smart_POS.Repository
         {
             var requestUri = new Uri($"{baseUrl}" +
                 $"lists/region_list" +
-                $"?p_company_id={HttpUtility.UrlEncode(companyId)}" +
+                $"?p_company_id=0" +
                 $"&p_lang_id={HttpUtility.UrlEncode(langId)}" +
                 $"&p_country_id={HttpUtility.UrlEncode(countryId)}" +
                 $"&p_city_id={HttpUtility.UrlEncode(cityId)}", UriKind.Absolute);

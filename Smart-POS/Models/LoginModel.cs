@@ -1,4 +1,4 @@
-﻿namespace POS_Desktop.Models
+﻿namespace Smart_POS.Models
 {
     class LoginModel
     {
